@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="login.css">
+    <script type="text/montage-serialization">
+    {
+        "owner": {
+            "properties": {
+                "element": {"#": "owner"}
+            }
+        },
+        "toggle": {
+            "prototype": "digit/ui/checkbox.reel",
+            "properties": {
+                "element": {"#": "toggle"},
+                "checked": false
+            }
+        },
+        "substitution": {
+            "prototype": "montage/ui/substitution.reel",
+            "properties": {
+                "element": {"#": "substitution"}
+            },
+            "bindings": {
+                "switchValue": {"<-": "@toggle.checked"}
+            }
+        },
+        "handleField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "handleField"},
+                "placeholderValue": "Your Handle?"
+            }
+        },
+        "stateField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "stateField"},
+                "placeholderValue": "Your State?"
+            }
+        },
+        "cityField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "cityField"},
+                "placeholderValue": "City or Town?"
+            }
+        },
+        "credentialsButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "credentialsButton"},
+                "label": "Submit"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "gsPlatoonSizeField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "gsPlatoonSizeField"},
+                "placeholderValue": "Platoon Size?"
+            }
+        },
+        "gsEmailField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "gsEmailField"},
+                "placeholderValue": "eMail?"
+            }
+        },
+        "gsMobilePhoneField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "gsMobilePhoneField"},
+                "placeholderValue": "Mobile Phone?"
+            }
+        },
+        "mmDateField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "mmDateField"},
+                "placeholderValue": "Date Acquired?"
+            }
+        },
+        "mmTypeField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "mmTypeField"},
+                "placeholderValue": "Gun Type?"
+            }
+        },
+        "mmModelField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "mmModelField"},
+                "placeholderValue": "Gun Model?"
+            }
+        },
+        "mmSerialNumberField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "mmSerialNumberField"},
+                "placeholderValue": "Serial Number?"
+            }
+        },
+        "mmNameField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "mmNameField"},
+                "placeholderValue": "Name/Maker?"
+            }
+        },
+        "mmDescriptionField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "mmDescriptionField"},
+                "placeholderValue": "Description?"
+            }
+        },
+        "button": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "button"},
+                "label": "Submit"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        }
+    }
+    </script>
+</head>
+<body>
+    <div data-montage-id="owner" class="Login">
+<h1>Militia Credentials</h1>
+        <p>Generally your credentials consist simply of three elements:  your city, your state
+            and, finnally, some unique "handle" that makes you special.  The handle could be
+            simply a nickname or other suitable label you commonly are known as (e.g. "Lefty", "Junior").</p>
+
+        <h2>Login Credentials</h2>
+        Required fields marked with an asterisk(*)<br/>
+        <span><input data-montage-id="cityField" type="text">*</span><br/>
+        <span><input data-montage-id="stateField" type="text">*</span><br/>
+        <span><input data-montage-id="handleField" type="text">*</span><br/>
+        <button data-montage-id="credentialsButton"></button>
+        <label><input type="checkbox" data-montage-id="toggle">Gunnery Sergeant?</label><br/>
+	<div data-montage-id="substitution">
+        <div data-arg="true" data-montage-id="GSblock">
+                <h2>Hello There GS!</h2>
+            You must be willing to occasionally call, text, email or snail mail members in your platoon<br/>
+        <span><input data-montage-id="gsPlatoonSizeField" type="text">*</span><br/>
+            <span><input data-montage-id="gsEmailField" type="text">*</span><br/>
+        <span><input data-montage-id="gsMobilePhoneField" type="text">*</span><br/>
+        </div> 
+        <div data-arg="false" data-montage-id="MMblock">
+                <h2>Hello There MM!</h2>
+        <span><input data-montage-id="mmDateField" type="text">*</span><br/>
+            <span><input data-montage-id="mmTypeField" type="text"></span><br/>
+            <span><input data-montage-id="mmModelField" type="text"></span><br/>
+                    <span><input data-montage-id="mmSerialNumberField" type="text"></span><br/>
+                    <span><input data-montage-id="mmNameField" type="text"></span><br/>
+                    <span><input data-montage-id="mmDescriptionField" type="text"></span><br/>
+        </div>
+    </div>
+    <button data-montage-id="button"></button>
+    </div>
+</body>
+</html>

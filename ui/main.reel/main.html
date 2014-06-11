@@ -12,11 +12,19 @@
                 "properties": {
                     "element": {"#": "main"}
                 }
+            },
+            "login": {
+                "prototype": "ui/login.reel",
+                "properties": {
+                    "element": {"#": "login"}
+                }
             }
         }
     </script>
 </head>
 <body>
-    <div data-montage-id="main" data-montage-skin="light" class="Main"></div>
+    <div data-montage-id="main" data-montage-skin="light" class="Main">
+        <div data-montage-id="login"></div>
+    </div>
 </body>
 </html>
