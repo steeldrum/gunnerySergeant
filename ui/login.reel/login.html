@@ -10,11 +10,30 @@
                 "element": {"#": "owner"}
             }
         },
+		"pageName": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "pageName"}
+        	}
+    	},
+		"associates": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "associates"}
+        	}
+    	},
+        "toggleField": {
+            "prototype": "digit/ui/checkbox.reel",
+            "properties": {
+                "element": {"#": "toggleField"},
+                "checked": false
+            }
+        },
         "toggle": {
             "prototype": "digit/ui/checkbox.reel",
             "properties": {
                 "element": {"#": "toggle"},
-                "checked": false
+                "enabled": false
             }
         },
         "substitution": {
@@ -23,7 +42,7 @@
                 "element": {"#": "substitution"}
             },
             "bindings": {
-                "switchValue": {"<-": "@toggle.checked"}
+                "switchValue": {"<-": "@pageName.value"}
             }
         },
         "handleField": {
@@ -33,6 +52,12 @@
                 "placeholderValue": "Your Handle?"
             }
         },
+    	"handle": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "handle"}
+       	 }
+    	},
         "stateField": {
             "prototype": "digit/ui/text-field.reel",
             "properties": {
@@ -40,12 +65,109 @@
                 "placeholderValue": "Your State?"
             }
         },
+    	"state": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "state"}
+       	 }
+    	},
         "cityField": {
             "prototype": "digit/ui/text-field.reel",
             "properties": {
                 "element": {"#": "cityField"},
                 "placeholderValue": "City or Town?"
             }
+        },
+    	"city": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "city"}
+       	 }
+    	},
+        "associateField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "associateField"},
+                "placeholderValue": "Associate"
+            }
+        },
+        "credentials2HomeButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "credentials2HomeButton"},
+                "label": "Home"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "associates2HomeButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "associates2HomeButton"},
+                "label": "Home"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "gunnerySergeant2HomeButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "gunnerySergeant2HomeButton"},
+                "label": "Home"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "contact2HomeButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "contact2HomeButton"},
+                "label": "Home"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "backupContact2HomeButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "backupContact2HomeButton"},
+                "label": "Home"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "loginButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "loginButton"},
+                "label": "Join Up!"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
         },
         "credentialsButton": {
             "prototype": "digit/ui/button.reel",
@@ -60,6 +182,77 @@
                 }
                 ]
         },
+        "associatesButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "associatesButton"},
+                "label": "Submit"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "privateContactButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "privateContactButton"},
+                "label": "Submit"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "privateBackupContactButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "privateBackupContactButton"},
+                "label": "Submit"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "privateGunnerySergeantSelectionButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "privateGunnerySergeantSelectionButton"},
+                "label": "Submit"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "privateReportButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "privateReportButton"},
+                "label": "Submit"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+    	"gsHandle": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "gsHandle"}
+       	 	}
+    	},
         "gsPlatoonSizeField": {
             "prototype": "digit/ui/text-field.reel",
             "properties": {
@@ -81,12 +274,155 @@
                 "placeholderValue": "Mobile Phone?"
             }
         },
+    	"mmContactHandle": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "mmContactHandle"}
+			}
+       	 },
+    	"mmMobilePhoneField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmMobilePhoneField"}
+			}
+       	 },
+    	"mmPhoneField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmPhoneField"}
+			}
+       	 },
+    	"mmEmailField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmEmailField"}
+			}
+       	 },
+    	"mmFirstNameField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmFirstNameField"}
+			}
+       	 },
+    	"mmLastNameField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmLastNameField"}
+			}
+       	 },
+    	"mmStreet1Field": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmStreet1Field"}
+			}
+       	 },
+    	"mmStreet2Field": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmStreet2Field"}
+			}
+       	 },
+    	"mmBackupHandle": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "mmBackupHandle"}
+			}
+       	 },
+    	"mmBackupMobilePhoneField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmBackupMobilePhoneField"}
+			}
+       	 },
+    	"mmBackupPhoneField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmBackupPhoneField"}
+			}
+       	 },
+    	"mmBackupEmailField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmBackupEmailField"}
+			}
+       	 },
+    	"mmBackupFirstNameField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmBackupFirstNameField"}
+			}
+       	 },
+    	"mmBackupLastNameField": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmBackupLastNameField"}
+			}
+       	 },
+    	"mmBackupStreet1Field": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmBackupStreet1Field"}
+			}
+       	 },
+    	"mmBackupStreet2Field": {
+        	"prototype": "digit/ui/text-field.reel",
+        	"properties": {
+            	"element": {"#": "mmBackupStreet2Field"}
+       	 	}
+    	},
+    	"mmSelectHandle": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "mmSelectHandle"}
+			}
+       	 },
+    	"gunnerySergeantsController": {
+        	"prototype": "montage/core/range-controller"
+    	},
+    	"gunnerySergeants": {
+        	"prototype": "digit/ui/select.reel",
+        	"properties": {
+            	"element": {"#": "gunnerySergeants"},
+            	"contentController": {"@": "gunnerySergeantsController"},
+            	"labelPropertyName": "label"
+        	}
+    	},
+    	"gunnerySergeant": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "gunnerySergeant"}
+        	},
+        	"bindings": {
+            	"value": {"<-": "@gunnerySergeants.value.email"}
+        	}
+    	},
+    	"mmHandle": {
+        	"prototype": "montage/ui/text.reel",
+        	"properties": {
+            	"element": {"#": "mmHandle"}
+			}
+       	 },
+        "mmDateEntryField": {
+            "prototype": "digit/ui/text-field.reel",
+            "properties": {
+                "element": {"#": "mmDateEntryField"},
+                "placeholderValue": "MM/DD/YYYY"
+            }
+        },
+    	"dateConverter": {
+        	"prototype": "montage/core/converter/date-converter"
+    	},
         "mmDateField": {
             "prototype": "digit/ui/text-field.reel",
             "properties": {
-                "element": {"#": "mmDateField"},
-                "placeholderValue": "Date Acquired?"
-            }
+                "element": {"#": "mmDateField"}
+            },
+        	"bindings": {
+           	 	"value": {
+                	"<-": "@mmDateEntryField.value",
+                	"converter": {"@": "dateConverter"}
+             	}
+        	}
         },
         "mmTypeField": {
             "prototype": "digit/ui/text-field.reel",
@@ -122,56 +458,111 @@
                 "element": {"#": "mmDescriptionField"},
                 "placeholderValue": "Description?"
             }
-        },
-        "button": {
-            "prototype": "digit/ui/button.reel",
-            "properties": {
-                "element": {"#": "button"},
-                "label": "Submit"
-            },
-            "listeners": [
-                {
-                    "type": "action",
-                    "listener": {"@": "owner"}
-                }
-                ]
         }
     }
     </script>
 </head>
 <body>
     <div data-montage-id="owner" class="Login">
-<h1>Militia Credentials</h1>
-        <p>Generally your credentials consist simply of three elements:  your city, your state
-            and, finnally, some unique "handle" that makes you special.  The handle could be
-            simply a nickname or other suitable label you commonly are known as (e.g. "Lefty", "Junior").</p>
-
-        <h2>Login Credentials</h2>
-        Required fields marked with an asterisk(*)<br/>
-        <span><input data-montage-id="cityField" type="text">*</span><br/>
-        <span><input data-montage-id="stateField" type="text">*</span><br/>
-        <span><input data-montage-id="handleField" type="text">*</span><br/>
-        <button data-montage-id="credentialsButton"></button>
-        <label><input type="checkbox" data-montage-id="toggle">Gunnery Sergeant?</label><br/>
-	<div data-montage-id="substitution">
-        <div data-arg="true" data-montage-id="GSblock">
-                <h2>Hello There GS!</h2>
-            You must be willing to occasionally call, text, email or snail mail members in your platoon<br/>
-        <span><input data-montage-id="gsPlatoonSizeField" type="text">*</span><br/>
-            <span><input data-montage-id="gsEmailField" type="text">*</span><br/>
-        <span><input data-montage-id="gsMobilePhoneField" type="text">*</span><br/>
-        </div> 
-        <div data-arg="false" data-montage-id="MMblock">
-                <h2>Hello There MM!</h2>
-        <span><input data-montage-id="mmDateField" type="text">*</span><br/>
-            <span><input data-montage-id="mmTypeField" type="text"></span><br/>
-            <span><input data-montage-id="mmModelField" type="text"></span><br/>
-                    <span><input data-montage-id="mmSerialNumberField" type="text"></span><br/>
-                    <span><input data-montage-id="mmNameField" type="text"></span><br/>
-                    <span><input data-montage-id="mmDescriptionField" type="text"></span><br/>
-        </div>
-    </div>
-    <button data-montage-id="button"></button>
-    </div>
+		<div data-montage-id="substitution">
+			<h1>Militia <span data-montage-id="pageName"></span></h1>
+       		<div data-arg="Home">
+        		<h1>The Gunnery Sergeant Organization</h1>
+        		<h2>GunnerySergeant.org - a <i>groundswell</i> regulated militia organization</h2>
+       		<img src="../../assets/images/beta.png" alt="Smiley face" height="42" width="42">
+        		<p>After reading the second amendment: "A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms", we decided to take a stab at establishing a "a <i>groundswell</i> regulated militia organization!" </p>
+        		<p>Our vision is simple: create a groundswell of public opinion to promote sane, common sense militia regulations (with benefits to gun owners and no infringement of <a href="http://www.collogistics.com/wiki/pages/M7P0S97/White_Paper_Regarding_Gun_Control_Idea.html>KABA Rights" style="color:red"><span class="patriot">KABA Rights</span></span></a>).</p>
+        		<p>Currently in "beta" mode, when completed, this web site is to provide these features:</p>
+        		<ul>
+        		<li>A "Gunnery Sergeant" role (mentor/big brother or sister) to help and advise "newbies" (new gun owners)</li>
+        		<li>Once funds are provided (donations to a nonprofit), a program to supply "newbies" a cash rebate to defer the cost of insuring against loss or theft of his or her gun.</li>
+        		<li>A membership card issued to "newbies" (upon request) that identifies them as a proud member of a 21st century militia organization!</li>
+        		</ul>
+        			<button data-montage-id="loginButton"></button>
+       		</div>
+       		<div data-arg="Credentials">
+        		<p>Generally your credentials consist simply of three elements:  your city, your state
+            	and, finally, some unique "handle" that makes you special.  The handle could be
+            	simply a nickname or other suitable label you commonly are known as (e.g. "Lefty", "Junior").</p>
+        		<h2>Login Credentials</h2>
+        		Enter changes or accept defaults. Required fields marked with an asterisk(*)<br/>
+        		<span>City: <input data-montage-id="cityField" type="text"/>*</span><br/>
+        		<span>State: <input data-montage-id="stateField" type="text"/>*</span><br/>
+        		<span>Handle: <input data-montage-id="handleField" type="text"/>*</span><br/>
+        		<span>Your associates: <span data-montage-id="associates"></span></span><br/>
+         		<label><input type="checkbox" data-montage-id="toggleField"/>Gunnery Sergeant?</label><br/>
+       			<button data-montage-id="credentialsButton"></button>&nbsp;&nbsp;<button data-montage-id="credentials2HomeButton"></button>
+       			
+       		</div>
+        	<div data-arg="Associates">
+         		City: <span data-montage-id="city"></span><br/>
+         		State: <span data-montage-id="state"></span><br/>
+         		Handle: <span data-montage-id="handle"></span><br/>
+         		<label><input type="checkbox" disabled="disabled" data-montage-id="toggle">Gunnery Sergeant?</label><br/>
+         	    <p>Generally your credentials consist simply of three elements:  your city, your state
+            	and, finally, some unique "handle" that makes you special.  The handle you selected is, however,
+            	not unique. Just provide an associate's name (friend, spouse, sibling, child, parent, etc.) to make it unique!</p>
+        		<span>Your associates: <span data-montage-id="associates"></span></span><br/>
+        		<h2>Login Associates</h2>
+        		Enter associate's first name. Required field (for handle uniqueness) is marked with an asterisk(*)<br/>
+        		<span><input data-montage-id="associateField" type="text"/>*</span><br/>
+       			<button data-montage-id="associatesButton"></button>&nbsp;&nbsp;<button data-montage-id="associates2HomeButton"></button>
+        	</div>
+         	<div data-arg="GunnerySergeant">
+                <h2>Hello There GS <span data-montage-id="gsHandle"></span>!</h2>
+            	You must be willing to occasionally call, text, email or snail mail members in your platoon<br/>
+        		<span><input data-montage-id="gsPlatoonSizeField" type="text"/>*</span><br/>
+            	<span><input data-montage-id="gsEmailField" type="text"/>*</span><br/>
+        		<span><input data-montage-id="gsMobilePhoneField" type="text"/>*</span><br/>
+       			<button data-montage-id="gunnerySergeantButton"></button>&nbsp;&nbsp;<button data-montage-id="gunnerySergeant2HomeButton"></button>
+        	</div>
+         	<div data-arg="PrivateContact">
+                <h2>How can your Gunnery Sergeant reach you <span data-montage-id="mmContactHandle"></span>?</h2>
+                <p>From time to time your selected Gunnery Sergeant will try to contact you.  Please
+                review the form below to ensure you can be reached either by phone, email or even snail mail.</p>
+        		<span>Mobile Phone: <input data-montage-id="mmMobilePhoneField" type="text"/></span><br/>
+        		<span>Phone: <input data-montage-id="mmPhoneField" type="text"/></span><br/>
+            	<span>Email: <input data-montage-id="mmEmailField" type="text"/></span><br/>
+            	<span>First Name: <input data-montage-id="mmFirstNameField" type="text"/></span><br/>
+                <span>Last Name: <input data-montage-id="mmLastNameField" type="text"/></span><br/>
+                <span>Street1: <input data-montage-id="mmStreet1Field" type="text"/></span><br/>
+                <span>Street2: <input data-montage-id="mmStreet2Field" type="text"/></span><br/>
+       			<button data-montage-id="privateContactButton"></button>&nbsp;&nbsp;<button data-montage-id="contact2HomeButton"></button>
+        	</div> 
+         	<div data-arg="PrivateBackupContact">
+                 <h2>In the event that your Gunnery Sergeant can't reach you, <span data-montage-id="mmBackupHandle"></span>, who is the backup person?</h2>
+                <p>From time to time your selected Gunnery Sergeant will try to contact you.  If unable
+                to get through to you, please
+                review the form below to ensure your backup contact can be reached either by phone, email or even snail mail.</p>
+       		<span>Mobile Phone: <input data-montage-id="mmBackupMobilePhoneField" type="text"/></span><br/>
+       		<span>Phone: <input data-montage-id="mmBackupPhoneField" type="text"/></span><br/>
+            	<span>Email: <input data-montage-id="mmBackupEmailField" type="text"/></span><br/>
+            	<span>First Name: <input data-montage-id="mmBackupFirstNameField" type="text"/></span><br/>
+                <span>Last Name: <input data-montage-id="mmBackupLastNameField" type="text"/></span><br/>
+                <span>Street1: <input data-montage-id="mmBackupStreet1Field" type="text"/></span><br/>
+                <span>Street2: <input data-montage-id="mmBackupStreet2Field" type="text"/></span><br/>
+       			<button data-montage-id="privateBackupContactButton"></button>&nbsp;&nbsp;<button data-montage-id="backupContact2HomeButton"></button>
+        	</div> 
+         	<div data-arg="PrivateGunnerySergeantSelection">
+                 <h2><span data-montage-id="mmSelectHandle"></span> please select your Gunnery Sergeant.</h2>
+                <p>This person lives in your community.</p>
+				<select data-montage-id="gunnerySergeants"></select>
+    			<br>
+    			<span data-montage-id="gunnerySergeant" class="hidden"></span>
+           		<button data-montage-id="privateGunnerySergeantSelectionButton"></button>
+        	</div> 
+        	<div data-arg="PrivateReportToGS">
+                <h2>Having established your credentials and contact info, <span data-montage-id="mmHandle"></span>, use form below as a report to your Gunnery Sergeant.</h2>
+        		<span><input data-montage-id="mmDateEntryField" type="text">*</span><br/>
+        		<span data-montage-id="mmDateField" class="hidden"></span>
+            	<span><input data-montage-id="mmTypeField" type="text"/></span><br/>
+            	<span><input data-montage-id="mmModelField" type="text"/></span><br/>
+                <span><input data-montage-id="mmSerialNumberField" type="text"/></span><br/>
+                <span><input data-montage-id="mmNameField" type="text"/></span><br/>
+                <span><input data-montage-id="mmDescriptionField" type="text"/></span><br/>
+       			<button data-montage-id="privateReportButton"></button>
+        	</div> 
+        </div> <!--  substitution -->
+    </div> <!--  owner -->
 </body>
 </html>

@@ -1,3 +1,22 @@
 .Login {
+background: url(../../assets/images/salmonFallsPotHoles1DPI72.jpg);
+
+font-family: "Apple Chancery";
+
+padding:15px;
+color: white;
+
 
 }
+P {
+	font-size: 20px;
+	}
+
+li {
+	font-size: 20px;
+	}
+
+.patriot {color: red;}
+.hidden {
+	visibility:hidden;
+	}
