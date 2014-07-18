@@ -91,6 +91,19 @@
                 "placeholderValue": "Associate"
             }
         },
+        "about2HomeButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "about2HomeButton"},
+                "label": "Home"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
         "credentials2HomeButton": {
             "prototype": "digit/ui/button.reel",
             "properties": {
@@ -161,6 +174,19 @@
             "properties": {
                 "element": {"#": "loginButton"},
                 "label": "Join Up!"
+            },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+        },
+        "aboutButton": {
+            "prototype": "digit/ui/button.reel",
+            "properties": {
+                "element": {"#": "aboutButton"},
+                "label": "Fire Away!"
             },
             "listeners": [
                 {
@@ -479,7 +505,21 @@
         		<li>A membership card issued to "newbies" (upon request) that identifies them as a proud member of a 21st century militia organization!</li>
         		</ul>
         			<button data-montage-id="loginButton"></button>
+        			<p>Are you "loaded" with questions about us?&nbsp;&nbsp;</button><button data-montage-id="aboutButton"></button></p>
        		</div>
+       		<div data-arg="About">
+        		<p>You're certainly able to "fire away" with questions.  We'll try to be an easy "target".  But we assume that you are (or maybe plan to) be a responsible gun owner.  Safety comes first.  The safest option is to read all the FAQs (below) before asking your question!</p>
+        		<h2>FAQs About Us</h2>
+        		<ul>
+        		<li>What does "currently in beta mode" mean? It means this web site is under construction.  Collaborators use it for test purposes.  Any data you enter could be lost!</li>
+        		<li>Who are the collaborators?  They are a volunteer corp who communicate using <a href="www.collogistics.com" style="color:red">Collogistics</a> (We can be reached using that web site, our host-providers and sponsors.)</li>
+        		<li>Who is the so-called "Gunnery Sergeant"? When folks join up (see home page) they are asked (via a simple check box option) if they intend to help newbies: fulfill the GS role - a mentor/big brother or sister helping new gun owners.</li>
+        		<li>If I join as a "newbie" (not a "Gunnery Sergeant") what happens?  If you provide a means to receive it, you'll get a membership card (and related details - for example about how to apply for your gun insurance cost partial rebate).  A GS may contact you as well.</li>
+        		<li>What do you mean when you say "once funds are provided (donations to a nonprofit)"? We are just beginning the process of setting up this site as a nonprofit. Presently we cannot accept donations.  In the future we hope the donations can be used to defray our costs as well as fund our insurance rebate initiative.</li>
+        		<li>None of the above questions have answered my question. What can I do? We suggest visiting <a href="www.collogistics.com" style="color:red">Collogistics</a> where they have several 'wikis' related to assorted projects.  The so-called "OddBulb" (weird ideas) wiki has specifics.  Collogistics can be emailed and will forward GS questions to us!</li>
+        		</ul>
+       			<button data-montage-id="about2HomeButton"></button>       			
+       		</div>      		
        		<div data-arg="Credentials">
         		<p>Generally your credentials consist simply of three elements:  your city, your state
             	and, finally, some unique "handle" that makes you special.  The handle could be
