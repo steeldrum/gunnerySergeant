@@ -154,6 +154,14 @@ exports.Login = Component.specialize(/** @lends Login# */ {
             //pageName.value = "Home";
         }
     },
+    handleReport2HomeButtonAction: {
+        value: function() {
+            console.log("handleReport2HomeButtonAction action!");
+            this.handleCredentials2HomeButtonAction();
+            //var pageName = this.templateObjects.pageName;            
+            //pageName.value = "Home";
+        }
+    },
     handleAboutButtonAction: {
         value: function() {
             console.log("about action!");
