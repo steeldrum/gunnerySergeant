@@ -58,6 +58,9 @@ exports.Login = Component.specialize(/** @lends Login# */ {
             var pageName = this.templateObjects.pageName;
             pageName.value = "Home";
 
+            // tjs 140719
+            loginTemplate = this;
+
             /*
             var pageName = this.templateObjects.pageName;            
             pageName.value = "Credentials";
