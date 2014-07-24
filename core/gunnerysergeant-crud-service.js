@@ -217,7 +217,47 @@ exports.GunnerySergeantCrudService = Montage
 			 * [{"spouse" : "Marsha" }] } } } }
 			 */
 			saveCredentials : {
-				value : function(memberState, memberCity, memberHandle, memberAugmentation, done) {
+				// tjs 140721
+				//value : function(memberState, memberCity, memberHandle, memberAugmentation, done) {
+				value : function(memberState, memberCity, memberHandle, memberAssociatesList, memberAssociateType, memberAssociateName, done) {
+					// done e.g. storeCredentialsRef
+					console.log("gunnerysergeant-crud-service save/update memberAssociateType "
+							+ memberAssociateType + " memberAssociateName " + memberAssociateName);
+					//var assocatesListContent = memberAssociatesList.content;
+					var assocatesListContent = memberAssociatesList;
+					var associatesTypesList = null;
+					var candidateCoincindentalCredentials = new Array();
+					var associatesKey = null;
+					
+					console.log("gunnerysergeant-crud-service save/update assocatesListContent length "
+							+ assocatesListContent.length);
+					/*
+					if (assocatesListContent.length > 0) {
+						console.log("gunnerysergeant-crud-service save/update assocatesListContent "
+								+ JSON.stringify(assocatesListContent));
+					}
+					if (memberAssociateName != null && memberAssociateName.length > 0) {
+						var newMemberAssociate = MemberAssociate(memberAssociateType, memberAssociateName);
+						assocatesListContent.push(newMemberAssociate);
+					} */
+					
+					if (assocatesListContent.length > 0) {
+						console.log("gunnerysergeant-crud-service save/update assocatesListContent (with add) "
+								+ JSON.stringify(assocatesListContent));
+						associatesTypesList = _.uniq(_.map(assocatesListContent, function(element){ 
+							var associateType = element.associateType;
+							var associateName = element.associateName;
+							return associateName + "_" + associateType; 
+							}));
+						associatesTypesList.sort();
+						
+						associatesKey = JSON.stringify(associatesTypesList);
+						console.log("gunnerysergeant-crud-service save/update associatesKey "
+								//+ JSON.stringify(associatesTypesList));
+								+ associatesKey);
+						//_.uniq([1, 2, 1, 3, 1, 4]);
+						
+					}
 					var aggregateDSN = "firebaseIO.com";
 					var aggregateDB = "gunnerysergeant";
 					var militia = "militia";
@@ -253,15 +293,60 @@ exports.GunnerySergeantCrudService = Montage
 															var handle = childData.credentials.region.locale.id.handle;
 															console.log("gunnerysergeant-crud-service save/update handle " + handle);
 															if (handle == memberHandle) {
-																foundMember = true;
-																console.log("gunnerysergeant-crud-service save/update foundMember " + foundMember);
-																ref = childSnapshot.ref();
+																var childRef = childSnapshot.ref().toString();
+																candidateCoincindentalCredentials.push(childRef);
 															}
 														}
 													}
-												});
-										if (foundMember) {
-											console.log("gunnerysergeant-crud-service save/update ref " + ref);
+												}); // end for each mm child
+										//if (foundMember) {
+										if (associatesKey != null && candidateCoincindentalCredentials.length > 1) {
+											var candidateAssocatesListContent = new Array();
+											var candidateAssociatesTypesList = null;
+
+											for (var i = 0; i < candidateCoincindentalCredentials.length; i++){
+												var childRef = candidateCoincindentalCredentials[i];
+												console.log("gunnerysergeant-crud-service save/update childRef " + childRef);
+												//var augmentationURL = gunnerySergeantReferenceURL + "//" + childRef + "//credentials//region//locale//id//augmentation";
+												var augmentationURL = childRef + "//credentials//region//locale//id//augmentation";
+												console.log("gunnerysergeant-crud-service save/update augmentationURL " + augmentationURL);
+												var gunnerySergeantAugmentationRef = new Firebase(
+														augmentationURL);
+												gunnerySergeantAugmentationRef.once(
+														'value',
+														function(dataSnapshot2) {
+															console.log("gunnerysergeant-crud-service save/update dataSnapshot2 " + dataSnapshot2.val());
+																dataSnapshot2.forEach(function(childSnapshot2) {
+																var augmentationChildData = childSnapshot2.val();
+																console.log("gunnerysergeant-crud-service save/update augmentationChildData " + JSON.stringify(augmentationChildData));
+																appendAssociate(candidateAssocatesListContent, augmentationChildData); 
+
+																// e.g. gunnerysergeant-crud-service save/update augmentationChildData {"spouse":"Marsha"} 
+
+															}); // end loop to accrue a coincidental member's associates
+																if (candidateAssocatesListContent.length > 0) {
+																	console.log("gunnerysergeant-crud-service save/update candidateAssocatesListContent "
+																			+ JSON.stringify(candidateAssocatesListContent));
+																	candidateAssociatesTypesList = _.uniq(_.map(candidateAssocatesListContent, function(element){ 
+																		var associateType = element.associateType;
+																		var associateName = element.associateName;
+																		return associateName + "_" + associateType; 
+																		}));
+																	candidateAssociatesTypesList.sort();
+																	
+																	var candidateAssociatesKey = JSON.stringify(candidateAssociatesTypesList);
+																	console.log("gunnerysergeant-crud-service save/update candidateAssociatesTypesList "
+																			+ candidateAssociatesKey);
+																	//_.uniq([1, 2, 1, 3, 1, 4]);
+																	if (!foundMember && associatesKey == candidateAssociatesKey) {
+																		foundMember = true;
+																		ref = childRef;
+																		//break;
+																	}
+																}																
+														}); // end query of one coincidental mm
+											} // end loop thru list of coincidental mm's
+											////console.log("gunnerysergeant-crud-service save/update ref " + ref);
 											// e.g. gunnerysergeant-crud-service
 											// save/update ref
 											// https://gunnerysergeant.firebaseio.com/militia/0
@@ -269,22 +354,80 @@ exports.GunnerySergeantCrudService = Montage
 											//done(ref);
 											// tjs 140709
 											//done(ref, template, contactValidator);
-											done(ref);
-										} else {
-											console.log("gunnerysergeant-crud-service save/update foundMember "
-															+ foundMember);
-											var newMember = generator
-													.newMember(0, '', '', '',
-															'', '', '', '', '',
-															'', '', '', '', '',
-															'', '', memberCity,
-															memberState, '',
-															'', '',
-															memberHandle);
-											ref = gunnerySergeantListRef.push(JSON.parse(newMember));
-											done(ref);
+											////done(ref);
+										} // end condition if have associates and found any coincidental mm's
+										else if (associatesKey != null && candidateCoincindentalCredentials.length == 1) {
+											var candidateAssocatesListContent = new Array();
+											var candidateAssociatesTypesList = null;
+
+											//for (var i = 0; i < candidateCoincindentalCredentials.length; i++){
+												var childRef = candidateCoincindentalCredentials[0];
+												console.log("gunnerysergeant-crud-service save/update single childRef " + childRef);
+												//var augmentationURL = gunnerySergeantReferenceURL + "//" + childRef + "//credentials//region//locale//id//augmentation";
+												var augmentationURL = childRef + "//credentials//region//locale//id//augmentation";
+												console.log("gunnerysergeant-crud-service save/update augmentationURL " + augmentationURL);
+												var gunnerySergeantAugmentationRef = new Firebase(
+														augmentationURL);
+												gunnerySergeantAugmentationRef.once(
+														'value',
+														function(dataSnapshot2) {
+															console.log("gunnerysergeant-crud-service save/update dataSnapshot2 " + dataSnapshot2.val());
+																dataSnapshot2.forEach(function(childSnapshot2) {
+																var augmentationChildData = childSnapshot2.val();
+																console.log("gunnerysergeant-crud-service save/update augmentationChildData " + JSON.stringify(augmentationChildData));
+																console.log("gunnerysergeant-crud-service save/update augmentationChildData.spouse " + augmentationChildData.spouse);
+																appendAssociate(candidateAssocatesListContent, augmentationChildData); 
+																// e.g. gunnerysergeant-crud-service save/update augmentationChildData {"spouse":"Marsha"} 
+
+															}); // end loop to accrue a coincidental member's associates
+																console.log("gunnerysergeant-crud-service save/update candidateAssocatesListContent.length "
+																		+ candidateAssocatesListContent.length);
+																if (candidateAssocatesListContent.length > 0) {
+																	//console.log("gunnerysergeant-crud-service save/update candidateAssocatesListContent "
+																		//	+ JSON.stringify(candidateAssocatesListContent));
+																	candidateAssociatesTypesList = _.uniq(_.map(candidateAssocatesListContent, function(element){ 
+																		var associateType = element.associateType;
+																		var associateName = element.associateName;
+																		return associateName + "_" + associateType; 
+																		}));
+																	candidateAssociatesTypesList.sort();
+																	
+																	var candidateAssociatesKey = JSON.stringify(candidateAssociatesTypesList);
+																	console.log("gunnerysergeant-crud-service save/update candidateAssociatesTypesList "
+																			+ candidateAssociatesKey);
+																	//_.uniq([1, 2, 1, 3, 1, 4]);
+																	if (!foundMember && associatesKey == candidateAssociatesKey) {
+																		console.log("gunnerysergeant-crud-service save/update found match for key "
+																				+ candidateAssociatesKey);
+																		foundMember = true;
+																		ref = childRef;
+																		done(ref);
+																	}
+																}																
+														}); // end query of one coincidental mm
+											
+										} else { // no associates key...
+											if (candidateCoincindentalCredentials.length == 1) { 
+												foundMember = true;
+												ref = candidateCoincindentalCredentials[0];
+												done(ref);
+											} else {
+												console.log("gunnerysergeant-crud-service save/update foundMember "
+														+ foundMember);
+										// tjs 140721 temp disable											
+										var newMember = generator
+												.newMember(0, '', '', '',
+														'', '', '', '', '',
+														'', '', '', '', '',
+														'', '', memberCity,
+														memberState, '',
+														'', '',
+														memberHandle);
+										ref = gunnerySergeantListRef.push(JSON.parse(newMember));
+										done(ref);											}
 										}
-									});
+									});	// end militia query
+					
 				}
 			},
 
@@ -358,12 +501,206 @@ exports.GunnerySergeantCrudService = Montage
 											var address = snailMail.address;
 											self.templateObjects.mmStreet1Field.value = address.street1;
 											self.templateObjects.mmStreet2Field.value = address.street2;
-										
+			
+											// tjs 140722 - handle augmentation
+											var assocatesListContent = new Array();
+											var augmentationURL = gunnerySergeantReferenceURL + "//credentials//region//locale//id//augmentation";
+											console.log("gunnerysergeant-crud-service findCredentialsByIndex augmentationURL " + augmentationURL);
+											var gunnerySergeantAugmentationRef = new Firebase(
+													augmentationURL);
+											gunnerySergeantAugmentationRef.once(
+													'value',
+													function(dataSnapshot2) {
+														console.log("gunnerysergeant-crud-service findCredentialsByIndex dataSnapshot2 " + dataSnapshot2.val());
+															dataSnapshot2.forEach(function(childSnapshot2) {
+															var augmentationChildData = childSnapshot2.val();
+															console.log("gunnerysergeant-crud-service findCredentialsByIndex augmentationChildData " + JSON.stringify(augmentationChildData));
+															appendAssociate(assocatesListContent, augmentationChildData); 
+														}); // end loop to accrue member's associates
+															if (assocatesListContent.length > 0) {
+																console.log("gunnerysergeant-crud-service findCredentialsByIndex candidateAssocatesListContent "
+																		+ JSON.stringify(assocatesListContent));
+																self.templateObjects.associatesList.content = assocatesListContent;
+															}																
+													}); // end query of one coincidental mm
+
 											// tjs 140715
 											self2.findFirstBackupContactInfoByIndex(index, self.templateObjects);
 										}										
 									});
 					}
+			},
+
+			/*
+			 * "credentials" : { "city" : "LYNN", "augmentation" : { "spouse" :
+			 * "Marsha" }, "state" : "MA", "handle" : "SteelDrum" } ,
+			 * "credentials" : { "region" : { "state": "MA", "locale": { "city":
+			 * "LYNN", "id": { "handle": "SteelDrum", "augmentation" :
+			 * [{"spouse" : "Marsha" }] } } } }
+			 */
+			validateCredentials : {
+				value : function(memberState, memberCity, memberHandle, memberAssociatesList, template, done, postprocess) {
+					console.log("gunnerysergeant-crud-service validateCredentials memberHandle "
+							+ memberHandle);
+					var assocatesListContent = memberAssociatesList;
+					var associatesTypesList = null;
+					var candidateCoincindentalCredentials = new Array();
+					var associatesKey = null;
+					
+					console.log("gunnerysergeant-crud-service validateCredentials assocatesListContent length "
+							+ assocatesListContent.length);
+					if (assocatesListContent.length > 0) {
+						console.log("gunnerysergeant-crud-service validateCredentials assocatesListContent "
+								+ JSON.stringify(assocatesListContent));
+					}
+
+					if (assocatesListContent.length > 0) {
+						console.log("gunnerysergeant-crud-service validateCredentials assocatesListContent (with add) "
+								+ JSON.stringify(assocatesListContent));
+						associatesTypesList = _.uniq(_.map(assocatesListContent, function(element){ 
+							var associateType = element.associateType;
+							var associateName = element.associateName;
+							return associateName + "_" + associateType; 
+							}));
+						associatesTypesList.sort();
+						
+						associatesKey = JSON.stringify(associatesTypesList);
+						console.log("gunnerysergeant-crud-service validateCredentials associatesKey "
+								+ associatesKey);
+					}
+					var aggregateDSN = "firebaseIO.com";
+					var aggregateDB = "gunnerysergeant";
+					var militia = "militia";
+					var foundMember = false;
+					var ref = null;
+					// Create our Firebase reference
+					var gunnerySergeantReferenceURL = "http://" + aggregateDB
+					+ "." + aggregateDSN + "//" + militia;
+					console.log("gunnerysergeant-crud-service validateCredentials gunnerySergeantReferenceURL "
+									+ gunnerySergeantReferenceURL);
+					var gunnerySergeantListRef = new Firebase(
+							gunnerySergeantReferenceURL);
+					gunnerySergeantListRef.once(
+									'value',
+									function(dataSnapshot) {
+										dataSnapshot.forEach(function(childSnapshot) { 										console.log("gunnerysergeant-crud-service validateCredentials childSnapshot ref " + childSnapshot.ref());
+													var childData = childSnapshot.val();
+													//console.log("gunnerysergeant-crud-service save/update childData " + JSON.stringify(childData));
+													var state = childData.credentials.region.state;
+													console.log("gunnerysergeant-crud-service validateCredentials state " + state);
+													if (state == memberState) {
+														var city = childData.credentials.region.locale.city;
+														console.log("gunnerysergeant-crud-service validateCredentials city " + city);
+														if (city == memberCity) {
+															var handle = childData.credentials.region.locale.id.handle;
+															console.log("gunnerysergeant-crud-service validateCredentials handle " + handle);
+															if (handle == memberHandle) {
+																var childRef = childSnapshot.ref().toString();
+																console.log("gunnerysergeant-crud-service validateCredentials candidate childRef " + childRef);
+																candidateCoincindentalCredentials.push(childRef);
+															}
+														}
+													}
+												}); // end for each mm child
+										if (associatesKey != null && candidateCoincindentalCredentials.length > 1) {
+											var candidateAssocatesListContent = new Array();
+											var candidateAssociatesTypesList = null;
+
+											for (var i = 0; i < candidateCoincindentalCredentials.length; i++){
+												var childRef = candidateCoincindentalCredentials[i];
+												console.log("gunnerysergeant-crud-service validateCredentials childRef " + childRef);
+												var augmentationURL = childRef + "//credentials//region//locale//id//augmentation";
+												console.log("gunnerysergeant-crud-service validateCredentials augmentationURL " + augmentationURL);
+												var gunnerySergeantAugmentationRef = new Firebase(
+														augmentationURL);
+												gunnerySergeantAugmentationRef.once(
+														'value',
+														function(dataSnapshot2) {
+															console.log("gunnerysergeant-crud-service validateCredentials dataSnapshot2 " + dataSnapshot2.val());
+																dataSnapshot2.forEach(function(childSnapshot2) {
+																var augmentationChildData = childSnapshot2.val();
+																console.log("gunnerysergeant-crud-service validateCredentials augmentationChildData " + JSON.stringify(augmentationChildData));
+																appendAssociate(candidateAssocatesListContent, augmentationChildData); 
+															}); // end loop to accrue a coincidental member's associates
+																if (candidateAssocatesListContent.length > 0) {
+																	console.log("gunnerysergeant-crud-service validateCredentials candidateAssocatesListContent "
+																			+ JSON.stringify(candidateAssocatesListContent));
+																	candidateAssociatesTypesList = _.uniq(_.map(candidateAssocatesListContent, function(element){ 
+																		var associateType = element.associateType;
+																		var associateName = element.associateName;
+																		return associateName + "_" + associateType; 
+																		}));
+																	candidateAssociatesTypesList.sort();
+																	
+																	var candidateAssociatesKey = JSON.stringify(candidateAssociatesTypesList);
+																	console.log("gunnerysergeant-crud-service validateCredentials candidateAssociatesTypesList "
+																			+ candidateAssociatesKey);
+																	//_.uniq([1, 2, 1, 3, 1, 4]);
+																	if (!foundMember && associatesKey == candidateAssociatesKey) {
+																		foundMember = true;
+																		ref = childRef;
+																		//break;
+																	}
+																}																
+														}); // end query of one coincidental mm
+												if (foundMember) {
+													done(foundMember, template, postprocess);
+												}
+											} // end loop thru list of coincidental mm's
+										} // end condition if have associates and found any coincidental mm's
+										else if (associatesKey != null && candidateCoincindentalCredentials.length == 1) {
+											var candidateAssocatesListContent = new Array();
+											var candidateAssociatesTypesList = null;
+												var childRef = candidateCoincindentalCredentials[0];
+												console.log("gunnerysergeant-crud-service validateCredentials single childRef " + childRef);
+												var augmentationURL = childRef + "//credentials//region//locale//id//augmentation";
+												console.log("gunnerysergeant-crud-service validateCredentials augmentationURL " + augmentationURL);
+												var gunnerySergeantAugmentationRef = new Firebase(
+														augmentationURL);
+												gunnerySergeantAugmentationRef.once(
+														'value',
+														function(dataSnapshot2) {
+															console.log("gunnerysergeant-crud-service validateCredentials dataSnapshot2 " + dataSnapshot2.val());
+																dataSnapshot2.forEach(function(childSnapshot2) {
+																var augmentationChildData = childSnapshot2.val();
+																console.log("gunnerysergeant-crud-service validateCredentials augmentationChildData " + JSON.stringify(augmentationChildData));
+																console.log("gunnerysergeant-crud-service validateCredentials augmentationChildData.spouse " + augmentationChildData.spouse);
+																appendAssociate(candidateAssocatesListContent, augmentationChildData); 
+															}); // end loop to accrue a coincidental member's associates
+																console.log("gunnerysergeant-crud-service validateCredentials candidateAssocatesListContent.length "
+																		+ candidateAssocatesListContent.length);
+																if (candidateAssocatesListContent.length > 0) {
+																	candidateAssociatesTypesList = _.uniq(_.map(candidateAssocatesListContent, function(element){ 
+																		var associateType = element.associateType;
+																		var associateName = element.associateName;
+																		return associateName + "_" + associateType; 
+																		}));
+																	candidateAssociatesTypesList.sort();
+																	
+																	var candidateAssociatesKey = JSON.stringify(candidateAssociatesTypesList);
+																	console.log("gunnerysergeant-crud-service validateCredentials candidateAssociatesTypesList "
+																			+ candidateAssociatesKey);
+																	//_.uniq([1, 2, 1, 3, 1, 4]);
+																	if (!foundMember && associatesKey == candidateAssociatesKey) {
+																		console.log("gunnerysergeant-crud-service validateCredentials found match for key "
+																				+ candidateAssociatesKey);
+																		foundMember = true;
+																		//ref = childRef;
+																		done(foundMember, template, postprocess);
+																	}
+																}																
+														}); // end query of one coincidental mm											
+										} else { // no associates key...
+											if (candidateCoincindentalCredentials.length == 1) { 
+												foundMember = true;
+											} else {
+												console.log("gunnerysergeant-crud-service validateCredentials foundMember "
+														+ foundMember);
+											}
+											done(foundMember, template, postprocess);
+										}
+									});	// end militia query					
+				}
 			},
 			savePrivateContactInfo : {
 					value : function(index, mmMobilePhoneField, mmPhoneField, mmEmailField, mmFirstNameField, mmLastNameField, mmStreet1Field, mmStreet2Field, template, contactValidator) {
