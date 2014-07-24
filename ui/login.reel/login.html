@@ -22,20 +22,147 @@
             	"element": {"#": "associates"}
         	}
     	},
-        "toggleField": {
-            "prototype": "digit/ui/checkbox.reel",
-            "properties": {
-                "element": {"#": "toggleField"},
-                "checked": false
-            }
+    "associatesList": {
+        "prototype": "digit/ui/list.reel",
+        "properties": {
+            "element": {"#": "associatesList"},
+            "axis": "vertical",
+            "isSelectionEnabled": false
+        }
+    },
+    "associatesListItem": {
+        "prototype": "digit/ui/list-item.reel",
+        "properties": {
+            "element": {"#": "associatesListItem"}
+        }
+    },
+    "associateName": {
+        "prototype": "digit/ui/text.reel",
+        "properties": {
+            "element": {"#": "associateName"}
         },
-        "toggle": {
-            "prototype": "digit/ui/checkbox.reel",
-            "properties": {
-                "element": {"#": "toggle"},
-                "enabled": false
-            }
+        "bindings": {
+            "value": {"<-": "@associatesList:iteration.object.associateName"}
+        }
+    },
+    "associateType": {
+        "prototype": "digit/ui/text.reel",
+        "properties": {
+            "element": {"#": "associateType"}
         },
+        "bindings": {
+            "value": {"<-": "@associatesList:iteration.object.associateType"}
+        }
+    },
+    "associateNameField": {
+        "prototype": "digit/ui/text-field.reel",
+        "properties": {
+            "element": {"#": "associateNameField"}
+        }
+    },
+    "associateTypes": {
+        "prototype": "digit/ui/select.reel",
+        "properties": {
+            "element": {"#": "associateTypes"}
+        }
+    },
+    "associateTypeSelection": {
+        "prototype": "montage/ui/text.reel",
+        "properties": {
+            "element": {"#": "associateTypeSelection"}
+        },
+        "bindings": {
+            "value": {"<-": "@associateTypes.value.label"}
+        }
+    },
+    "targetRangeController": {
+        "prototype": "montage/core/radio-button-controller"
+    },
+    "signup": {
+        "prototype": "digit/ui/radio-button.reel",
+        "properties": {
+            "element": {"#": "signup"},
+            "checked": true,
+            "value": "signup",
+            "radioButtonController": {"@": "targetRangeController"}
+        },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+    },
+    "alreadySignedUp": {
+        "prototype": "digit/ui/radio-button.reel",
+        "properties": {
+            "element": {"#": "alreadySignedUp"},
+            "value": "alreadySignedUp",
+            "radioButtonController": {"@": "targetRangeController"}
+        },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+    },
+    "volunteer": {
+        "prototype": "digit/ui/radio-button.reel",
+        "properties": {
+            "element": {"#": "volunteer"},
+            "value": "volunteer",
+            "radioButtonController": {"@": "targetRangeController"}
+        },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+    },
+    "log": {
+        "prototype": "digit/ui/radio-button.reel",
+        "properties": {
+            "element": {"#": "log"},
+            "value": "log",
+            "radioButtonController": {"@": "targetRangeController"}
+        },
+            "listeners": [
+                {
+                    "type": "action",
+                    "listener": {"@": "owner"}
+                }
+                ]
+    },
+    "signupImage": {
+        "prototype": "digit/ui/image.reel",
+        "properties": {
+            "element": {"#": "signupImage"},
+            "src": "../../assets/images/untargetedDuck30x32.jpg"
+        }
+    },
+    "alreadySignedUpImage": {
+        "prototype": "digit/ui/image.reel",
+        "properties": {
+            "element": {"#": "alreadySignedUpImage"},
+            "src": "../../assets/images/untargetedDuck30x32.jpg"
+        }
+    },
+    "volunteerImage": {
+        "prototype": "digit/ui/image.reel",
+        "properties": {
+            "element": {"#": "volunteerImage"},
+            "src": "../../assets/images/untargetedDuck30x32.jpg"
+        }
+    },
+    "logImage": {
+        "prototype": "digit/ui/image.reel",
+        "properties": {
+            "element": {"#": "logImage"},
+            "src": "../../assets/images/untargetedDuck30x32.jpg"
+        }
+    },
         "substitution": {
             "prototype": "montage/ui/substitution.reel",
             "properties": {
@@ -640,10 +767,23 @@
         		<span>City: <input data-montage-id="cityField" type="text"/>*</span><br/>
         		<span>State: <input data-montage-id="stateField" type="text"/>*</span><br/>
         		<span>Handle: <input data-montage-id="handleField" type="text"/>*</span><br/>
-        		<span>Your associates: <span data-montage-id="associates"></span></span><br/>
-         		<label><input type="checkbox" data-montage-id="toggleField"/>Gunnery Sergeant?</label><br/>
-       			<button data-montage-id="credentialsButton"><img data-montage-id="submitCredentialsImage"></button>&nbsp;&nbsp;<button data-montage-id="credentials2HomeButton"><img data-montage-id="submit2HomeImage"></button>
-       			
+        		<span>Your associates:</span><br/>
+        			<ul data-montage-id="associatesList">
+        <li data-montage-id="associatesListItem">
+            <span data-montage-id="associateName"></span>
+            <span data-montage-id="associateType"></span>
+        </li>        
+    </ul>
+    <span data-montage-id="associateTypeSelection" class="hidden"></span>
+                		<span>New associate: <span data-montage-id="associateNameField"></span>&nbsp;&nbsp;<select data-montage-id="associateTypes"></select></span><br/>
+<p>The "target" range that my credentials can be used for:</p>
+             <div data-montage-id="targetRangeController">
+    <span><img data-montage-id="signupImage">&nbsp;<input type="radio" data-montage-id="signup">&nbsp;I plan to enlist!</span><br/><br/>
+    <span><img data-montage-id="alreadySignedUpImage">&nbsp;<input type="radio" data-montage-id="alreadySignedUp">&nbsp;I'm already enlisted and I'm returning to the site!</span><br/><br/>
+    <span><img data-montage-id="volunteerImage">&nbsp;<input type="radio" data-montage-id="volunteer">&nbsp;I plan to enlist as a volunteer Gunnery Sergeant!</span><br/><br/>
+    <span><img data-montage-id="logImage">&nbsp;<input type="radio" data-montage-id="log">&nbsp;I'm already a Gunnery Sergeant, reporting back sir!</span><br/><br/>
+</div> <br/> 
+       			<button data-montage-id="credentialsButton"><img data-montage-id="submitCredentialsImage"></button>&nbsp;&nbsp;<button data-montage-id="credentials2HomeButton"><img data-montage-id="submit2HomeImage"></button>   			
        		</div>
         	<div data-arg="Associates">
          		City: <span data-montage-id="city"></span><br/>

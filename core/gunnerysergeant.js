@@ -8,6 +8,8 @@
 var currentMilitiaMemberLocalStorageRef = null;
 var gunnerySergeants = null;
 var loginTemplate;
+// tjs 140723
+var userMode;
 
 /*
  * Data design
@@ -169,3 +171,62 @@ var generator = {
 		    return memberInfo;
 		  }
 		};
+
+//tjs 140721
+function MemberAssociate(type, name) {
+	this.associateType = type;
+	this.associateName = name;
+}
+
+//tjs 140722
+function appendAssociate(ary, associate) {
+	if (associate.spouse != null) {
+		var newMemberAssociate = new MemberAssociate("Spouse", associate.spouse);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Spouse != null) {
+		var newMemberAssociate = new MemberAssociate("Spouse", associate.Spouse);
+		ary.push(newMemberAssociate);							
+	} else if (associate.friend != null) {
+		var newMemberAssociate = new MemberAssociate("Friend", associate.friend);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Friend != null) {
+		var newMemberAssociate = new MemberAssociate("Friend", associate.Friend);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Brother != null) {
+		var newMemberAssociate = new MemberAssociate("Brother", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Sister != null) {
+		var newMemberAssociate = new MemberAssociate("Sister", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Father != null) {
+		var newMemberAssociate = new MemberAssociate("Father", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Mother != null) {
+		var newMemberAssociate = new MemberAssociate("Mother", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Son != null) {
+		var newMemberAssociate = new MemberAssociate("Son", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Daughter != null) {
+		var newMemberAssociate = new MemberAssociate("Daughter", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Uncle != null) {
+		var newMemberAssociate = new MemberAssociate("Uncle", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Aunt != null) {
+		var newMemberAssociate = new MemberAssociate("Aunt", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Nephew != null) {
+		var newMemberAssociate = new MemberAssociate("Nephew", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Niece != null) {
+		var newMemberAssociate = new MemberAssociate("Niece", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Acquaintance != null) {
+		var newMemberAssociate = new MemberAssociate("Acquaintance", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} else if (associate.Other != null) {
+		var newMemberAssociate = new MemberAssociate("Other", associate.Brother);
+		ary.push(newMemberAssociate);							
+	} 
+}

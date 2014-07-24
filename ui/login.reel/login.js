@@ -57,39 +57,29 @@ exports.Login = Component.specialize(/** @lends Login# */ {
             console.log("load done...");
             var pageName = this.templateObjects.pageName;
             pageName.value = "Home";
+            
+            // tjs 140721
+            var associateTypes = this.templateObjects.associateTypes;
+            
+            associateTypes.content = [
+                {"label": "Spouse"},
+                {"label": "Brother"},
+                {"label": "Sister"},
+                {"label": "Father"},
+                {"label": "Mother"},
+                {"label": "Son"},
+                {"label": "Daughter"},
+                {"label": "Uncle"},
+                {"label": "Aunt"},
+                {"label": "Nephew"},
+                {"label": "Niece"},
+                {"label": "Friend"},
+                {"label": "Acquaintance"},
+                {"label": "Other"}
+            ];
 
             // tjs 140719
             loginTemplate = this;
-
-            /*
-            var pageName = this.templateObjects.pageName;            
-            pageName.value = "Credentials";
-            var associates = this.templateObjects.associates;            
-            associates.value = "None";
-            if (localStorage) {
-                var credentialsSerialization = localStorage.getItem(LOCAL_STORAGE_KEY);
-                if (credentialsSerialization) {
-                    var deserializer = new Deserializer(),
-                        self = this;
-
-                    // tjs 140711
-                    loginTemplate = this;
-                    
-                    deserializer.init(credentialsSerialization, require)
-                    .deserializeObject()
-                    .then(function (credentialsRefIndex) {
-                       	var index = credentialsRefIndex;
-                       	// tjs 140630
-                       	currentMilitiaMemberLocalStorageRef = index;
-                    	console.log("restore using local storage credentials from index " + index);
-                         sharedGunnerySergeantCrudService.findCredentialsByIndex(index, self);
-                    }).fail(function (error) {
-                        console.error('Could not load credentials ref.');
-                        console.debug('Could not deserialize', credentialsSerialization);
-                        console.log(error.stack);
-                    });
-                }
-            }*/
         }
     },
     createMember: { // enlist
@@ -107,7 +97,6 @@ exports.Login = Component.specialize(/** @lends Login# */ {
     },
     processNewMemberFormSubmit: {
         value: function () {
-
         }
     },
     handleCredentials2HomeButtonAction: {
@@ -121,48 +110,36 @@ exports.Login = Component.specialize(/** @lends Login# */ {
         value: function() {
             console.log("handleAssociates2HomeButtonAction action!");
             this.handleCredentials2HomeButtonAction();
-            //var pageName = this.templateObjects.pageName;            
-            //pageName.value = "Home";
         }
     },
     handleGunnerySergeant2HomeButtonAction: {
         value: function() {
             console.log("handleGunnerySergeant2HomeButtonAction action!");
             this.handleCredentials2HomeButtonAction();
-            //var pageName = this.templateObjects.pageName;            
-            //pageName.value = "Home";
-        }
+         }
     },
     handleContact2HomeButtonAction: {
         value: function() {
             console.log("handleContact2HomeButtonAction action!");
             this.handleCredentials2HomeButtonAction();
-            //var pageName = this.templateObjects.pageName;            
-            //pageName.value = "Home";
         }
     },
     handleBackupContact2HomeButtonAction: {
         value: function() {
             console.log("handleBackupContact2HomeButtonAction action!");
             this.handleCredentials2HomeButtonAction();
-            //var pageName = this.templateObjects.pageName;            
-            //pageName.value = "Home";
         }
     },
     handleAbout2HomeButtonAction: {
         value: function() {
             console.log("handleAbout2HomeButtonAction action!");
             this.handleCredentials2HomeButtonAction();
-            //var pageName = this.templateObjects.pageName;            
-            //pageName.value = "Home";
         }
     },
     handleReport2HomeButtonAction: {
         value: function() {
             console.log("handleReport2HomeButtonAction action!");
             this.handleCredentials2HomeButtonAction();
-            //var pageName = this.templateObjects.pageName;            
-            //pageName.value = "Home";
         }
     },
     handleAboutButtonAction: {
@@ -172,6 +149,54 @@ exports.Login = Component.specialize(/** @lends Login# */ {
             pageName.value = "About";
         }
     },
+    handleSignupAction: {
+        value: function() {
+            console.log("handleSignupAction");
+            //var targetRangeController = this.templateObjects.targetRangeController;
+            userMode = "signup";
+            this.templateObjects.signupImage.src = "../../assets/images/targetedDuck30x32.jpg";
+            this.templateObjects.alreadySignedUpImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.volunteerImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.logImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.cityField.value = "";            
+            this.templateObjects.stateField.value = "";            
+            this.templateObjects.handleField.value = "";
+            this.templateObjects.associatesList.content = new Array();
+        }
+    },
+    handleAlreadySignedUpAction: {
+        value: function() {
+            console.log("handleAlreadySignedUpAction");
+            //var targetRangeController = this.templateObjects.targetRangeController;
+            userMode = "alreadySignedUp";
+            this.templateObjects.signupImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.alreadySignedUpImage.src = "../../assets/images/targetedDuck30x32.jpg";
+            this.templateObjects.volunteerImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.logImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+        }
+    },
+    handleVolunteerAction: {
+        value: function() {
+            console.log("handleVolunteerAction");
+            //var targetRangeController = this.templateObjects.targetRangeController;
+            userMode = "volunteer";
+           this.templateObjects.signupImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.alreadySignedUpImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.volunteerImage.src = "../../assets/images/targetedDuck30x32.jpg";
+            this.templateObjects.logImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+        }
+    },
+    handleLogAction: {
+        value: function() {
+            console.log("handleLogAction");
+            //var targetRangeController = this.templateObjects.targetRangeController;
+            userMode = "log";
+            this.templateObjects.signupImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.alreadySignedUpImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.volunteerImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+            this.templateObjects.logImage.src = "../../assets/images/targetedDuck30x32.jpg";
+        }
+    },
     handleLoginButtonAction: {
         value: function() {
             console.log("login action!");
@@ -179,6 +204,13 @@ exports.Login = Component.specialize(/** @lends Login# */ {
             pageName.value = "Credentials";
             var associates = this.templateObjects.associates;            
             associates.value = "None";
+            // tjs 140721 temp for debug
+            var associatesList = this.templateObjects.associatesList;
+            
+            //this.templateObjects.signupImage.src = "../../assets/images/targetedDuck30x32.jpg";
+            selfie.handleSignupAction();
+        	console.log("handleLoginButtonAction userMode " + userMode);
+
             if (localStorage) {
                 var credentialsSerialization = localStorage.getItem(LOCAL_STORAGE_KEY);
                 if (credentialsSerialization) {
@@ -196,6 +228,17 @@ exports.Login = Component.specialize(/** @lends Login# */ {
                        	currentMilitiaMemberLocalStorageRef = index;
                     	console.log("restore using local storage credentials from index " + index);
                          sharedGunnerySergeantCrudService.findCredentialsByIndex(index, self);
+                         // tjs 140721 temp hack
+                         loginTemplate.templateObjects.alreadySignedUp.checked = true;
+                         selfie.handleAlreadySignedUpAction();
+                     	console.log("handleLoginButtonAction userMode (localStorage) " + userMode);
+                         /*
+                          loginTemplate.templateObjects.signupImage.src = "../../assets/images/untargetedDuck30x32.jpg";
+                         loginTemplate.templateObjects.alreadySignedUp.checked = true;
+                         var targetRangeController = loginTemplate.templateObjects.targetRangeController;
+                         userMode = targetRangeController.value;
+                         loginTemplate.templateObjects.alreadySignedUpImage.src = "../../assets/images/targetedDuck30x32.jpg";
+                         */
                     }).fail(function (error) {
                         console.error('Could not load credentials ref.');
                         console.debug('Could not deserialize', credentialsSerialization);
@@ -210,13 +253,66 @@ exports.Login = Component.specialize(/** @lends Login# */ {
             console.log("credentials login action!");
             var cityField = this.templateObjects.cityField.value;            
             var stateField = this.templateObjects.stateField.value;            
-            var handleField = this.templateObjects.handleField.value;            
+            var handleField = this.templateObjects.handleField.value;
+            var associatesList = this.templateObjects.associatesList.content;
+            var associateTypeSelection = this.templateObjects.associateTypeSelection.value;
+            var associateNameField = this.templateObjects.associateNameField.value;
+            
+            // tjs 140723
+			if (associatesList.length > 0) {
+				console.log("handleCredentialsButtonAction associatesList "
+						+ JSON.stringify(associatesList));
+			}
+			if (associateNameField != null && associateNameField.length > 0) {
+				var newMemberAssociate = MemberAssociate(associateTypeSelection, associateNameField);
+				associatesList.push(newMemberAssociate);
+			}
+            
             console.log("credentials cityField " + cityField + " stateField " + stateField + " handleField " + handleField);
+            // tjs 140723
+         	console.log("handleCredentialsButtonAction userMode " + userMode);
+            var targetRangeController = this.templateObjects.targetRangeController;
+            //var userMode = targetRangeController.value;
+            userMode = targetRangeController.value;
+            console.log("credentials userMode (controller reset) " + userMode);
         	this.templateObjects.city.value = cityField;
         	this.templateObjects.state.value = stateField;
         	this.templateObjects.handle.value = handleField;
-            var toggleField = this.templateObjects.toggleField.checked;            
+            //var toggleField = this.templateObjects.toggleField.checked;
+        	var toggleField = userMode == "volunteer" || userMode == "log";
             console.log("credentials toggle " + toggleField);
+            //var foundMember = sharedGunnerySergeantCrudService.validateCredentials(stateField, cityField, handleField, associatesList);
+            //console.log("handleCredentialsButtonAction foundMember " + foundMember);
+            //var pageName = this.templateObjects.pageName;
+            var template = this.templateObjects;
+       	if (toggleField) {
+            	this.templateObjects.gsHandle.value = handleField;
+        	    pageName.value = "GunnerySergeant";
+        	} else {
+                sharedGunnerySergeantCrudService.validateCredentials(stateField, cityField, handleField, associatesList, template, this.validateCredentialsDone, this.storeCredentialsRef);
+ /*
+                if (!foundMember) {
+        			if (userMode == "signup") {
+                    	this.templateObjects.mmContactHandle.value = handleField;
+                    	this.templateObjects.mmBackupHandle.value = handleField;
+                    	this.templateObjects.mmSelectHandle.value = handleField;
+                    	this.templateObjects.mmHandle.value = handleField;
+                    	// tjs 140721
+                        //sharedGunnerySergeantCrudService.saveCredentials(stateField, cityField, handleField, null, this.storeCredentialsRef);
+                        sharedGunnerySergeantCrudService.saveCredentials(stateField, cityField, handleField, associatesList, associateTypeSelection, associateNameField, this.storeCredentialsRef);
+                 	    pageName.value = "PrivateContact";
+        			}
+        		} else {
+        			if (userMode == "signup") {
+        	       	    pageName.value = "Associates";
+        			} else {
+        				pageName.value = "PrivateContact";
+        			}
+        		} */
+        	}
+
+            
+            /*
              var result = Math.floor((Math.random()*10)+1);
             console.log("credentials lookup result " + result + " result%2 " + result%2);
             var pageName = this.templateObjects.pageName;
@@ -234,12 +330,14 @@ exports.Login = Component.specialize(/** @lends Login# */ {
                 	this.templateObjects.mmBackupHandle.value = handleField;
                 	this.templateObjects.mmSelectHandle.value = handleField;
                 	this.templateObjects.mmHandle.value = handleField;
-                    sharedGunnerySergeantCrudService.saveCredentials(stateField, cityField, handleField, null, this.storeCredentialsRef);
+                	// tjs 140721
+                    //sharedGunnerySergeantCrudService.saveCredentials(stateField, cityField, handleField, null, this.storeCredentialsRef);
+                    sharedGunnerySergeantCrudService.saveCredentials(stateField, cityField, handleField, associatesList, associateTypeSelection, associateNameField, this.storeCredentialsRef);
              	    pageName.value = "PrivateContact";
             	}
             }
             var associates = this.templateObjects.associates;            
-            associates.value = "None";
+            associates.value = "None";*/
         }
     },
     handleAssociatesButtonAction: {
@@ -250,7 +348,61 @@ exports.Login = Component.specialize(/** @lends Login# */ {
             var handle = this.templateObjects.handle.value;            
             var handleField = this.templateObjects.handleField.value;            
             console.log("associates city " + city + " state " + state + " handle " + handle);
-            var toggle = this.templateObjects.toggle.checked;            
+            // tjs 140721
+            var associatesList = this.templateObjects.associatesList.content;
+            var associateTypeSelection = this.templateObjects.associateTypeSelection.value;
+            var associateNameField = this.templateObjects.associateNameField.value;
+
+            // tjs 140723
+			if (associatesList.length > 0) {
+				console.log("handleAssociatesButtonAction associatesList "
+						+ JSON.stringify(associatesList));
+			}
+			if (associateNameField != null && associateNameField.length > 0) {
+				var newMemberAssociate = MemberAssociate(associateTypeSelection, associateNameField);
+				associatesList.push(newMemberAssociate);
+			}
+
+            // tjs 140723
+         	console.log("associates userMode " + userMode);
+            var targetRangeController = this.templateObjects.targetRangeController;
+            //var userMode = targetRangeController.value;
+            userMode = targetRangeController.value;
+            console.log("associates userMode (controller reset) " + userMode);
+
+            //var toggle = this.templateObjects.toggle.checked;
+        	var toggleField = userMode == "volunteer" || userMode == "log";
+            console.log("credentials toggle " + toggleField);
+            //var pageName = this.templateObjects.pageName;
+            var template = this.templateObjects;
+
+           // var foundMember = sharedGunnerySergeantCrudService.validateCredentials(state, city, handle, associatesList);
+           // console.log("handleAssociatesButtonAction foundMember " + foundMember);
+        	if (toggleField) {
+            	this.templateObjects.gsHandle.value = handleField;
+        	    pageName.value = "GunnerySergeant";
+        	} else {
+                sharedGunnerySergeantCrudService.validateCredentials(state, city, handle, associatesList, template, this.validateCredentialsDone, this.storeCredentialsRef);
+        		/*if (!foundMember) {
+        			if (userMode == "signup") {
+                    	this.templateObjects.mmContactHandle.value = handleField;
+                    	this.templateObjects.mmBackupHandle.value = handleField;
+                    	this.templateObjects.mmSelectHandle.value = handleField;
+                    	this.templateObjects.mmHandle.value = handleField;
+                    	// tjs 140721
+                        //sharedGunnerySergeantCrudService.saveCredentials(stateField, cityField, handleField, null, this.storeCredentialsRef);
+                        sharedGunnerySergeantCrudService.saveCredentials(state, city, handle, associatesList, associateTypeSelection, associateNameField, this.storeCredentialsRef);
+                 	    pageName.value = "PrivateContact";
+        			}
+        		} else {
+        			if (userMode == "signup") {
+        	       	    pageName.value = "Associates";
+        			} else {
+        				pageName.value = "PrivateContact";
+        			}
+        		}*/
+        	}           
+            /*
             var result = Math.floor((Math.random()*10)+1);
             console.log("credentials lookup result " + result + " result%2 " + result%2);
             var pageName = this.templateObjects.pageName;            
@@ -271,10 +423,11 @@ exports.Login = Component.specialize(/** @lends Login# */ {
                 	this.templateObjects.mmBackupHandle.value = handleField;
                 	this.templateObjects.mmSelectHandle.value = handleField;
                 	this.templateObjects.mmHandle.value = handleField;
-                     sharedGunnerySergeantCrudService.saveCredentials(state, city, handle, null, this.storeCredentialsRef);
+                     //sharedGunnerySergeantCrudService.saveCredentials(state, city, handle, null, this.storeCredentialsRef);
+                     sharedGunnerySergeantCrudService.saveCredentials(state, city, handle, associatesList, associateTypeSelection, associateNameField, this.storeCredentialsRef);
              	    pageName.value = "PrivateContact";
             	}
-            }
+            }*/
         }
     },
     handleGunnerySergeantButtonAction: {
@@ -341,21 +494,53 @@ exports.Login = Component.specialize(/** @lends Login# */ {
     	    pageName.value = "PrivateGunnerySergeantSelection";    		
     	}
     },
-    storeCredentialsRef: {
-        	value: function(ref) {
-            if (localStorage) {
-    	    	console.log("login storeCredentialsRef ref " + ref);
-    	    	var refString = ref.toString();
-       	    	var pos = refString.lastIndexOf("/");
-    	    	var index = refString.substr(++pos);
-    	    	var self = this;
-    	    	currentMilitiaMemberLocalStorageRef = index;
-                    serializer = new Serializer().initWithRequire(require);
-                    localStorage.setItem(LOCAL_STORAGE_KEY, serializer.serializeObject(index));
-                    sharedGunnerySergeantCrudService.findCredentialsByIndex(index, loginTemplate);
-              }    		
+    validateCredentialsDone: {
+        	value: function(foundMember, template, postprocess) {
+                var cityField = template.cityField.value;            
+                var stateField = template.stateField.value;            
+                var handleField = template.handleField.value;
+                var associatesList = template.associatesList.content;
+                var associateTypeSelection = template.associateTypeSelection.value;
+                var associateNameField = template.associateNameField.value;
+                console.log("validateCredentialsDone handleField " + handleField + " foundMember " + foundMember + " userMode " + userMode);
+
+        		var pageName = template.pageName;											        	
+                if (!foundMember) {
+        			if (userMode == "signup") {
+        				template.mmContactHandle.value = handleField;
+        				template.mmBackupHandle.value = handleField;
+        				template.mmSelectHandle.value = handleField;
+        				template.mmHandle.value = handleField;
+                    	// tjs 140721
+                        //sharedGunnerySergeantCrudService.saveCredentials(stateField, cityField, handleField, null, this.storeCredentialsRef);
+                        sharedGunnerySergeantCrudService.saveCredentials(stateField, cityField, handleField, associatesList, associateTypeSelection, associateNameField, postprocess);
+                 	    pageName.value = "PrivateContact";
+        			}
+        		} else {
+                    sharedGunnerySergeantCrudService.saveCredentials(stateField, cityField, handleField, associatesList, associateTypeSelection, associateNameField, postprocess);
+        			if (userMode == "signup") {
+         	       	    pageName.value = "Associates";
+        			} else {
+        				pageName.value = "PrivateContact";
+        			}
+        		}
     	}
     },
+    storeCredentialsRef: {
+    	value: function(ref) {
+        if (localStorage) {
+	    	console.log("login storeCredentialsRef ref " + ref);
+	    	var refString = ref.toString();
+   	    	var pos = refString.lastIndexOf("/");
+	    	var index = refString.substr(++pos);
+	    	var self = this;
+	    	currentMilitiaMemberLocalStorageRef = index;
+                serializer = new Serializer().initWithRequire(require);
+                localStorage.setItem(LOCAL_STORAGE_KEY, serializer.serializeObject(index));
+                sharedGunnerySergeantCrudService.findCredentialsByIndex(index, loginTemplate);
+          }    		
+	}
+},
     validateContactInfo: {
    	value: function(template, email, phones, snailMail, backupTorf) {
      	    	console.log("login validateContactInfo...");
