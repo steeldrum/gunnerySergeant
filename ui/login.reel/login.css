@@ -16,6 +16,14 @@ li {
 	font-size: 20px;
 	}
 
+input.capitalize {
+	text-transform: capitalize;
+	}
+
+input.uppercase {
+    text-transform: uppercase;
+}
+
 .patriot {color: red;}
 .hidden {
 	visibility:hidden;
