@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>Contacts</title>
+    <link rel="stylesheet" type="text/css" href="login.css">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="../../core/jquery-2.1.0.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){				
+				$('#gs-email').html(function(){
+					var e = "gunnerysergeant";
+					var a = "@";
+					var d = "collogistics";
+					var c = ".com";
+					var h = 'mailto:' + e + a + d + c;
+					console.log("h " + h);
+					$(this).parent('a').attr('href', h);
+					return e + a + d + c;
+				});
+
+				$('#cc-email').html(function(){
+					var e = "collaborators";
+					var a = "@";
+					var d = "collogistics";
+					var c = ".com";
+					var h = 'mailto:' + e + a + d + c;
+					console.log("h " + h);
+					$(this).parent('a').attr('href', h);
+					return e + a + d + c;
+				});
+
+				$('#ci-email').html(function(){
+					var e = "info";
+					var a = "@";
+					var d = "collogistics";
+					var c = ".com";
+					var h = 'mailto:' + e + a + d + c;
+					console.log("h " + h);
+					$(this).parent('a').attr('href', h);
+					return e + a + d + c;
+				});
+});
+		</script>
+	</head>
+	<body>
+	<div class="Login">
+	<ul>
+<li>GunnerySergeant Collaborator: &nbsp;<a href="#"><span id="gs-email">please enable javascript to view</span></a></li>
+<li>Collogistics Collaborators Coordinator (Site Volunteers): &nbsp;<a href="#"><span id="cc-email">please enable javascript to view</span></a></li>
+<li>Collogistics Info: &nbsp;<a href="#"><span id="ci-email">please enable javascript to view</span></a></li>
+<li><a href="../../index.html">Home</a></li>
+</ul>
+	</div>	
+	</body>
+</html>
