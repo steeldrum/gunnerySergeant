@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <title>gunnerySergeant.org</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="gunnerysergeant">
+    <meta name="mobile-web-app-capable" content="yes">
+<link rel="mask-icon" href="/owl.svg" color="#990000">
+<link href="/favicon.ico" rel="icon" type="image/x-icon" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/images/icons/favicon52x152.png">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/images/icons/favicon20x120.png">
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="assets/images/icons/favicon76x76.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/images/icons/favicon57x57.png">
+    <link rel="shortcut icon" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="shortcut icon" sizes="128x128" href="assets/images/icons/icon-128x128.png">
+    <link rel="shortcut icon" sizes="57x57" href="assets/images/icons/icon-57x57.png">
+     <link rel="stylesheet" href="assets/style/style.css">
+<link rel="stylesheet" href="assets/style/w3.css"/>
+<link rel="stylesheet" href="assets/style/w3-theme-khaki.css">
+<link href="assets/style/common.css" rel="stylesheet"/>
+<link href="assets/style/phone.css" rel="stylesheet" media="screen"/>
+<link href="assets/style//tablet.css" rel="stylesheet" media="screen and (min-device-width: 380px)"/>
+<link href="assets/style/desktop.css" rel="stylesheet" media="screen and (min-device-width: 480px)"/>
+    <script src="core/w3data.js"></script>
+    <script src="core/jquery-2.1.0.js"></script>
+    <script src="core/underscore.js"></script>
+    <script src="core/tools.js"></script>
+     <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+   
+<script src="core/controller.js"></script>
+  </head>
+
+  <!-- 3. Display the application -->
+  <body style="background: url(images/salmonFallsPotHoles1DPI72.jpg) no-repeat center fixed; 
+    background-size: cover;">
+  <div class="w3-container w3-brown">
+    <h1>&nbsp;&nbsp;Private enlistment into the Gunnery Sergeant Organization!</h1>
+</div>
+<br/>
+<div class="w3-text-sand">
+<h3><p>&nbsp;&nbsp;Choose your "target" and <img src="assets/images/FireSBC.jpg" alt="Smiley face" height="32" width="75"> away:</p></h3>
+</div>
+<div class="w3-accordion w3-brown">
+  <button onclick="myFunction('Demo21')" class="w3-btn-block w3-left-align w3-brown">
+    <img src="assets/images/Target Image32x32" alt="Smiley face" height="32" width="32"/>&nbsp;Private Enlistment (select here...)
+  </button>
+  <div id="Demo21" class="w3-accordion-content w3-container w3-sand">
+    <p>This organization tries to lower any hurdles or barriers towards membership.</p>
+
+<p>At a bare minimum all the enlister needs to tell us are the following:</p>
+
+<ul id="privateInfo">
+  <li>Specify your gender.</li>
+  <li>Specify your zip code.</li>
+  <li>Specify your handle. <a class="w3-btn w3-round-large w3-pale-green" href="#" data-toggle="popover" title="A Handle is:" data-content="A mnemonic for your name (e.g. BillyTheKid).">(what is this?)</a></li>
+  <li>Specify your sponsor. <a class="w3-btn w3-round-large w3-pale-green" href="#" data-toggle="popover" title="A Sponsor is:" data-content="A trusted friend enlisted as your personal 'booster'.">(who is this?)</a></li>
+  <li>Specify your communication option choice. <a class="w3-btn w3-round-large w3-pale-green" href="#" data-toggle="popover" title="Choices are:" data-content="Listed in the FAQ. They include by phone, email, or indirect (via a sponsor).">(what are these choices?)</a></li>
+  <li>Specify some information about your gun(s).</li>
+</ul>
+<p>The above information is all that is required to enlist!  We don't actually
+require, for example, your name, address, etc.  Because of this we call
+you a 'private' member of our organization, since you are ensured complete
+privacy (if you so choose).  Private members are full members but
+not "certified".
+</p>
+<br/>
+<br/>
+&nbsp;&nbsp;<a class="w3-btn w3-round-large" href="javascript:enlist('private', 1);">Enlist as a Private!</a>
+<br/>
+<br/>
+  </div>
+  <button onclick="myFunction('Demo22')" class="w3-btn-block w3-left-align w3-brown">
+    <img src="assets/images/Target Image32x32" alt="Smiley face" height="32" width="32"/>&nbsp;Certified Private Enlistment (select here...)
+  </button>
+  <div id="Demo22" class="w3-accordion-content w3-container w3-sand">
+    <p>To become "certified" we require a verified email address (along with the private information - see prior selection).
+Certified privates are emailed a printable "certificate" that could be
+displayed.  A copy of such a document may be received favorably by some
+retailers (e.g. discounts for ammunition, etc.).</p>
+<p>At any time an uncertified private can 'promote' his or her self and become certified, simply by signing in and changing one's profile.</p>
+<br/>
+<br/>
+&nbsp;&nbsp;<a class="w3-btn w3-round-large" href="javascript:enlist('private', 2);">Enlist as a Certified Private!</a>
+<br/>
+<br/>
+  </div>
+ <button onclick="myFunction('Demo23')" class="w3-btn-block w3-left-align w3-brown">
+    <img src="assets/images/Target Image32x32" alt="Smiley face" height="32" width="32"/>&nbsp;First Class Private (PFC) Enlistment (select here...)
+  </button>
+  <div id="Demo23" class="w3-accordion-content w3-container w3-sand">
+    <p>Additional information may be provided during the enlistment process that would
+enable you to become, in our terms, a "first class private".  Such members are provided
+ with a membership card, a device that is also even more likely to be received
+ and honored by retailers.</p>
+<p>At any time a certified private can 'promote' his or her self and become a PFC, simply by signing in and changing one's profile.</p>
+<br/>
+<br/>
+&nbsp;&nbsp;<a class="w3-btn w3-round-large" href="javascript:enlist('private', 3);">Enlist as a First Class Private!</a>
+<br/>
+<br/>
+  </div>
+  </div>
+  <p/>
+    <p/>
+<footer class="w3-container w3-round w3-border w3-brown">
+<div class="w3-container w3-center">
+<a class="w3-btn w3-round-large" href="./indexgs.html">
+<img border="0" alt="Home" src="assets/images/HomeSBC.jpg" width="100" height="30">
+</a>
+</div> 
+</footer>  
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});
+</script>
+      </body>
+
+</html>

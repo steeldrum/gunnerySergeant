@@ -1,0 +1,9 @@
+   .graphic {
+        background: black url('./../images/NRA200.jpg') no-repeat 50% 50%;
+        box-sizing: border-box;
+        color: white;
+        font-size: 3em;
+        line-height: 1;
+        height: 235px;
+        text-align: left;
+    }

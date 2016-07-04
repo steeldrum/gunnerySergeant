@@ -1,0 +1,10 @@
+  .graphic {
+        background: black url('./../images/NRA400.jpg') no-repeat 50% 50%;
+        box-sizing: border-box;
+        color: white;
+        font-size: 3em;
+        line-height: 1;
+        height: 470px;
+        text-align: left;
+    }
+

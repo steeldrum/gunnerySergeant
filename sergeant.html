@@ -1,0 +1,115 @@
+<html>
+  <head>
+    <title>gunnerySergeant.org</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="gunnerysergeant">
+    <meta name="mobile-web-app-capable" content="yes">
+<link rel="mask-icon" href="/owl.svg" color="#990000">
+<link href="/favicon.ico" rel="icon" type="image/x-icon" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/images/icons/favicon52x152.png">
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/images/icons/favicon20x120.png">
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="assets/images/icons/favicon76x76.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/images/icons/favicon57x57.png">
+    <link rel="shortcut icon" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="shortcut icon" sizes="128x128" href="assets/images/icons/icon-128x128.png">
+    <link rel="shortcut icon" sizes="57x57" href="assets/images/icons/icon-57x57.png">
+    <link rel="stylesheet" href="assets/style/style.css">
+<link rel="stylesheet" href="assets/style/w3.css"/>
+<link rel="stylesheet" href="assets/style/w3-theme-khaki.css">
+<link href="assets/style/common.css" rel="stylesheet"/>
+<link href="assets/style/phone.css" rel="stylesheet" media="screen"/>
+<link href="assets/style//tablet.css" rel="stylesheet" media="screen and (min-device-width: 380px)"/>
+<link href="assets/style/desktop.css" rel="stylesheet" media="screen and (min-device-width: 480px)"/>
+    <script src="core/w3data.js"></script>
+    <script src="core/jquery-2.1.0.js"></script>
+    <script src="core/underscore.js"></script>
+    <script src="core/tools.js"></script>
+<script src="core/controller.js"></script>
+  </head>
+
+  <!-- 3. Display the application -->
+  <body>
+  <div class="w3-container w3-brown">
+    <h1>&nbsp;&nbsp;Sergeant enlistment into the Gunnery Sergeant Organization!</h1>
+</div>
+<br/>
+<br/>
+<div class="w3-text-sand">
+<h3><p>&nbsp;&nbsp;Choose your "target" and <img src="assets/images/FireSBC.jpg" alt="Smiley face" height="32" width="75"> away:</p></h3>
+</div>
+<div class="w3-accordion w3-brown">
+  <button onclick="myFunction('Demo41')" class="w3-btn-block w3-left-align w3-brown">
+    <img src="assets/images/Target Image32x32" alt="Smiley face" height="32" width="32"/>&nbsp;Booster Collaborator Promotion Request (select here...)
+  </button>
+  <div id="Demo41" class="w3-accordion-content w3-container w3-sand">
+    <p>We solicit volunteer Gunnery Sergeants!</p>
+
+  <p>Understand the role a Gunnery Sergeant plays. If the application is approved then details will be emailed to the Gunnery Sergeant collaborator.  However a summary is here:</p>
+
+<ul>
+  <li>The GS is expected to be accredited by the Gunnery Sergeant Organization.</li>
+  <li>The GS undergoes web-based online training.</li>
+  <li>The GS commits to try to contact his or her platoon at regular intervals and logs relevant details.</li>
+  <li>The GS contacts a gun owner sponsor (in lieu of the owner) when the owner is an uncertified private.</li>
+  <li>The GS never solicits any personal information about the owner (and the system hides this information if available).  This means that the contact is address solely by his or her's handle.</li>
+  <li>The GS is provided with the Sponsor's first name only, and the gun owner's handle, when (and if) the gun owner is an uncertified private (or failure exists in communications).</li>
+  <li>The GS never voices concerns about the gun owner to this organization.  If concerns arise the gun owner and/or Sponsor is informed.</li>
+</ul>
+
+<p>We assume that prospective GS's (aka Gunnery Sergeants) have already enlisted as booster member collaborators.  If you haven't (as yet) enlisted please do so here: <a class="w3-btn w3-round-large" href="javascript:processBoosterCollaboratorEnlistment();">Enlist as a Collaborator!</a> and then return to apply.</p>
+
+   <p>Once the organization acknowledges you as a booster collaborator, you may make a formal request to help by becoming a GS.</p>
+
+<p>To formally apply please do so here:</p>
+
+<br/>
+<br/>
+&nbsp;&nbsp;<a class="w3-btn w3-round-large" href="javascript:enlist('sergeant', 1);">Enlist as a GS Collaborator!</a>
+<br/>
+<br/>
+  </div>
+  <button onclick="myFunction('Demo42')" class="w3-btn-block w3-left-align w3-brown">
+    <img src="assets/images/Target Image32x32" alt="Smiley face" height="32" width="32"/>&nbsp;Private Promotion Request (select here...)
+  </button>
+  <div id="Demo42" class="w3-accordion-content w3-container w3-sand">
+    <p>We solicit volunteer Gunnery Sergeants that also formerly or currently have gun(s)!</p>
+
+  <p>Understand the role a Gunnery Sergeant plays. If the application is approved then details will be emailed to the Gunnery Sergeant collaborator.  However a summary is here:</p>
+
+<ul>
+  <li>The GS is expected to be accredited by the Gunnery Sergeant Organization.</li>
+  <li>The GS undergoes web-based online training.</li>
+  <li>The GS commits to try to contact his or her platoon at regular intervals and logs relevant details.</li>
+  <li>The GS contacts a gun owner sponsor (in lieu of the owner) when the owner is an uncertified private.</li>
+  <li>The GS never solicits any personal information about the owner (and the system hides this information if available).  This means that the contact is address solely by his or her's handle.</li>
+  <li>The GS is provided with the Sponsor's first name only, and the gun owner's handle, when (and if) the gun owner is an uncertified private (or failure exists in communications).</li>
+  <li>The GS never voices concerns about the gun owner to this organization.  If concerns arise the gun owner and/or Sponsor is informed.</li>
+</ul>
+
+<p>We assume that prospective GS's (aka Gunnery Sergeants) have already enlisted as PFC member.  If you haven't (as yet) enlisted please do so here: <a class="w3-btn w3-round-large" href="javascript:processPrivateFirstClassEnlistment();">Enlist as a First Class Private!</a> and then return to apply.</p>
+
+   <p>Once the organization acknowledges you as a PFC, you may make a formal request to help by becoming a GS.</p>
+
+<p>To formally apply please do so here:</p>
+<br/>
+<br/>
+&nbsp;&nbsp;<a class="w3-btn w3-round-large" href="javascript:enlist('sergeant', 2);">Enlist as a GS Collaborator!</a>
+<br/>
+<br/>
+  </div>
+  </div>
+  <p/>
+    <p/>
+<footer class="w3-container w3-round w3-border w3-brown">
+<div class="w3-container w3-center">
+<a class="w3-btn w3-round-large" href="./indexgs.html">
+<img border="0" alt="Home" src="assets/images/HomeSBC.jpg" width="100" height="30">
+</a>
+</div> 
+</footer> 
+      </body>
+
+</html>

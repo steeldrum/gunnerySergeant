@@ -1,0 +1,50 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+a:link, a:visited {
+    background-color: #808080;
+    color: white;
+    padding: 14px 18px;
+    text-align: center; 
+    text-decoration: none;
+    display: inline-block;
+}
+
+a:hover, a:active {
+    background-color: sand;
+}
+
+#privateInfo a:link, a:visited {
+    background-color: w3-pale-green;
+    color: white;
+    padding: 14px 18px;
+    text-align: center; 
+    text-decoration: none;
+    display: inline-block;
+}
+
+.collogistics {
+	float: left;
+	width: 175px;
+	margin-right: 10px;
+}
+
+.collogistics, a:link, a:visited { 
+    color: (internal value);
+    text-decoration: underline;
+    cursor: auto;
+}
+
+.nrarip {
+	width: 250px;
+	margin-bottom: 10px;
+}
+
+.prompt td {
+	text-align: right;
+}
+
+.response td {
+	text-align: left;
+}
