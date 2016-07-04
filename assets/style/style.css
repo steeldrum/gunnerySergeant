@@ -9,6 +9,10 @@ html {
     
     /* Prevent iOS text size adjust after orientation change, without disabling user zoom. */
     -webkit-text-size-adjust: 100%;
+    
+    /* tjs 160527 */
+    background: url(../images/salmonFallsPotHoles1DPI72.jpg) no-repeat center fixed; 
+    background-size: cover;
 }
 
 body {
