@@ -1,28 +1,14 @@
-<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>gunnerysergeant</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">    
+  <head>
+    <title>gunnerySergeant.org</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="gunnerysergeant">
     <meta name="mobile-web-app-capable" content="yes">
-    
-    <!-- tjs 160423 -->
-<!-- link rel="mask-icon" href="/favicon.svg" color="#990000" -->
 <link rel="mask-icon" href="/owl.svg" color="#990000">
 <link href="/favicon.ico" rel="icon" type="image/x-icon" />
-    
-    <!-- link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/images/icons/apple-touch-icon-152x152-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/images/icons/apple-touch-icon-120x120-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="assets/images/icons/apple-touch-icon-76x76-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="assets/images/icons/apple-touch-icon-57x57-precomposed.png">
-    <link rel="shortcut icon" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="shortcut icon" sizes="1024x1024" href="assets/images/icons/icon-1024x1024.png">
-    <link rel="shortcut icon" sizes="128x128" href="assets/images/icons/icon-128x128.png" -->
-
     <link rel="apple-touch-icon-precomposed" sizes="152x152" href="assets/images/icons/favicon52x152.png">
     <link rel="apple-touch-icon-precomposed" sizes="120x120" href="assets/images/icons/favicon20x120.png">
     <link rel="apple-touch-icon-precomposed" sizes="76x76" href="assets/images/icons/favicon76x76.png">
@@ -30,23 +16,127 @@
     <link rel="shortcut icon" href="assets/images/icons/apple-touch-icon.png">
     <link rel="shortcut icon" sizes="128x128" href="assets/images/icons/icon-128x128.png">
     <link rel="shortcut icon" sizes="57x57" href="assets/images/icons/icon-57x57.png">
-
     <link rel="stylesheet" href="assets/style/style.css">
-    <script src="node_modules/montage/montage.js"></script>
-  <script src="https://cdn.firebase.com/js/client/1.0.15/firebase.js"></script>
+<link rel="stylesheet" href="assets/style/w3.css"/>
+<link rel="stylesheet" href="assets/style/w3-theme-khaki.css">
+<link href="assets/style/common.css" rel="stylesheet"/>
+<link href="assets/style/phone.css" rel="stylesheet" media="screen"/>
+<link href="assets/style//tablet.css" rel="stylesheet" media="screen and (min-device-width: 380px)"/>
+<link href="assets/style/desktop.css" rel="stylesheet" media="screen and (min-device-width: 480px)"/>
+    <script src="core/w3data.js"></script>
     <script src="core/jquery-2.1.0.js"></script>
     <script src="core/underscore.js"></script>
     <script src="core/tools.js"></script>
-    <script src="core/gunnerysergeant.js"></script>
-    <script type="text/montage-serialization">
-    {
-        "owner": {
-            "prototype": "montage/ui/loader.reel"
-        }
-    }
-    </script>
- </head>
-<body>
-    <span class="loading"></span>
-</body>
+     <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+   
+<script src="core/controller.js"></script>
+  </head>
+
+  <!-- 3. Display the application -->
+  <body  style="background: url(images/salmonFallsPotHoles1DPI72.jpg) no-repeat center fixed; 
+    background-size: cover;">
+  <!-- tjs 160621 -->
+    <!-- my-app>Loading...</my-app -->
+<div class="w3-container w3-brown">
+    <h1>&nbsp;&nbsp;Welcome to the Gunnery Sergeant Organization!</h1>
+</div>
+<br/>
+&nbsp;&nbsp;<img src="assets/images/beta.png" alt="Smiley face" height="42" width="42">
+<br/>
+<br/>
+<div class="w3-container w3-round w3-border w3-brown">
+<p>&nbsp;&nbsp;Here <strong><i>We Do Our Part</i></strong> to manage a "groundswell"-regulated "militia"!</p>
+</div>
+<div class="w3-text-sand">
+<h3><p>&nbsp;&nbsp;Choose your "target" and <img src="assets/images/FireSBC.jpg" alt="Smiley face" height="32" width="75"> away:</p></h3>
+</div>
+<div class="w3-accordion w3-brown">
+  <button onclick="myFunction('Demo1')" class="w3-btn-block w3-left-align w3-brown">
+    <img src="assets/images/Target Image32x32" alt="Smiley face" height="32" width="32"/>&nbsp;Browse Enlisted Ranks (Search ...)
+  </button>
+  <div id="Demo1" class="w3-accordion-content w3-container w3-sand">
+    <p>Every enlisted member who owns a gun specifies a mnemonic 'handle'.  <a class="w3-btn w3-round-large w3-pale-green" href="#" data-toggle="popover" title="A Handle is:" data-content="A mnemonic for your name (e.g. BillyTheKid).">(what is this?)</a>
+Shortly after enlistment he or she is assigned a 'Gunnery Sergeant'.  That person also
+has a unique handle within the region where the gun owner lives.</p>
+<p>After reading the second amendment: "A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms", we decided to take a stab at establishing a "a grounds<i>well regulated</i> militia organization!"
+</p>
+<p>Our vision is simple: create a groundswell of public opinion to promote sane, common sense militia regulations (with benefits to gun owners and no infringement of KABA Rights). <a class="w3-btn w3-round-large w3-pale-green" href="#" data-toggle="popover" title="KABA Rights are:" data-content="The right to Keep And Bear Arms">(what are these rights?)</a>
+</p>
+<p>Currently in "beta" mode, when completed, this web site is to provide these features:
+</p>
+<ul>
+<li>A "Gunnery Sergeant" role (mentor/big brother or sister) to help and advise "newbies" (new gun owners)
+</li>
+<li>Once funds are provided (donations to a nonprofit), a program to supply "newbies" a cash rebate to defer the cost of insuring against loss or theft of his or her gun.  Other cash rebates are planned as well.
+</li>
+<li>A membership card issued to "newbies" (upon request) that identifies them as a proud member of a 21st century militia organization!
+</li>
+</ul>
+<p>The names of gun owners as well as Gunnery Sergeants are held in confidence and kept
+private from casual public browsing.</p>
+<p>a 'guest' browser user can play an important role to help establish this groundswell
+movement.  Folks who observe any gun owners (friends or even strangers) should
+simply ask them one question: "Who is your Gunnery Sergeant and what is your handle?"</p>
+<p>A <strong>properly</strong> enlisted member will always be found (again, we repeat no private information
+is shown).  To verify (or find) your friend's enlistment status simply specify
+the two answers to the above question here: </p>
+</br>
+<form action="search.php" method="post"><input type="hidden" name="action" value="search" /><table class="w3-table"><tr><td style="text-align: right;">Gun Owner's Handle:</td><td style="text-align: left;"><input type="text" name="handle" /></tr><tr><td style="text-align: right;">Gunnery Sergeant's Handle:</td><td style="text-align: left;"><input type="text" name="gshandle"></td></tr>
+<tr><td/><td style="text-align: left;"><input type="submit" value="Submit"></td></tr></table></form>
+
+  </div>
+  <button onclick="myFunction('Demo2')" class="w3-btn-block w3-left-align w3-brown">
+    <img src="assets/images/Target Image32x32" alt="Smiley face" height="32" width="32"/>&nbsp;Report for duty (Sign In ...)
+  </button>
+  <div id="Demo2" class="w3-accordion-content w3-container w3-sand">
+    <p>Report for Duty (Sign In ...)</p>
+  </div>
+  <button onclick="myFunction('Demo3')" class="w3-btn-block w3-left-align w3-brown">
+    <img src="assets/images/Target Image32x32" alt="Smiley face" height="32" width="32"/>&nbsp;Enlist! (Sign Up ...)
+  </button>
+  <div id="Demo3" class="w3-accordion-content w3-container w3-sand">
+    <h4>Choose an enlistment type:</h4>
+
+    <input class="w3-radio membertype" type="radio" name="membertype" value="booster" checked>
+<label class="w3-validate">Booster</label>
+
+<input class="w3-radio membertype" type="radio" name="membertype" value="sponsor">
+<label class="w3-validate">Sponsor</label>
+
+<input class="w3-radio membertype" type="radio" name="membertype" value="private">
+<label class="w3-validate">Private Gun Owner</label>
+
+<input class="w3-radio membertype" type="radio" name="membertype" value="sergeant">
+<label class="w3-validate">Gunnery Sergeant</label>
+<br/>
+<br/>
+&nbsp;&nbsp;<a class="w3-btn w3-round-large" href="javascript:processEnlistment();">Enlist as a Member!</a>
+<br/>
+
+  </div>
+</div>
+<br/>
+<br/>
+<footer class="w3-container w3-round w3-border w3-brown">
+<div class="w3-text-sand">
+<p>&nbsp;&nbsp;Your feedback is welcome! <a class="w3-btn w3-round-large" href="mailto:gunnerysergeant@collogistics.com" title="Feedback">gunnerysergeant@collogistics.com</a>
+</p>
+</div>
+ 
+</footer>
+<script>
+//w3IncludeHTML();
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});
+</script>
+  </body>
+
 </html>
