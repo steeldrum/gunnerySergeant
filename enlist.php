@@ -50,6 +50,7 @@
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <script src="core/controller.js"></script>
+<script src="core/ajaxrequest.js"></script>
 </head>
 
 <!-- 3. Display the application -->
