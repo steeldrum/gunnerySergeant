@@ -50,25 +50,157 @@
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <script src="core/controller.js"></script>
-<script src="core/ajaxrequest.js"></script>
+<script>
+	function getNodeValue(parent, tagName)
+	  {
+	    var node = parent.getElementsByTagName(tagName)[0];
+	    return (node && node.firstChild) ? node.firstChild.nodeValue : false;
+	  };
+
+	 function callAjax(method, value, target) {
+	        console.log("callAjax method " + method + " value " + value + " target " + target);
+	   	var request = $.ajax({
+	        url: "./validate.php",
+	        type: "post",
+	        data: {
+	        method: method,
+	        value: value,
+	        target: target
+	    	}
+	    	});    
+	    
+	    // Callback handler that will be called on success
+	    request.done(function (response, textStatus, jqXHR){
+	        // Log a message to the console
+	        //console.log("callAjax done worked...");
+	        console.log("callAjax done worked and textStatus " + textStatus);
+	    	// received XML response
+	    	if(response == null) {
+	      		window.console.log("Invalid XML response - please check the Ajax response data for invalid characters or formatting");
+	    	}
+	    	console.log("callAjax done response " + response);
+	    	/*
+	    	  xmlDoc = $.parseXML( xml ),
+	  $xml = $( xmlDoc ),
+	  $title = $xml.find( "title" );
+	  */
+	//var oParser = new DOMParser();
+	//var oDOM = oParser.parseFromString(response, "text/xml");
+	    	//var response  = responseXML.documentElement;
+	    	var commands = response.getElementsByTagName('command');
+	    	//var commands = oDOM.getElementsByTagName('command');
+	    	console.log("callAjax done commands length " + commands.length);
+	    	for(var i=0; i < commands.length; i++) {
+	      		method = commands[i].getAttribute('method');
+	    		console.log("callAjax done method " + method);
+	      switch(method)
+	      {
+	        case 'alert':
+	          var message = getNodeValue(commands[i], 'message');
+	          window.alert(message);
+	          break;
+
+	        case 'setvalue':
+	          var target = getNodeValue(commands[i], 'target');
+	          var value = getNodeValue(commands[i], 'value');
+	          if(target && value !== false) {
+	            document.getElementById(target).value = value;
+	          }
+	          break;
+
+	        case 'setdefault':
+	          var target = getNodeValue(commands[i], 'target');
+	          if(target) {
+	            document.getElementById(target).value = document.getElementById(target).defaultValue;
+	          }
+	          break;
+
+	        case 'focus':
+	          var target = getNodeValue(commands[i], 'target');
+	          if(target) {
+	            document.getElementById(target).focus();
+	          }
+	          break;
+
+	        case 'setcontent':
+	          var target = getNodeValue(commands[i], 'target');
+	          var content = getNodeValue(commands[i], 'content');
+	          var append = getNodeValue(commands[i], 'append');
+	          console.log("setcontent target " + target + " content " + content + " append " + append);
+	          if(target && (content !== false)) {
+	            var el = document.getElementById(target);
+	            if(el) {
+	              if(append !== false) {
+	                var newcontent = document.createElement("div");
+	                newcontent.innerHTML = content;
+	                while(newcontent.firstChild) {
+	                  el.appendChild(newcontent.firstChild);
+	                }
+	              } else {
+	                el.innerHTML = content;
+	              }
+	            } else {
+	              console.log("Cannot target missing element: " + target);
+	            }
+	          }
+	          break;
+
+	        case 'setstyle':
+	          var target = getNodeValue(commands[i], 'target');
+	          var property = getNodeValue(commands[i], 'property');
+	          var value = getNodeValue(commands[i], 'value');
+	          if(target && property && (value !== false)) {
+	            document.getElementById(target).style[property] = value;
+	          }
+	          break;
+
+	        case 'setproperty':
+	          var target = getNodeValue(commands[i], 'target');
+	          var property = getNodeValue(commands[i], 'property');
+	          var value = getNodeValue(commands[i], 'value');
+	          console.log("setproperty target " + target + " property " + property + " value " + value);
+	          if(value == "true") value = true;
+	          if(value == "false") value = false;
+	          if(target && document.getElementById(target)) {
+	            document.getElementById(target)[property] = value;
+	          }
+	          break;
+
+	        case 'callback':
+	          var idx = 1;
+	          var param = getNodeValue(commands[i], "param" + idx++);
+	          while(param) {
+	            callbackParams.push(param);
+	            param = getNodeValue(commands[i], "param" + idx++);
+	          }
+	          break;
+
+	        default:
+	          window.console.log("Unrecognised method '" + method + "' in processReqChange()");
+
+	      } // switch
+
+	    } // for
+	 	});
+	    // Callback handler that will be called on failure
+	    request.fail(function (jqXHR, textStatus, errorThrown){
+	        // Log the error to the console
+	        console.error(
+	            "The following error occurred: "+
+	            textStatus, errorThrown
+	        );
+	    });
+	    }
+</script>
 </head>
 
 <!-- 3. Display the application -->
 <body
 	style="background: url(images/salmonFallsPotHoles1DPI72.jpg) no-repeat center fixed; background-size: cover;">
-	<div class="w3-container w3-brown">
-		<h1>&nbsp;&nbsp;Enlistment into the Gunnery Sergeant Organization!</h1>
-	</div>
 	<br />
 	<p />
 	<p />
-	<footer class="w3-container w3-round w3-border w3-brown">
-	<div class="w3-container w3-center">
-		<a class="w3-btn w3-round-large" href="./index.html"> <img
-			border="0" alt="Home" src="assets/images/HomeSBC.jpg" width="100"
-			height="30"> </a>
-	</div>
-	</footer>
+
 
 </body>
 <?php
@@ -136,12 +268,20 @@ require_once( "Kaba.class.php" );
 require_once( "Guns.class.php" );
 
 if ( isset( $_POST["action"] ) and $_POST["action"] == "register" ) {
+	//echo "processForm...";
 	processForm();
+} else {
+	//displayForm( array(), array(), new Member( array() ) );
+	displayForm( array(), array(), new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $_GET["role"], $_GET["option"] );
+	 
+	//echo "displayErrors...";
+	//displayErrors();
 }
 
-function displayForm( $errorMessages, $missingFields, $member ) {
+//function displayForm( $errorMessages, $missingFields, $member ) {
+function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $guns, $role, $option) {
 	//displayPageHeader( "Sign up for the book club!" );
-	displayPageHeader( "Sign up as Collogistics collaborator!" );
+	displayPageHeader( "Enlistment into the Gunnery Sergeant Organization!" );
 
 	if ( $errorMessages ) {
 		foreach ( $errorMessages as $errorMessage ) {
@@ -149,17 +289,22 @@ function displayForm( $errorMessages, $missingFields, $member ) {
 		}
 	} else {
 		?>
-<p>Thanks for choosing to join Collogistics.</p>
-<p>To register, please fill in your details below and click Send
-	Details.</p>
+<p>Thanks for choosing to join the GunnerySergeant Organization.</p>
+<p>To enlist, please fill in your details below and click Send Details.</p>
 <p>Fields marked with an asterisk (*) are required.</p>
 		<?php } ?>
 
-<form action="register.php" method="post" style="margin-bottom: 50px;">
+<form action="enlist.php" method="post" style="margin-bottom: 50px;">
 	<div style="width: 30em;">
-		<input type="hidden" name="action" value="register" /> <label
-			for="username" <?php validateField( "username", $missingFields ) ?>>Choose
-			a username *</label> <input type="text" name="username" id="username"
+		<input type="hidden" name="action" value="register" /> <input
+			type="hidden" name="role" value="<?php echo $role; ?>" /> <input
+			type="hidden" name="option" value="<?php echo $option; ?>" />
+			
+			<?php if ($role != 'private') { ?>
+			
+		<label for="username"
+		<?php validateField( "username", $missingFields ) ?>>Choose a
+			username *</label> <input type="text" name="username" id="username"
 			value="<?php echo $member->getValueEncoded( "username" ) ?>" /> <label
 			for="password1" <?php if ( $missingFields ) echo ' class="error"' ?>>Choose
 			a password *</label> <input type="password" name="password1"
@@ -187,13 +332,6 @@ function displayForm( $errorMessages, $missingFields, $member ) {
 			for="lastName" <?php validateField( "lastName", $missingFields ) ?>>Last
 			name *</label> <input type="text" name="lastName" id="lastName"
 			value="<?php echo $member->getValueEncoded( "lastName" ) ?>" /> <label
-			<?php validateField( "gender", $missingFields ) ?>>Your gender: *</label>
-		<label for="genderMale">Male</label> <input type="radio" name="gender"
-			id="genderMale" value="m"
-			<?php setChecked( $member, "gender", "m" )?> /> <label
-			for="genderFemale">Female</label> <input type="radio" name="gender"
-			id="genderFemale" value="f"
-			<?php setChecked( $member, "gender", "f" )?> /> <label
 			for="primarySkillArea">What's your primary skill?</label> <select
 			name="primarySkillArea" id="primarySkillArea" size="1">
 			<?php foreach ( $member->getSkills() as $value => $label ) { ?>
@@ -206,6 +344,95 @@ function displayForm( $errorMessages, $missingFields, $member ) {
 		<textarea name="otherSkills" id="otherSkills" rows="4" cols="50">
 		<?php echo $member->getValueEncoded( "otherSkills" ) ?>
 		</textarea>
+		
+		<?php } else {
+				
+			$now = date("YmdHis");
+			$tempEmailAddress = $now . "@gunnerysergeant.org";
+			?>
+
+		<input type="hidden" name="username" value="unknown" /> <input
+			type="hidden" name="street1" value="unknown" /> <input type="hidden"
+			name="street2" value="unknown" /> <input type="hidden" name="city"
+			value="unknown" /> <input type="hidden" name="stateName" value="XX" />
+		<input type="hidden" name="phone" value="unknown" /> <input
+			type="hidden" name="primarySkillArea" value="other" /> <input
+			type="hidden" name="passwordMnemonicQuestion"
+			value="visit sponsor to reset" /> <input type="hidden"
+			name="passwordMnemonicAnswer" value="sponsorhelp" /> <input
+			type="hidden" name="firstName" value="unknown" /> <input
+			type="hidden" name="lastName" value="unknown" /> <input type="hidden"
+			name="emailAddress" value="<?php echo $tempEmailAddress; ?>" /> <input
+			type="hidden" name="shortname" value="shortname" /> <input
+			type="hidden" name="isforsale" value="0" /> <input type="hidden"
+			name="createddate" value="2016-07-11" />
+
+			<?php } ?>
+
+		<label for="zip5" <?php validateField( "zip5", $missingFields ) ?>>Zip
+			code *</label> <input type="text" name="zip5" id="zip5"
+			value="<?php echo $member->getValueEncoded( "zip5" ) ?>"
+			onchange="this.value = /^([0-9]{5})$/.test(this.value)? this.value : ''; valid_zip5.checked = this.value;" />&nbsp;<input
+			class="valid" type="checkbox" disabled name="valid_zip5" />
+			 <label
+			for="handle" <?php validateField( "handle", $missingFields ) ?>>Handle
+			*</label>
+		<p>
+			<input type="text" name="handle" id="handle"
+				value="<?php echo $kaba->getValueEncoded( "handle" ) ?>"
+				onchange="callAjax('checkHandle', this.value, this.id);" />&nbsp;<input
+				class="valid" id="valid_handle" type="checkbox" disabled
+				name="valid_handle" />
+		</p>
+		<div class="rsp_message" id="rsp_handle">
+			<!-- -->
+		</div>
+		<label for="sponsor"
+		<?php validateField( "sponsor", $missingFields ) ?>>Sponsor Username
+			*</label>
+		<p>
+			<input type="text" name="sponsor" id="sponsorusername"
+				value="<?php echo $sponsor->getValueEncoded( "username" ) ?>"
+				onchange="callAjax('checkSponsorUsername', this.value, this.id);" />&nbsp;<input
+				class="valid" id="valid_sponsorusername" type="checkbox" disabled
+				name="valid_sponsorusername">
+		</p>
+		<div class="rsp_message" id="rsp_sponsorusername">
+			<!-- -->
+		</div>
+
+		<label <?php validateField( "gender", $missingFields ) ?>>Your gender:
+			*</label> <label for="genderMale">Male</label> <input type="radio"
+			name="gender" id="genderMale" value="m"
+			<?php setChecked( $member, "gender", "m" )?> /> <label
+			for="genderFemale">Female</label> <input type="radio" name="gender"
+			id="genderFemale" value="f"
+			<?php setChecked( $member, "gender", "f" )?> /><br /> <label
+			for="gunname" <?php validateField( "gunname", $missingFields ) ?>>Gun
+			Name *</label> <input type="text" name="gunname" id="gunname"
+			value="<?php echo $guns->getValueEncoded( "gunname" ) ?>" /><br /> <label
+			for="make" <?php validateField( "make", $missingFields ) ?>>Gun Make
+			*</label> <input type="text" name="make" id="make"
+			value="<?php echo $guns->getValueEncoded( "make" ) ?>" /><br /> <label
+			for="model" <?php validateField( "model", $missingFields ) ?>>Gun
+			Model *</label> <input type="text" name="model" id="model"
+			value="<?php echo $guns->getValueEncoded( "model" ) ?>" /><br /> <label
+			for="serialnumber"
+			<?php validateField( "serialnumber", $missingFields ) ?>>Serial
+			Number *</label> <input type="text" name="serialnumber"
+			id="serialnumber"
+			value="<?php echo $guns->getValueEncoded( "serialnumber" ) ?>" /><br />
+
+		<label for="description"
+		<?php validateField( "description", $missingFields ) ?>>Description *</label>
+		<input type="text" name="description" id="description"
+			value="<?php echo $guns->getValueEncoded( "description" ) ?>" /><br />
+
+		<label for="caliber"
+		<?php validateField( "caliber", $missingFields ) ?>>Caliber *</label>
+		<input type="text" name="caliber" id="caliber"
+			value="<?php echo $guns->getValueEncoded( "caliber" ) ?>" /><br />
+		<br />
 
 		<div style="clear: both;">
 			<input type="submit" name="submitButton" id="submitButton"
@@ -216,16 +443,20 @@ function displayForm( $errorMessages, $missingFields, $member ) {
 	</div>
 </form>
 <br />
-<a href="admin.php">Site Admin</a>
+
 		<?php
 		displayPageFooter();
 }
 
 function processForm() {
 	//	echo "processForm... ";
-	$requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "gender" );
+	//$requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "gender" );
+	$requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "zip5", "gender" );
 	$missingFields = array();
 	$errorMessages = array();
+	$errorNumber = 0;
+	$role = $_POST["role"];
+	$option = $_POST["option"];
 	// tjs 141114
 	//$d=mktime(1, 1, 1, 12, 31, 1970);
 	//echo "Created date is " . date("Y-m-d h:i:sa", $d);
@@ -235,13 +466,17 @@ function processForm() {
 	//$username = $_POST["username"];
 	//echo "Handle is " . $handle . " username is " . $username;
 	$handleUsername = '';
+	$handleName = '';
 	$handleFound = false;
+	$kabaMemberFound = false;
 	$memberPassword = '';
 	$sponsorId = "";
 	$requirePasswords = true;
-	if (isset( $_POST["handle"] )) {
+	//if (isset( $_POST["handle"] )) {
+	if (isset( $_POST["handle"] ) && $role == 'private') {
 		$handleFound = true;
-		$handleUsername = preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["handle"] );
+		$handleName = preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["handle"] );
+		$handleUsername = preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["handle"] ) . preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["zip5"] );
 	} else if (isset( $_POST["username"] )) {
 		$handleUsername = preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["username"] );
 	} else {
@@ -254,13 +489,7 @@ function processForm() {
 		//echo "Sponsor Username is " . $sponsorUsername;
 		//  $sponsor = '';
 		//$sponsorid = 11;
-		if ( !$sponsor = Member::getByUsername( $sponsorUsername ) ) {
-		 //if ( !$sponsor = Member::getMember( $sponsorid ) ) {
-		 //  displayPageHeader( "Error" );
-			echo "Member not found using Sponsor Username of " . $sponsorUsername;
-			//displayPageFooter();
-			// exit;
-		} else {
+		if ( $sponsor = Member::getByUsername( $sponsorUsername ) ) {
 			$memberPassword = $sponsor->getValue('password');
 			//echo "Member password is " . $memberPassword;
 			$sponsorId = $sponsor->getValue('id');
@@ -271,7 +500,15 @@ function processForm() {
 		$memberPassword = $handleUsername;
 	}
 	//echo "Handle Username is " . $handleUsername . " Member Password is " . $memberPassword;
-
+			$now = date("YmdHis");
+			$postedEmailAddress = $now . "@gunnerysergeant.org";
+	 if ( isset( $_POST["emailAddress"] ) ) {
+	 	$postedEmailAddress = preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] );
+	 	if ($role == 'private') {
+	 		$postedEmailAddress = $handleUsername . "@gunnerysergeant.org";
+	 	}
+	 }
+	
 	//TODO see related comments in controller.
 	//    "username" => isset( $_POST["username"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["username"] ) : "",
 
@@ -288,7 +525,7 @@ function processForm() {
     	"joindate" => date("Y-m-d", "2016-06-30"),
   		"gender" => isset( $_POST["gender"] ) ? preg_replace( "/[^mf]/", "", $_POST["gender"] ) : "",
     	"primaryskillarea" => isset( $_POST["primarySkillArea"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["primarySkillArea"] ) : "",
-    	"emailaddress" => isset( $_POST["emailAddress"] ) ? preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] ) : "",
+    	"emailaddress" => $postedEmailAddress,
     	"otherskills" => isset( $_POST["otherSkills"] ) ? preg_replace( "/[^ \'\,\.\-a-zA-Z0-9]/", "", $_POST["otherSkills"] ) : "",
     	"registered" => date("Y-m-d"),
    		"lastlogindate" => date("Y-m-d"),
@@ -302,70 +539,157 @@ function processForm() {
           "zip5" => isset( $_POST["zip5"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["zip5"] ) : "",
          "zip4" => isset( $_POST["zip4"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["zip4"] ) : ""
   
-      ) );
-              //echo "Created date is " . date("Y-m-d h:i:sa", $d);
+         ) );
+         //echo "Created date is " . date("Y-m-d h:i:sa", $d);
 
-     foreach ( $requiredFields as $requiredField ) {
-         if ( !$member->getValue( $requiredField ) ) {
-              		$missingFields[] = $requiredField;
-              	}
-     }
-              /*
-               if ( $missingFields ) {
-               echo "missing fields... ";
-               $errorMessages[] = '<p class="error">There were some missing fields in the form you submitted. Please complete the fields highlighted below and click Send Details to resend the form.</p>';
-               }
-               */
+         if ($handleFound) {
+         	/*
+      	    if (!$sponsor) {
+      	    $sponsor = new Member( array() );
+      	    }
+      	    */
+         	$kabaMemberId = 1;
+         	//echo "kabaMemberId " . $kabaMemberId . " sponsorId " . $sponsorId;
+         	$kaba = new Kaba( array(
+    			"memberid" => $kabaMemberId,
+    			"sponsorid" => $sponsorId,
+  				"sergeantid" => "1",
+    			"isinactive" => "0",
+              	"handle" => $handleName 
+         	) );
 
-              //if ( !isset( $_POST["password1"] ) or !isset( $_POST["password2"] ) or !$_POST["password1"] or !$_POST["password2"] or ( $_POST["password1"] != $_POST["password2"] ) ) {
-      if ( $requirePasswords and (!isset( $_POST["password1"] ) or !isset( $_POST["password2"] ) or !$_POST["password1"] or !$_POST["password2"] or ( $_POST["password1"] != $_POST["password2"] ) )) {
-              	$errorMessages[] = '<p class="error">Please make sure you enter your password correctly in both password fields.</p>';
-      }
+         	//echo "constructing guns... ";
+         	// insert initial gun information...
+         	$gunInfo = new Guns( array(
+    			"memberid" => $kabaMemberId,
+    			"gunname" => isset( $_POST["gunname"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["gunname"] ) : "",
+              "shortname" => isset( $_POST["shortname"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["shortname"] ) : "",
+  				"make" => isset( $_POST["make"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["make"] ) : "",
+  				"model" => isset( $_POST["model"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["model"] ) : "",
+    		  	"serialnumber" => isset( $_POST["serialnumber"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["serialnumber"] ) : "",
+  				 "description" => isset( $_POST["description"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["description"] ) : "",
+    		  	"caliber" => isset( $_POST["caliber"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["caliber"] ) : "",
+  				"createddate" => isset( $_POST["createddate"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["createddate"] ) : "",
+    		  	"isforsale" => isset( $_POST["isforsale"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["isforsale"] ) : "",
+  				 "isinactive" => "0"
+  				 ));
+  				  
+         }
 
-      if (Member::getByUsername( $member->getValue( "username" ) ) ) {
-              	//echo "username exists... ";
-              	$errorMessages[] = '<p class="error">A member with that username already exists in the database. Please choose another username.</p>';
-      }
+         foreach ( $requiredFields as $requiredField ) {
+         	if ( !$member->getValue( $requiredField ) ) {
+         		$missingFields[] = $requiredField;
+         	} else {
+         		$field = $member->getValue( $requiredField );
+         		if (strLen($field) == 0) {
+         			$missingFields[] = $requiredField;
+         		}
+         	}
+         }
+         /*
+          if ( $missingFields ) {
+          echo "missing fields... ";
+          $errorMessages[] = '<p class="error">There were some missing fields in the form you submitted. Please complete the fields highlighted below and click Send Details to resend the form.</p>';
+          }
+          */
 
-              //if ( Member::getByEmailAddress( $member->getValue( "emailAddress" ) ) ) {
-      if ( Member::getByEmailAddress( $member->getValue( "emailaddress" ) ) ) {
-              	//echo "email exists... ";
-              	$errorMessages[] = '<p class="error">A member with that email address already exists in the database. Please choose another email address, or contact the webmaster to retrieve your password.</p>';
-      }
+         if ( $missingFields ) {
+         	//echo "missing fields... ";
+         	$errorMessages[] = '<p class="error">There were some missing fields in the form you submitted. Please complete the fields highlighted below and click Send Details to resend the form.</p>';
+         	$errorNumber += 32;
+         }
+          
+         //if ( !isset( $_POST["password1"] ) or !isset( $_POST["password2"] ) or !$_POST["password1"] or !$_POST["password2"] or ( $_POST["password1"] != $_POST["password2"] ) ) {
+         if ( $requirePasswords and (!isset( $_POST["password1"] ) or !isset( $_POST["password2"] ) or !$_POST["password1"] or !$_POST["password2"] or ( $_POST["password1"] != $_POST["password2"] ) )) {
+         	$errorMessages[] = '<p class="error">Please make sure you enter your password correctly in both password fields.</p>';
+         	$errorNumber += 1;
+         }
 
-      if ( $errorMessages ) {
-              	//displayForm( $errorMessages, $missingFields, $member );
-      } else {
-              	//echo "inserting... ";
+         if (Member::getByUsername( $member->getValue( "username" ) ) ) {
+         	//echo "username exists... ";
+         	if ($handleFound) {
+         		$errorMessages[] = '<p class="error">A member in you zip code area with that handle already exists in the database. Please choose another handle.</p>';
+         		$errorNumber += 2;
+         	} else {
+         		$errorMessages[] = '<p class="error">A member with that username already exists in the database. Please choose another username.</p>';
+         		$errorNumber += 4;
+         	}
+         }
+
+         //if ( Member::getByEmailAddress( $member->getValue( "emailAddress" ) ) ) {
+         if ( Member::getByEmailAddress( $member->getValue( "emailaddress" ) ) ) {
+         	//echo "email exists... ";
+         	$errorMessages[] = '<p class="error">A member with that email address already exists in the database. Please choose another email address, or contact the webmaster to retrieve your password.</p>';
+         	$errorNumber += 8;
+         }
+
+         // tjs 160709
+         if (Kaba::findHandleByZipCode($handleName, $member->getValue( "zip5" ))) {
+         	$errorMessages[] = '<p class="error">A member with that handle already exists for the same zip code in the database. Please choose another handle.</p>';
+         	$errorNumber += 16;
+         }
+
+         //if ( $errorMessages ) {
+         if ( $errorNumber > 0 ) {
+      	   // displayForm( $errorMessages, $missingFields, $member );
+      	   //displayForm( $errorMessages, $missingFields, $member, $sponsor, $kaba, $guns, $role, $option );
+         	//, new Member( array() )
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option );
+
+         	 
+         	//echo "ERRORS errornumber " . $errorNumber;
+         	/*
+         	$errors = '<div class="w3-container w3-round w3-border w3-sand">';
+         	$errors .= "<p>Errors detected (Use browser back button to correct form):</p>";
+         	foreach($errorMessages as $error) {
+         	$errors .= $error;
+         	}
+         	$errors .= "</div>";
+         	*/
+         	//echo "ERRORS " . $errors;
+         	//echo  $errors;
+         	//setcookie("errors", $errors);
+         	//echo "ERROR Number " . $errorNumber;
+         	//setcookie("errornumber", $errorNumber);
+         	//echo " ERROR Number cookie set...";
+         	/*
+         	 $errors = '<div class="w3-container w3-round w3-border w3-sand">';
+         	 $errors .= "<p>Errors detected (Use browser back button to correct form):</p>";
+         	 foreach($errorMessages as $error) {
+         	 $errors .= $error;
+         	 }
+         	 $errors .= "</div>";
+         	 displayErrors($errors);*/
+         	//displayErrors();
+         	/*
+         	<script>
+         	<!--
+         	location.replace("./enlist.html");
+         	-->
+         	</script>
+         	*/
+         	//displayForm( $errorMessages, $missingFields, $member );
+         } else {
+         	//echo "inserting... ";
           $member->insert();
-              	//displayThanks();
+          //displayThanks();
           if ($handleFound) {
-              //echo "inserting into kaba... ";
-
-              		/*
-              		 *   derived sponsor id given sponsor username (above)
-              		 derive kaba member id given kaba member username
-              		 use temp sergeantid = 1
-
-              		 insert into kaba (gun owner desiring KABA rights)
-              		 //TODO ensure sponsorId NOT in kaba already!
-              		 * NB the system daemons detects the sergeatId of one and reassigns a real sergeant
-              		 */
-          		if ( $kabaMember = Member::getByUsername( $handleUsername ) ) {
-              		$kabaMemberId = $kabaMember->getValue('id');
-              			//echo "kabaMemberId " . $kabaMemberId . " sponsorId " . $sponsorId;
-              			$kaba = new Kaba( array(
+          	//echo "inserting into kaba... ";
+          	if ( $kabaMember = Member::getByUsername( $handleUsername ) ) {
+          		$kabaMemberId = $kabaMember->getValue('id');
+          		//echo "kabaMemberId " . $kabaMemberId . " sponsorId " . $sponsorId;
+          		$kaba = new Kaba( array(
     						"memberid" => $kabaMemberId,
     						"sponsorid" => $sponsorId,
   							"sergeantid" => "1",
     						"isinactive" => "0",
-              				"handle" => $handleUsername 
-              			) );
-              			$kaba->insert();
+              				"handle" => $handleName 
+          		) );
+          		$kaba->insert();
 
-              			//echo "constructing guns... ";
-              			// insert initial gun information...
-              			$gunInfo = new Guns( array(
+          		//echo "constructing guns... ";
+          		// insert initial gun information...
+          		$gunInfo = new Guns( array(
     						"memberid" => $kabaMemberId,
     						"gunname" => isset( $_POST["gunname"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["gunname"] ) : "",
               			"shortname" => isset( $_POST["shortname"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["shortname"] ) : "",
@@ -377,24 +701,108 @@ function processForm() {
   							"createddate" => isset( $_POST["createddate"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["createddate"] ) : "",
     					  	"isforsale" => isset( $_POST["isforsale"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["isforsale"] ) : "",
   							 "isinactive" => "0"
-              			));
-              			//echo "inserting into guns... ";
-              			$gunInfo->insert();
-              			// 			) );
+  							 ));
+  							 //echo "inserting into guns... ";
+  							 $gunInfo->insert();
+  							 // 			) );
 
-              		}
-              	}
-              }
+
+          	}
+          }
+          displayThanks($role, $option);
+         }
 }
 
-function displayThanks() {
-	displayPageHeader( "Thanks for registering!" );
+/*
+ function displayErrors($errors) {
+ foreach($errors as $error)	{
+ echo $error;
+ }
+ }
+ */
+/*
+ function displayErrors() {
+ ?>
+ <script>
+ displayErrors();
+ </script>
+ <?php
+ }
+ */
+function displayThanks($role, $option) {
+	displayPageHeader( "Thanks for enlisting!" );
 	?>
-<p>Thank you, you are now a registered member of Collogistics.</p>
+<p>Thank you, you are now an enlisted member of the GunnerySergeant Organization!</p>
 <br />
-<a href="admin.php">Site Admin</a>
-<br />
-<a href="index.php">Home</a>
+<?php if ($role = 'private') { ?>
+<?php if ($option = 1) { ?>
+<p>
+You have chosen to enlist as an 'uncertified' private.  This means that the only data
+we have is your zip code and your handle (as well as information you supplied about
+your gun).</p>
+<p>
+In the near future you will be assigned a GunnerySergeant (aka a GS).
+</p>
+<p>
+Given your uncertified status, the GS can only reach you through your sponsor.
+</p>
+<p>
+The GS will inform your sponsor the GS's own handle.  The GS will ask your sponsor
+to convey the following information to you:
+</p>
+<ul>
+<li>Your sponsor tells you the GS's handle.</li>
+<li>Your sponsor asks you for a temporary password and resets your 'sign in' password to
+the temporary one.</li>
+<li>Your sponsor asks you to sign into gunnerysergeant.org (using the temporary password)
+and then reset your password to a permanent password known only to you.</li>
+<li>Your sponsor will suggest that you sign in and specify any additional guns you own
+(in addition to the single gun specified during initial registration).</li>
+</ul>
+<p>
+In the future all communications directed to you will be through your intermediary sponsor.
+</p>
+<p>
+At any time, if you decide to become a certified private, you can sign in and change
+your own profile.
+</p>
+<p>
+A certified private must supply a means for direct communication from the GS.
+Typically that means supply an email address and/or a phone number.
+</p>
+<p>
+Once certified, the gun owner becomes eligible for benefits including:
+</p>
+<ul>
+<li>Help from the GunnerySergeant Organization to locate any verified firearms you
+own that become lost or stolen.</li>
+
+<li>Partial insurance coverage for each gun listed that can be verified.</li>
+
+<li>GunnerySergeant Organization offers private phone rebates for members that have an ISP
+(Internet Service Provider).  Under certain plans, this benefit could reduce your
+monthly fees (for example if you are charged for a phone, since the phone you
+acquire thru us has no ISP related charges).</li>
+
+<li>A member certificate that may be useful to present to retailers for appropriate discounts.</li>
+</ul>
+<?php } else if ($option = 2) { ?>
+<p>You have chosen to enlist as an 'uncertified' private.</p>
+<?php } else { ?>
+<p>You have chosen to enlist as an 'first class' private (PFC).</p>
+
+<?php } ?>
+
+<?php } else if ($role = 'booster') { ?>
+<p>You have chosen to enlist as a booster.</p>
+
+<?php } else if ($role = 'sergeant') { ?>
+<p>You have chosen to enlist as a Gunnery Sergeant (GS).</p>
+
+<?php } else if ($role = 'sponsor') { ?>
+<p>You have chosen to enlist as a sponsor.</p>
+
+<?php } ?>
 	<?php
 	displayPageFooter();
 }

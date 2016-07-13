@@ -28,6 +28,43 @@ class Kaba extends DataObject {
     "handle" => ""
     );
 
+    public static function getSponsoredKaba( $sponsorId ) {
+    	$conn = parent::connect();
+    	$sql = "SELECT * FROM " . TBL_KABAS . " WHERE sponsorid = :sponsorid";
+
+    	try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":sponsorid", $sponsorId, PDO::PARAM_INT );
+      $st->execute();
+      $row = $st->fetch();
+      parent::disconnect( $conn );
+      if ( $row ) return new Kaba( $row );
+    	} catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    	}
+    }
+
+    public static function findHandleByZipCode( $handle, $zip5 ) {
+    	$conn = parent::connect();
+    	$sql = "SELECT memberid FROM " . TBL_KABAS . " k, " . TBL_MEMBERS . " m WHERE k.handle = :handle AND k.memberid = m.id AND m.zip5 = :zip5";
+
+    	try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":handle", $handle, PDO::PARAM_STR );
+      $st->bindValue( ":zip5", $zip5, PDO::PARAM_STR );
+      $st->execute();
+      $row = $st->fetch();
+      parent::disconnect( $conn );
+      if ( $row ) { return true;
+    	} else { return false; }
+    	}
+    	catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    	}
+    }
+    
     public function insert() {
     	$conn = parent::connect();
     	// tjs 141114 - remove password function
