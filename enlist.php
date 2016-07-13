@@ -299,39 +299,115 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 		<input type="hidden" name="action" value="register" /> <input
 			type="hidden" name="role" value="<?php echo $role; ?>" /> <input
 			type="hidden" name="option" value="<?php echo $option; ?>" />
+	 <input
+			type="hidden" name="passwordMnemonicQuestion"
+			value="visit sponsor to reset" />
+			 <input type="hidden"
+			name="passwordMnemonicAnswer" value="sponsorhelp" />
 			
 			<?php if ($role != 'private') { ?>
-			
+				
 		<label for="username"
-		<?php validateField( "username", $missingFields ) ?>>Choose a
-			username *</label> <input type="text" name="username" id="username"
-			value="<?php echo $member->getValueEncoded( "username" ) ?>" /> <label
+		<?php validateField( "username", $missingFields ) ?>>Username
+			*</label>
+		<p>
+			<input type="text" name="username" id="username"
+				value="<?php echo $member->getValueEncoded( "username" ) ?>"
+				onchange="callAjax('checkUsername', this.value, this.id);" />&nbsp;<input
+				class="valid" id="valid_username" type="checkbox" disabled
+				name="valid_username">
+		</p>
+		<div class="rsp_message" id="rsp_username">
+			<!-- -->
+		</div>
+			
+			 <label
 			for="password1" <?php if ( $missingFields ) echo ' class="error"' ?>>Choose
 			a password *</label> <input type="password" name="password1"
 			id="password1" value="" /> <label for="password2"
 			<?php if ( $missingFields ) echo ' class="error"' ?>>Retype password
 			*</label> <input type="password" name="password2" id="password2"
-			value="" /> <label for="passwordMnemonicQuestion">Specify password
-			mnemonic question</label> <input type="text"
-			name="passwordMnemonicQuestion" id="passwordMnemonicQuestion"
-			value="<?php echo $member->getValueEncoded( "passwordMnemonicQuestion" ) ?>" />
-
-		<label for="passwordMnemonicAnswer">Specify password mnemonic answer</label>
-		<input type="text" name="passwordMnemonicAnswer"
-			id="passwordMnemonicAnswer"
-			value="<?php echo $member->getValueEncoded( "passwordMnemonicAnswer" ) ?>" />
+			value="" />
 
 		<label for="emailAddress"
 		<?php validateField( "emailAddress", $missingFields ) ?>>Email
-			address *</label> <input type="text" name="emailAddress"
-			id="emailAddress"
-			value="<?php echo $member->getValueEncoded( "emailAddress" ) ?>" /> <label
+			address
+			*</label>
+		<p>
+			<input type="text" name="emailAddress" id="email"
+				value="<?php echo $member->getValueEncoded( "emailAddress" ) ?>"
+				onchange="callAjax('checkEmail', this.value, this.id);" />&nbsp;<input
+				class="valid" id="valid_email" type="checkbox" disabled
+				name="valid_email">
+		</p>
+		<div class="rsp_message" id="rsp_email">
+			<!-- -->
+		</div>
+			
+			 <label
 			for="firstName" <?php validateField( "firstName", $missingFields ) ?>>First
 			name *</label> <input type="text" name="firstName" id="firstName"
-			value="<?php echo $member->getValueEncoded( "firstName" ) ?>" /> <label
+			value="<?php echo $member->getValueEncoded( "firstName" ) ?>" /> 
+			<label
 			for="lastName" <?php validateField( "lastName", $missingFields ) ?>>Last
 			name *</label> <input type="text" name="lastName" id="lastName"
-			value="<?php echo $member->getValueEncoded( "lastName" ) ?>" /> <label
+			value="<?php echo $member->getValueEncoded( "lastName" ) ?>" />
+			
+		
+		<?php } else {
+				
+			$now = date("YmdHis");
+			$tempEmailAddress = $now . "@gunnerysergeant.org";
+			?>
+
+		<input type="hidden" name="username" value="unknown" /> <input
+			type="hidden" name="street1" value="unknown" /> <input type="hidden"
+			name="street2" value="unknown" /> <input type="hidden" name="city"
+			value="unknown" /> <input type="hidden" name="stateName" value="XX" />
+		<input type="hidden" name="phone" value="unknown" />
+		 <input
+			type="hidden" name="primarySkillArea" value="other" />
+					 <input
+			type="hidden" name="firstName" value="unknown" /> <input
+			type="hidden" name="lastName" value="unknown" /> <input type="hidden"
+			name="emailAddress" value="<?php echo $tempEmailAddress; ?>" /> <input
+			type="hidden" name="shortname" value="shortname" /> <input
+			type="hidden" name="isforsale" value="0" /> <input type="hidden"
+			name="createddate" value="2016-07-11" />
+
+			<?php } ?>
+
+	<?php if ($role != 'private') { ?>		
+		 <label
+			for="street1" <?php validateField( "street1", $missingFields ) ?>>Street1
+			 *</label> <input type="text" name="street1" id="street1"
+			value="<?php echo $member->getValueEncoded( "street1" ) ?>" /> 
+
+		 <label
+			for="street2" <?php validateField( "street2", $missingFields ) ?>>Street2
+			 *</label> <input type="text" name="street2" id="street2"
+			value="<?php echo $member->getValueEncoded( "street2" ) ?>" /> 
+
+		 <label
+			for="city" <?php validateField( "city", $missingFields ) ?>>City
+			 *</label> <input type="text" name="city" id="city"
+			value="<?php echo $member->getValueEncoded( "city" ) ?>" /> 
+
+		 <label
+			for="statename" <?php validateField( "statename", $missingFields ) ?>>State
+			 *</label> <input type="text" name="statename" id="statename"
+			value="<?php echo $member->getValueEncoded( "statename" ) ?>" /> 
+
+<?php } ?>
+
+		<label for="zip5" <?php validateField( "zip5", $missingFields ) ?>>Zip
+			code *</label> <input type="text" name="zip5" id="zip5"
+			value="<?php echo $member->getValueEncoded( "zip5" ) ?>"
+			onchange="this.value = /^([0-9]{5})$/.test(this.value)? this.value : ''; valid_zip5.checked = this.value;" />&nbsp;<input
+			class="valid" type="checkbox" disabled name="valid_zip5" />
+
+	<?php if ($role == 'booster'  && $option == 2) { ?>		
+			 <label
 			for="primarySkillArea">What's your primary skill?</label> <select
 			name="primarySkillArea" id="primarySkillArea" size="1">
 			<?php foreach ( $member->getSkills() as $value => $label ) { ?>
@@ -344,36 +420,15 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 		<textarea name="otherSkills" id="otherSkills" rows="4" cols="50">
 		<?php echo $member->getValueEncoded( "otherSkills" ) ?>
 		</textarea>
-		
-		<?php } else {
-				
-			$now = date("YmdHis");
-			$tempEmailAddress = $now . "@gunnerysergeant.org";
-			?>
 
-		<input type="hidden" name="username" value="unknown" /> <input
-			type="hidden" name="street1" value="unknown" /> <input type="hidden"
-			name="street2" value="unknown" /> <input type="hidden" name="city"
-			value="unknown" /> <input type="hidden" name="stateName" value="XX" />
-		<input type="hidden" name="phone" value="unknown" /> <input
-			type="hidden" name="primarySkillArea" value="other" /> <input
-			type="hidden" name="passwordMnemonicQuestion"
-			value="visit sponsor to reset" /> <input type="hidden"
-			name="passwordMnemonicAnswer" value="sponsorhelp" /> <input
-			type="hidden" name="firstName" value="unknown" /> <input
-			type="hidden" name="lastName" value="unknown" /> <input type="hidden"
-			name="emailAddress" value="<?php echo $tempEmailAddress; ?>" /> <input
-			type="hidden" name="shortname" value="shortname" /> <input
-			type="hidden" name="isforsale" value="0" /> <input type="hidden"
-			name="createddate" value="2016-07-11" />
+<?php } else { ?>
+		 <input
+			type="hidden" name="primarySkillArea" value="other" />
 
-			<?php } ?>
+<?php } ?>
 
-		<label for="zip5" <?php validateField( "zip5", $missingFields ) ?>>Zip
-			code *</label> <input type="text" name="zip5" id="zip5"
-			value="<?php echo $member->getValueEncoded( "zip5" ) ?>"
-			onchange="this.value = /^([0-9]{5})$/.test(this.value)? this.value : ''; valid_zip5.checked = this.value;" />&nbsp;<input
-			class="valid" type="checkbox" disabled name="valid_zip5" />
+	
+	<?php if ($role == 'private') { ?>		
 			 <label
 			for="handle" <?php validateField( "handle", $missingFields ) ?>>Handle
 			*</label>
@@ -400,14 +455,18 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 		<div class="rsp_message" id="rsp_sponsorusername">
 			<!-- -->
 		</div>
-
+		<?php } ?>
+		
 		<label <?php validateField( "gender", $missingFields ) ?>>Your gender:
 			*</label> <label for="genderMale">Male</label> <input type="radio"
 			name="gender" id="genderMale" value="m"
 			<?php setChecked( $member, "gender", "m" )?> /> <label
 			for="genderFemale">Female</label> <input type="radio" name="gender"
 			id="genderFemale" value="f"
-			<?php setChecked( $member, "gender", "f" )?> /><br /> <label
+			<?php setChecked( $member, "gender", "f" )?> /><br />
+	
+	<?php if ($role == 'private') { ?>		
+			 <label
 			for="gunname" <?php validateField( "gunname", $missingFields ) ?>>Gun
 			Name *</label> <input type="text" name="gunname" id="gunname"
 			value="<?php echo $guns->getValueEncoded( "gunname" ) ?>" /><br /> <label
@@ -433,7 +492,8 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 		<input type="text" name="caliber" id="caliber"
 			value="<?php echo $guns->getValueEncoded( "caliber" ) ?>" /><br />
 		<br />
-
+		<?php } ?>
+		
 		<div style="clear: both;">
 			<input type="submit" name="submitButton" id="submitButton"
 				value="Send Details" /> <input type="reset" name="resetButton"
@@ -734,8 +794,8 @@ function displayThanks($role, $option) {
 	?>
 <p>Thank you, you are now an enlisted member of the GunnerySergeant Organization!</p>
 <br />
-<?php if ($role = 'private') { ?>
-<?php if ($option = 1) { ?>
+<?php if ($role == 'private') { ?>
+<?php if ($option == 1) { ?>
 <p>
 You have chosen to enlist as an 'uncertified' private.  This means that the only data
 we have is your zip code and your handle (as well as information you supplied about
@@ -786,21 +846,58 @@ acquire thru us has no ISP related charges).</li>
 
 <li>A member certificate that may be useful to present to retailers for appropriate discounts.</li>
 </ul>
-<?php } else if ($option = 2) { ?>
+<?php } else if ($option == 2) { ?>
 <p>You have chosen to enlist as an 'uncertified' private.</p>
 <?php } else { ?>
 <p>You have chosen to enlist as an 'first class' private (PFC).</p>
 
 <?php } ?>
 
-<?php } else if ($role = 'booster') { ?>
-<p>You have chosen to enlist as a booster.</p>
+<?php } else if ($role == 'booster') { ?>
+<?php if ($option == 1) { ?>
+<p>You have chosen to enlist as a donor.</p>
+<p>By default your profile settings are:</p>
+<ul>
+<li>We will likely send you 'reminder' solicitations for a donation yearly.</li>
+<li>We will not share your contact information with like nonprofits.</li>
+<li>We will not mail or email periodic news about our web site.</li>
+</ul>
+<p/>
+<p>NOTE: At this time Gunnery Sergeant Organization cannot accept monitary contributions!
+We are in the process of establishing ourselves as a nonprofit entity.</p>
+<?php } else { ?>
+<p>You have chosen to enlist as a collaborator.</p>
+<p>The next step is that we will review your skill set and make suggestions about tasks where you could help us.  Our most pressing needs are: </p>
+<ul>
+<li>We need help to establish ourselves as a nonprofit.</li>
+<li>We need a mailing address.</li>
+<li>We currently are completely unfunded, so we need volunteers for roles that should typically be paid positions.</li>
+</ul>
+<p/>
+<p>NOTE: At this time Gunnery Sergeant Organization coordinates tasks via
+email, phone and our host provider's wiki <a class="w3-btn w3-round-large" href="https://collogistics.collogistics.com:3443">Collogistics.org</a>.</p>
 
-<?php } else if ($role = 'sergeant') { ?>
+<?php } ?>
+<?php } else if ($role == 'sergeant') { ?>
 <p>You have chosen to enlist as a Gunnery Sergeant (GS).</p>
+<p>NOTE: At this time Gunnery Sergeant Organization, being a beta site, has not recruited the volunteer GS staffers!
+The progress of the beta can be tracked via wiki <a class="w3-btn w3-round-large" href="https://collogistics.collogistics.com:3443">Collogistics.org</a>.</p>
 
-<?php } else if ($role = 'sponsor') { ?>
+<?php } else if ($role == 'sponsor') { ?>
 <p>You have chosen to enlist as a sponsor.</p>
+<p>The next step is to inform your friend (who owns a gun) what username you have specified for yourself.  Here's some steps: </p>
+<ul>
+<li>The friend can then enlist by simply specifying your handle and a few other facts (including information about his or her gun).</li>
+<li>Alternately you could enlist your friend provided you know some details about his or her's gun.</li>
+<li>If the friend enlists as an 'uncertified private', then, after enlistment, you can sign into his or her's account and change the password to some mutually agreed temporary (but secret) password.
+Once changed the friend can sign in at any time and change the password to a permanent secret password known only to the friend.</li>
+<li>The friend is always assigned a Gunnery Sergeant (aka GS).  The friend is typically direcly notified the handle for the GS.  However if the friend is an 'uncertified private' that information is passed to you (to convey to your friend).</li>
+<li>The GS periodically contacts your friend directly. They never know each other's names. The handle is used for addressing each other (both have a handle).
+An exception to this is for 'uncertified privates'.  In that case the GS can only communicate to your friend through you (an intermediary).  The GS never knows a think about you such as your username, email, phone, etc.  The GS can simply 'trigger' the system to send you information and/or make queries.</li>
+</ul>
+<p/>
+<p>NOTE: At this time Gunnery Sergeant Organization, being a beta site, has not recruited the volunteer GS staffers!
+The progress of the beta can be tracked via wiki <a class="w3-btn w3-round-large" href="https://collogistics.collogistics.com:3443">Collogistics.org</a>.</p>
 
 <?php } ?>
 	<?php
