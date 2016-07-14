@@ -343,6 +343,12 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 		<div class="rsp_message" id="rsp_email">
 			<!-- -->
 		</div>
+
+		<label for="phone" <?php validateField( "phone", $missingFields ) ?>>Phone
+			 *</label> <input type="text" name="phone" id="phone"
+			value="<?php echo $member->getValueEncoded( "phone" ) ?>"
+			onchange="this.value = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/.test(this.value)? this.value.replace(/[^0-9]+/g, '') : ''; valid_phone.checked = this.value;" />&nbsp;<input
+			class="valid" type="checkbox" disabled name="valid_phone" />
 			
 			 <label
 			for="firstName" <?php validateField( "firstName", $missingFields ) ?>>First
