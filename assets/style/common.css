@@ -34,7 +34,6 @@ a:hover, a:active {
 }
 
 .collogistics, a:link, a:visited { 
-    color: (internal value);
     text-decoration: underline;
     cursor: auto;
 }
