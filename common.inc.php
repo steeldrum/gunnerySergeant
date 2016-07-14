@@ -235,7 +235,7 @@ function displayPageFooter() {
 </div>
 	<footer class="w3-container w3-round w3-border w3-brown">
 	<div class="w3-container w3-center">
-		<a class="w3-btn w3-round-large" href="./index.html"> <img
+		<a style="margin: 10px 0 10px 0"; class="w3-btn w3-round-large" href="./index.html"> <img
 			border="0" alt="Home" src="assets/images/HomeSBC.jpg" width="100"
 			height="30"> </a>
 	</div>
