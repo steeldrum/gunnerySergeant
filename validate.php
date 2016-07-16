@@ -67,6 +67,33 @@ switch($method) {
 
 		break;
 
+			case 'checkMemberUsername':
+		// ...
+		// set the $retval message, and the $passed variable to true or false
+		// TODO ensure sponsor doesn't sponsor any other private...
+		$memberUsername = $_POST['value'];
+		if ($member = Member::getByUsername( $memberUsername ) ) {
+			//echo "username exists... ";
+			//$retval = "A member with that username already exists in the database. Please choose another username.";
+			$passed = true;
+			$retval = "$memberUsername is a valid username of a member who has previously enlisted!";
+			
+			/*
+			$retval = "A member with that username will be asked to sponsor you!";
+			$propertyId = "valid_sponsorusername";
+			// OK so far but what if this sponsor already agreed to sponsor some other gun owner?
+			$sponsorId = $member->getValue('id');
+			if ($kaba = Kaba::getSponsoredKaba( $sponsorId ) ) {
+				$passed = false;
+				$kabaHandle = $kaba->getValue('handle');
+				$retval = "Sorry. The sponsor with username $memberUsername is now sponsoring another gun owner with the handle $kabaHandle!";
+			}*/
+		} else {
+			$retval = "Sorry. There is no member with that username!";
+		}
+
+		break;
+		
 	case 'checkHandle':
 		// ...
 		// set the $retval message, and the $passed variable to true or false

@@ -30,10 +30,27 @@ class Sergeant extends DataObject {
     "handle" => ""
     );
 
+   public static function getByHandle( $handle ) {
+    	$conn = parent::connect();
+    	$sql = "SELECT * FROM " . TBL_SERGEANTS . " WHERE handle = :handle";
+
+    	try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":handle", $handle, PDO::PARAM_STR );
+      $st->execute();
+      $row = $st->fetch();
+      parent::disconnect( $conn );
+      if ( $row ) return new Sergeant( $row );
+    	} catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    	}
+    }
+    
     public function insert() {
     	$conn = parent::connect();
     	// tjs 141114 - remove password function
-    	$sql = "INSERT INTO " . TBL_KABAS . " (
+    	$sql = "INSERT INTO " . TBL_SERGEANTS . " (
               memberid,
               platooncap,
  			isinactive,

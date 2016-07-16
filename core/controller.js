@@ -98,7 +98,64 @@ function enlist(arole, aoption) {
 		//window.location.href = 'enlist.html';*/
 		
 	}
+
+function memberServices(arole, aoption) {
+	role = arole;
+	option = aoption;
+	console.log("memberServices role is " + role + " options is " + option);
+	//window.role = role;
+	//window.option = option;
+	setCookie('role', role, 1);
+	setCookie('option', option, 1);
+	// tjs 160709
+	//setCookie('errors', 'none', 1);
+	setCookie('errornumber', 0, 1);
+	//window.location.href = 'enlist.html';
+	//window.location.href = 'enlist.php';
+		window.location.href = 'memberProfileManager.php?role=' + role + '&option=' + option + '&token=-1';
+		/*
+		var html;
+		switch(role) {
+		case 'sponsor':
+			console.log("enlist sponsor case...");
+			//window.location.href = 'sponsor.html';
+			break;
+		case 'private':
+			console.log("enlist owner case...");
+			//window.location.href = 'private.html';
+			switch(option) {
+			case 2:
+				break;
+			case 3:
+				break;
+			default:
+				html='<div id="gender">{{gender}}</div><div id="zip5">{{zip5}}</div><div id="handle">{{handle}}</div><div id="sponsor">{{sponsor}}</div><div id="commPreference">{{commPreference}}</div>';
+				break;
+			}
+			break;
+		case 'sergeant':
+			console.log("enlist sergeant case...");
+			//window.location.href = 'sergeant.html';
+			break;
+		default:
+			console.log("enlist default case...");
+		  //window.location.href = 'booster.html';
+			break;
+		}
+		window.location.href = 'enlist.html';
+		console.log("enlist html " + html);
+		$('#enlistmentForm').empty();
 	
+		$('#enlistmentForm').append($(html));
+		console.log("enlist form appended...");
+		
+		var handle = "BillyTheKid";
+		console.log("enlist handle " + handle);
+		w3DisplayData("handle", {"handle" : handle});
+		console.log("enlist handle displayed...");
+		//window.location.href = 'enlist.html';*/
+		
+	}
 function displayErrors() {
 	errorNumber = getCookie('errornumber');
 	//console.log("displayEnlistmentForm errors are " + errors);
