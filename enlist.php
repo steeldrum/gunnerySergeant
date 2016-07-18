@@ -292,6 +292,9 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 <p>Thanks for choosing to join the GunnerySergeant Organization.</p>
 <p>To enlist, please fill in your details below and click Send Details.</p>
 <p>Fields marked with an asterisk (*) are required.</p>
+		<?php } if ($role == 'private' && $option > 1) { ?>
+<p>Although an email account is required, if you don't specify one, we'll automatically setup this account: &lt;your username&gt;@gunnerysergeant.org. </p>
+<p>Although a phone number is required, if you don't specify one, we'll automatically send you a coupon with instructions to order a rebated phone.  This new phone would have no monthly service fees (and could save you money if you currently pay for phone services). </p>		
 		<?php } ?>
 
 <form action="enlist.php" method="post" style="margin-bottom: 50px;">
@@ -305,7 +308,7 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 			 <input type="hidden"
 			name="passwordMnemonicAnswer" value="sponsorhelp" />
 			
-			<?php if ($role != 'private') { ?>
+			<?php if ($role != 'private' || ($role == 'private' && $option > 1) ) { ?>
 				
 		<label for="username"
 		<?php validateField( "username", $missingFields ) ?>>Username
@@ -349,7 +352,8 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 			value="<?php echo $member->getValueEncoded( "phone" ) ?>"
 			onchange="this.value = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/.test(this.value)? this.value.replace(/[^0-9]+/g, '') : ''; valid_phone.checked = this.value;" />&nbsp;<input
 			class="valid" type="checkbox" disabled name="valid_phone" />
-			
+	<?php }
+	 if ($role != 'private' || ($role == 'private' && $option == 3) ) { ?>		
 			 <label
 			for="firstName" <?php validateField( "firstName", $missingFields ) ?>>First
 			name *</label> <input type="text" name="firstName" id="firstName"
@@ -360,30 +364,33 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 			value="<?php echo $member->getValueEncoded( "lastName" ) ?>" />
 			
 		
-		<?php } else {
-				
+		<?php } else if (($role == 'private' && $option == 1) ) {
+				// role private option 1 or 2
 			$now = date("YmdHis");
 			$tempEmailAddress = $now . "@gunnerysergeant.org";
+			$today = date("Y-m-d");
 			?>
 
 		<input type="hidden" name="username" value="unknown" /> <input
 			type="hidden" name="street1" value="unknown" /> <input type="hidden"
 			name="street2" value="unknown" /> <input type="hidden" name="city"
 			value="unknown" /> <input type="hidden" name="stateName" value="XX" />
+			<?php if ($option == 1) { ?>
 		<input type="hidden" name="phone" value="unknown" />
+			<input type="hidden" name="emailAddress" value="<?php echo $tempEmailAddress; ?>" /> 
+			<?php } ?>
 		 <input
 			type="hidden" name="primarySkillArea" value="other" />
-					 <input
-			type="hidden" name="firstName" value="unknown" /> <input
+					 
+			<input type="hidden" name="firstName" value="unknown" /> <input
 			type="hidden" name="lastName" value="unknown" /> <input type="hidden"
-			name="emailAddress" value="<?php echo $tempEmailAddress; ?>" /> <input
 			type="hidden" name="shortname" value="shortname" /> <input
 			type="hidden" name="isforsale" value="0" /> <input type="hidden"
-			name="createddate" value="2016-07-11" />
+			name="createddate" value="<?php echo $today; ?>" />
 
 			<?php } ?>
 
-	<?php if ($role != 'private') { ?>		
+	<?php if ($role != 'private'  || ($role == 'private' && $option == 3) ) { ?>		
 		 <label
 			for="street1" <?php validateField( "street1", $missingFields ) ?>>Street1
 			 *</label> <input type="text" name="street1" id="street1"
@@ -517,12 +524,19 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 function processForm() {
 	//	echo "processForm... ";
 	//$requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "gender" );
+	$role = $_POST["role"];
+	$option = $_POST["option"];
 	$requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "zip5", "gender" );
+	if ($role == 'private') {
+		if ($option == 1) {
+			$requiredFields = array("zip5", "gender" );
+		} else if ($option == 2) {
+			$requiredFields = array("username", "password", "emailAddress", "zip5", "gender" );
+		}
+	}
 	$missingFields = array();
 	$errorMessages = array();
 	$errorNumber = 0;
-	$role = $_POST["role"];
-	$option = $_POST["option"];
 	// tjs 141114
 	//$d=mktime(1, 1, 1, 12, 31, 1970);
 	//echo "Created date is " . date("Y-m-d h:i:sa", $d);
@@ -570,24 +584,28 @@ function processForm() {
 			$postedEmailAddress = $now . "@gunnerysergeant.org";
 	 if ( isset( $_POST["emailAddress"] ) ) {
 	 	$postedEmailAddress = preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] );
-	 	if ($role == 'private') {
+	 	if ($postedEmailAddress == '' && $role == 'private') {
 	 		$postedEmailAddress = $handleUsername . "@gunnerysergeant.org";
 	 	}
 	 }
 	
 	//TODO see related comments in controller.
 	//    "username" => isset( $_POST["username"] ) ? preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["username"] ) : "",
-
+$street2 = isset( $_POST["street2"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["street2"] ) : "";
+if ($street2 == "") {
+	$street2 = 'unknown';
+}
+$state = isset( $_POST["stateName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["stateName"] ) : "MA";
 	$member = new Member( array(
     	"username" => $handleUsername,
     	"password" => $memberPassword,
   		"firstname" => isset( $_POST["firstName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["firstName"] ) : "",
     	"lastname" => isset( $_POST["lastName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["lastName"] ) : "",
     	"street1" => isset( $_POST["street1"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["street1"] ) : "",
-      	"street2" => isset( $_POST["street2"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["street2"] ) : "",
+      	"street2" => $street2,
         "city" => isset( $_POST["city"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["city"] ) : "",
-          "statename" => isset( $_POST["stateName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["stateName"] ) : "",
-          "phone" => isset( $_POST["phone"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["phone"] ) : "",
+          "statename" => $state,
+          "phone" => isset( $_POST["phone"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["phone"] ) : "unknown",
     	"joindate" => date("Y-m-d", "2016-06-30"),
   		"gender" => isset( $_POST["gender"] ) ? preg_replace( "/[^mf]/", "", $_POST["gender"] ) : "",
     	"primaryskillarea" => isset( $_POST["primarySkillArea"] ) ? preg_replace( "/[^a-zA-Z]/", "", $_POST["primarySkillArea"] ) : "",
@@ -626,6 +644,7 @@ function processForm() {
 
          	//echo "constructing guns... ";
          	// insert initial gun information...
+         	//$today = date("Y-m-d");
          	$gunInfo = new Guns( array(
     			"memberid" => $kabaMemberId,
     			"gunname" => isset( $_POST["gunname"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["gunname"] ) : "",
@@ -635,7 +654,7 @@ function processForm() {
     		  	"serialnumber" => isset( $_POST["serialnumber"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["serialnumber"] ) : "",
   				 "description" => isset( $_POST["description"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["description"] ) : "",
     		  	"caliber" => isset( $_POST["caliber"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["caliber"] ) : "",
-  				"createddate" => isset( $_POST["createddate"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["createddate"] ) : "",
+  				"createddate" => date("Y-m-d", "2016-06-30"),
     		  	"isforsale" => isset( $_POST["isforsale"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["isforsale"] ) : "",
   				 "isinactive" => "0"
   				 ));
@@ -645,11 +664,13 @@ function processForm() {
          foreach ( $requiredFields as $requiredField ) {
          	if ( !$member->getValue( $requiredField ) ) {
          		$missingFields[] = $requiredField;
+        	$errorMessages[] = '<p class="error">Missing field: ' . $requiredField . '</p>';
          	} else {
          		$field = $member->getValue( $requiredField );
          		if (strLen($field) == 0) {
          			$missingFields[] = $requiredField;
-         		}
+       				$errorMessages[] = '<p class="error">Empty field: ' . $requiredField . '</p>';
+          		}
          	}
          }
          /*
@@ -658,8 +679,9 @@ function processForm() {
           $errorMessages[] = '<p class="error">There were some missing fields in the form you submitted. Please complete the fields highlighted below and click Send Details to resend the form.</p>';
           }
           */
-
-         if ( $missingFields ) {
+		$missingFieldsCount = count($missingFields);
+         //if ( $missingFields ) {
+		if ( $missingFieldsCount > 0 ) {
          	//echo "missing fields... ";
          	$errorMessages[] = '<p class="error">There were some missing fields in the form you submitted. Please complete the fields highlighted below and click Send Details to resend the form.</p>';
          	$errorNumber += 32;
@@ -764,8 +786,8 @@ function processForm() {
     					  	"serialnumber" => isset( $_POST["serialnumber"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["serialnumber"] ) : "",
   							 "description" => isset( $_POST["description"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["description"] ) : "",
     					  	"caliber" => isset( $_POST["caliber"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["caliber"] ) : "",
-  							"createddate" => isset( $_POST["createddate"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["createddate"] ) : "",
-    					  	"isforsale" => isset( $_POST["isforsale"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["isforsale"] ) : "",
+  							"createddate" => date("Y-m-d", "2016-06-30"),
+    					  	"isforsale" => isset( $_POST["isforsale"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["isforsale"] ) : "0",
   							 "isinactive" => "0"
   							 ));
   							 //echo "inserting into guns... ";
