@@ -293,8 +293,8 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 <p>To enlist, please fill in your details below and click Send Details.</p>
 <p>Fields marked with an asterisk (*) are required.</p>
 		<?php } if ($role == 'private' && $option > 1) { ?>
-<p>Although an email account is required, if you don't specify one, we'll automatically setup this account: &lt;your username&gt;@gunnerysergeant.org. </p>
-<p>Although a phone number is required, if you don't specify one, we'll automatically send you a coupon with instructions to order a rebated phone.  This new phone would have no monthly service fees (and could save you money if you currently pay for phone services). </p>		
+<p class="tip">Tip: Although an email account is required, if you don't specify one, we'll automatically setup this account: &lt;your username&gt;@gunnerysergeant.org. </p>
+<p class="tip">Tip: Although a phone number is required, if you don't specify one, we'll automatically email you a coupon with instructions to order a rebated phone.  This new phone would have no monthly service fees (and could save you money if you currently pay for phone services). </p>		
 		<?php } ?>
 
 <form action="enlist.php" method="post" style="margin-bottom: 50px;">
