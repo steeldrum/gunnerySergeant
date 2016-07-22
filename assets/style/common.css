@@ -27,6 +27,12 @@ a:hover, a:active {
     display: inline-block;
 }
 
+#handleFAQlink, a:link, a:visited { 
+    text-decoration: underline;
+    padding: 2px 2px;
+    text-align: center; 
+}
+
 .collogistics {
 	float: left;
 	width: 175px;
@@ -34,6 +40,11 @@ a:hover, a:active {
 }
 
 .collogistics, a:link, a:visited { 
+    text-decoration: underline;
+    cursor: auto;
+}
+
+.faq, a:link, a:visited { 
     text-decoration: underline;
     cursor: auto;
 }

@@ -208,7 +208,7 @@ $xml->endxml();
 
 function checkWord ($word) {
 	$wordPermitted = true;
-	$tabooWords = array("boobs", "cock", "cunt", "faggot", "fuck", "kike", "nigger", "piss", "prick", "pussy", "shit", "slut", "tits", "whore", "yid");
+	$tabooWords = array("boobs", "cock", "cunt", "faggot", "fuck", "hate", "hitler", "kike", "nigger", "piss", "prick", "pussy", "shit", "slut", "tits", "whore", "yid");
 	foreach($tabooWords as $tabooWord) {
 		$pos = strripos($word, $tabooWord);
 		if ($pos === false) {
