@@ -471,12 +471,15 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 		<?php } ?>
 		
 		<label <?php validateField( "gender", $missingFields ) ?>>Your gender:
-			*</label> <label for="genderMale">Male</label> <input type="radio"
+			*</label> 
+
+			<label class="radioLabel" for="genderMale">Male</label><input class="radioInput" type="radio"
 			name="gender" id="genderMale" value="m"
-			<?php setChecked( $member, "gender", "m" )?> /> <label
-			for="genderFemale">Female</label> <input type="radio" name="gender"
+			<?php setChecked( $member, "gender", "m" )?>/>  
+			<label class="radioLabel" for="genderFemale">Female</label><input class="radioInput" type="radio" name="gender"
 			id="genderFemale" value="f"
-			<?php setChecked( $member, "gender", "f" )?> /><br />
+			<?php setChecked( $member, "gender", "f" )?>/>
+			
 	
 	<?php if ($role == 'private') { ?>		
 			 <label

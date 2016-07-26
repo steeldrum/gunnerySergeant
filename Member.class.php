@@ -140,6 +140,99 @@ class Member extends DataObject {
     	}
     }
 
+    // tjs 160722
+    public static function isSponsorMember( $memberId ) {
+    	$conn = parent::connect();
+    	$sql = "SELECT * FROM " . TBL_KABAS . " WHERE sponsorId = :id";
+
+    	try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":id", $memberId, PDO::PARAM_INT );
+      $st->execute();
+      $row = $st->fetch();
+      parent::disconnect( $conn );
+      if ( $row ) return true;
+    	} catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    	}
+    	return false;
+    }
+
+    public static function isSergeantMember( $memberId ) {
+    	$conn = parent::connect();
+    	$sql = "SELECT * FROM " . TBL_SERGEANTS . " WHERE memberId = :id";
+
+    	try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":id", $memberId, PDO::PARAM_INT );
+      $st->execute();
+      $row = $st->fetch();
+      parent::disconnect( $conn );
+      if ( $row ) return true;
+    	} catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    	}
+    	return false;
+    }
+
+    public static function isKabaMember( $memberId ) {
+    	$conn = parent::connect();
+    	$sql = "SELECT * FROM " . TBL_KABAS . " WHERE memberId = :id";
+
+    	try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":id", $memberId, PDO::PARAM_INT );
+      $st->execute();
+      $row = $st->fetch();
+      parent::disconnect( $conn );
+      if ( $row ) return true;
+    	} catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    	}
+    	return false;
+    }
+
+    /*
+     * sponsoredPrivate
+certifiedPrivate
+PFC
+sponsoredSergeant
+sergeant
+sponsor
+booster
+    */
+    public static function getMemberRole( $memberId ) {
+    	if (Member::isSponsorMember( $memberId )) {
+    		return 'sponsor';
+    	} else if (Member::isSergeantMember( $memberId )) {
+    		if (Member::isKabaMember( $memberId )) {
+    			return 'sponsoredSergeant';
+    		} else {
+    			return 'sergeant';
+    		}
+    	} else if (Member::isKabaMember( $memberId )) {
+    		$member = Member::getMember( $memberId );
+    		$firstname = $member->getValue('firstname');
+    		if ($firstname == 'unknown') {
+    			$email = $member->getValue('emailaddress');
+    			$email = preg_replace('/\d+/', '', $email);    			
+    			if ($email == '@gunnerysergeant.org') {
+    				return 'sponsoredPrivate';
+    			} else {
+    				return 'certifiedPrivate';
+    			}
+    		} else {
+    			return 'PFC';
+    		}
+    	} else {
+    		// TBD isAdmin?
+    		return 'booster';
+    	}
+    }
+    
     public static function getByUsername( $username ) {
     	$conn = parent::connect();
     	$sql = "SELECT * FROM " . TBL_MEMBERS . " WHERE username = :username";
@@ -191,7 +284,36 @@ class Member extends DataObject {
     public function setIsSelectableForSite($torf) {
     	$this->data["isselectableforsite"] = $torf;
     }
-
+    
+    //tjs 160725
+    public function setFirstName($firstName) {
+    	$this->data["firstname"] = $firstName;
+    }
+    public function setLastName($lastName) {
+    	$this->data["lastname"] = $lastName;
+    }
+    public function setStreet1($street1) {
+    	$this->data["street1"] = $street1;
+    }
+    public function setStreet2($street2) {
+    	$this->data["street2"] = $street2;
+    }
+    public function setCity($city) {
+    	$this->data["city"] = $city;
+    }
+    public function setStateName($stateName) {
+    	$this->data["statename"] = $stateName;
+    }
+    public function setZip5($zip5) {
+    	$this->data["zip5"] = $zip5;
+    }
+    public function setPhone($phone) {
+    	$this->data["phone"] = $phone;
+    }
+    public function setEmail($email) {
+    	$this->data["emailaddress"] = $email;
+    }
+    
     public function insert() {
     	$conn = parent::connect();
     	// tjs 141114 - remove password function
@@ -255,7 +377,6 @@ class Member extends DataObject {
       $st->bindValue( ":password", $this->data["password"], PDO::PARAM_STR );
       $st->bindValue( ":firstName", $this->data["firstname"], PDO::PARAM_STR );
       $st->bindValue( ":lastName", $this->data["lastname"], PDO::PARAM_STR );
-      $st->bindValue( ":lastName", $this->data["lastname"], PDO::PARAM_STR );
       $st->bindValue( ":street1", $this->data["street1"], PDO::PARAM_STR );
       $st->bindValue( ":street2", $this->data["street2"], PDO::PARAM_STR );
       $st->bindValue( ":city", $this->data["city"], PDO::PARAM_STR );
@@ -295,20 +416,28 @@ class Member extends DataObject {
               $passwordSql
               firstname = :firstName,
               lastname = :lastName,
+              street1 = :street1,
+              street2 = :street2,
+              city = :city,
+              statename = :stateName,
+              phone = :phone,
               joindate = :joinDate,
               gender = :gender,
               primaryskillarea = :primarySkillArea,
               emailaddress = :emailAddress,
               otherskills = :otherSkills,
-              cumdonationsforsites = :cumDonationsForSites,
-              lastdonationmadeon = :lastDonationMadeOn,
-              lastdonationforsite = :lastDonationForSite,
+              registered = :registered,
               lastlogindate = :lastLoginDate,
-              permissionforsite = :permissionForSite,
-              isselectableforsite = :isSelectableForSite,
+              confidential = :confidential,
+              remindergap = :reminderGap,
+              intentionaldonor = :intentionalDonor,
+              subscriber = :subscriber,
               passwordmnemonicquestion = :passwordMnemonicQuestion,
               passwordmnemonicanswer = :passwordMnemonicAnswer,
-              isinactive = :isInactive
+              isinactive = :isInactive,
+              zip5 = :zip5,
+              zip4 = :zip4
+              
             WHERE id = :id";
 
               try {
@@ -318,20 +447,27 @@ class Member extends DataObject {
               	if ( $this->data["password"] ) $st->bindValue( ":password", $this->data["password"], PDO::PARAM_STR );
               	$st->bindValue( ":firstName", $this->data["firstname"], PDO::PARAM_STR );
               	$st->bindValue( ":lastName", $this->data["lastname"], PDO::PARAM_STR );
+              	$st->bindValue( ":street1", $this->data["street1"], PDO::PARAM_STR );
+              	$st->bindValue( ":street2", $this->data["street2"], PDO::PARAM_STR );
+              	$st->bindValue( ":city", $this->data["city"], PDO::PARAM_STR );
+              	$st->bindValue( ":stateName", $this->data["statename"], PDO::PARAM_STR );
+              	$st->bindValue( ":phone", $this->data["phone"], PDO::PARAM_STR );
               	$st->bindValue( ":joinDate", $this->data["joindate"], PDO::PARAM_STR );
               	$st->bindValue( ":gender", $this->data["gender"], PDO::PARAM_STR );
               	$st->bindValue( ":primarySkillArea", $this->data["primaryskillarea"], PDO::PARAM_STR );
               	$st->bindValue( ":emailAddress", $this->data["emailaddress"], PDO::PARAM_STR );
               	$st->bindValue( ":otherSkills", $this->data["otherskills"], PDO::PARAM_STR );
-              	$st->bindValue( ":cumDonationsForSites", $this->data["cumdonationsforsites"], PDO::PARAM_STR );
-              	$st->bindValue( ":lastDonationMadeOn", $this->data["lastdonationmadeon"], PDO::PARAM_STR );
-              	$st->bindValue( ":lastDonationForSite", $this->data["lastdonationforsite"], PDO::PARAM_STR );
-              	$st->bindValue( ":lastLoginDate", $this->data["lastLoginDate"], PDO::PARAM_STR );
-              	$st->bindValue( ":permissionForSite", $this->data["permissionforsite"], PDO::PARAM_STR );
-              	$st->bindValue( ":isSelectableForSite", $this->data["isselectableforsite"], PDO::PARAM_STR );
+              	$st->bindValue( ":registered", $this->data["registered"], PDO::PARAM_STR );
+              	$st->bindValue( ":lastLoginDate", $this->data["lastlogindate"], PDO::PARAM_STR );
+              	$st->bindValue( ":confidential", $this->data["confidential"], PDO::PARAM_STR );
+              	$st->bindValue( ":reminderGap", $this->data["remindergap"], PDO::PARAM_STR );
+              	$st->bindValue( ":intentionalDonor", $this->data["intentionaldonor"], PDO::PARAM_STR );
+              	$st->bindValue( ":subscriber", $this->data["subscriber"], PDO::PARAM_STR );
               	$st->bindValue( ":passwordMnemonicQuestion", $this->data["passwordmnemonicquestion"], PDO::PARAM_STR );
               	$st->bindValue( ":passwordMnemonicAnswer", $this->data["passwordmnemonicanswer"], PDO::PARAM_STR );
               	$st->bindValue( ":isInactive", $this->data["isinactive"], PDO::PARAM_STR );
+              	$st->bindValue( ":zip5", $this->data["zip5"], PDO::PARAM_STR );
+              	$st->bindValue( ":zip4", $this->data["zip4"], PDO::PARAM_STR );
               	$st->execute();
               	parent::disconnect( $conn );
               } catch ( PDOException $e ) {

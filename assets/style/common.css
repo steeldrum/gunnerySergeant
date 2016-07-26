@@ -79,6 +79,8 @@ dd { width: 60%; float: left; margin: 0; padding: 6px 0 5px 0; border-top: 1px s
 /* Forms  margin top, right, bottom, left*/
 form label { display: block; float: left; clear: both; text-align: right; margin: 0.6em 5px 0 0; width: 35%; }
 form input, select, textarea { float: left; margin: 1em 0 0 0; width: 57%; }
+form .radioLabel {  display: block; float: left; clear: both; text-align: right; margin: 0 5px 0 0; width: 35%; }
+form .radioInput {  float: left; margin: 3em 0 0 0; width: 57%; }
 .valid { float: right; margin: 1em 0 0 0; width: 10%; }
 .rsp_message {float: left; margin: 1em 0 1em 0; width: 57%;}
 form input { border: 1px solid #666; }

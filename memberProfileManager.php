@@ -291,6 +291,9 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 <p>Member Login for the Gunnery Sergeant Organization.</p>		
 		<?php } else { ?>
 <p>Members of the Gunnery Sergeant Organization have the opportunity to manage services.</p>
+<?php if ($role != 'unknown' && $option == 0) { ?>
+<p>Your profile can be altered with appropriate options for your role: <?php echo $role; ?>.</p>
+<?php } ?>
 <p>To manage your service or update your profile, please fill in your details below and click Send Details.</p>
 <p>Fields marked with an asterisk (*) are required.</p>
 		<?php } ?>
@@ -323,12 +326,132 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 			 *</label> <input type="password" name="password"
 			id="password" value="" />
 					
-		<?php } else if ($token > 0 && $role == sergeant) {	
+		<?php } else if ($token > 0) {	
 			if ($member = Member::getMember( $token ) ) {		?>
+		<input type="hidden" name="token" value="<?php echo $token; ?>" />
 		<p>Welcome <?php echo $member->getValue('firstname'); ?></p>
+<?php switch ($option) { 
+	case 0: ?>
+		<label>Choose a task:
+			*</label> 
+<!-- select option based on role choises:
+ sponsoredPrivate
+certifiedPrivate
+PFC
+sponsoredSergeant
+sergeant
+sponsor
+booster
+ -->
+<?php switch ($role) { 
+    case 'sponsoredPrivate':
+        //echo "sponsoredPrivate";
+        ?>
+<label class="radioLabel">Edit Guns</label>
+            <input class="radioInput" type="radio" name="task" value="9" disabled/>
+        
+        <?php
+        break;
+    case 'certifiedPrivate':
+        //echo "certifiedPrivate";
+        ?>
+<label class="radioLabel">Edit Guns</label>
+    <input class="radioInput" type="radio" name="task" value="9" disabled/>
+        
+        <?php
+        break;
+            case 'PFC':
+        //echo "PFC";
+        ?>
+<label class="radioLabel">Edit Guns</label>
+    <input class="radioInput" type="radio" name="task" value="9" disabled/>
+        
+        <?php
+        break;
+            case 'sponsoredSergeant':
+        //echo "sponsoredSergeant";
+        ?>
+<label class="radioLabel">Log Conversation</label>
+    <input class="radioInput" type="radio" name="task" value="12" disabled/>
+<label class="radioLabel">View Platoon</label>
+    <input class="radioInput" type="radio" name="task" value="11" disabled/>
+<label class="radioLabel">View Logs</label>
+    <input class="radioInput" type="radio" name="task" value="10" disabled/>
+<label class="radioLabel">Edit Guns</label>
+    <input class="radioInput" type="radio" name="task" value="9" disabled/>
+        
+        <?php
+        break;
+            case 'sergeant':
+        //echo "sergeant";
+        ?>
+ <label class="radioLabel">Log Conversation</label>
+    <input class="radioInput" type="radio" name="task" value="12" disabled/>
+<label class="radioLabel">View Platoon</label>
+    <input class="radioInput" type="radio" name="task" value="11" disabled/>
+<label class="radioLabel">View Logs</label>
+    <input class="radioInput" type="radio" name="task" value="10" disabled/>
+         
+        <?php
+        break;
+            case 'sponsor':
+        //echo "sponsor";
+        ?>
+<label class="radioLabel">Remove Sponsorship</label>
+    <input class="radioInput" type="radio" name="task" value="13" disabled/>
+        
+        <?php
+        break;
+            case 'booster':
+        //echo "booster";
+        break;
+            case 'admin':
+        //echo "admin";
+        ?>
+<label class="radioLabel">Assign Member GS</label>
+    <input class="radioInput" type="radio" name="task" value="21" disabled/>
+        
+        <?php
+        break;        
+} ?>
 
-<?php if ($option == 1 ) { ?>
+<label class="radioLabel">Change Prefs</label>
+    <input class="radioInput" type="radio" name="task" value="8" disabled/>
+
+<label class="radioLabel">Change Skills</label>
+    <input class="radioInput" type="radio" name="task" value="7" disabled/>
+
+<label class="radioLabel">Change Email</label>
+    <input class="radioInput" type="radio" name="task" value="6"/>
+
+<label class="radioLabel">Change Phone</label>
+    <input class="radioInput" type="radio" name="task" value="5"/>
+
+<label class="radioLabel">Change Address</label>
+<input class="radioInput" type="radio" name="task" value="4" checked/>
+
+<label class="radioLabel">Change Name</label>
+<input class="radioInput" type="radio" name="task" value="3"/>
+
+<label class="radioLabel">Change Password</label>
+<input class="radioInput" type="radio" name="task" value="2" disabled/>
+
+<label class="radioLabel">Resign</label>
+<input class="radioInput" type="radio" name="task" value="98" disabled/>
+
+<label class="radioLabel">Sign Off</label>
+<input class="radioInput" type="radio" name="task" value="99"/>
+
+<br/>
+
+<?php break;
+	case 1:
+	if ($role == 'booster') {
+	?>
 <p>Collaborator requesting promotion to become a Gunnery Sergeant...</p>
+<?php } else if ($role == 'PFC') { ?>
+			<p>Private (PFC) requesting promotion to become a Gunnery Sergeant...</p>
+<?php } ?>
 <p>To request becomming a GS, please fill in your details below and click Send Details.</p>
 <p>Fields marked with an asterisk (*) are required.</p>
 		 <label
@@ -345,30 +468,135 @@ function displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, 
 			<!-- -->
 		</div>
 		
-			<?php } else if ($option == 2 ) { ?>
-			<p>Private (PFC) requesting promotion to become a Gunnery Sergeant...</p>
-			<?php } else { ?>
-		    <h4>Choose a task:</h4>
-
-    <input class="w3-radio sergeanttask" type="radio" name="sergeanttask" value="booster" checked/>
-<label class="w3-validate">Booster</label>
-
-<input class="w3-radio sergeanttask" type="radio" name="sergeanttask" value="sponsor"/>
-<label class="w3-validate">Sponsor</label>
-
-<input class="w3-radio sergeanttask" type="radio" name="sergeanttask" value="private"/>
-<label class="w3-validate">Private Gun Owner</label>
-
-<input class="w3-radio sergeanttask" type="radio" name="sergeanttask" value="sergeant"/>
-<label class="w3-validate">Gunnery Sergeant</label>
-<br/>
-<br/>
-&nbsp;&nbsp;<a style="margin-bottom: 10px;" class="w3-btn w3-round-large" href="javascript:processSergeantTask();">Process Task</a>
-<br/>
-			<?php } ?>
+			<?php break;  // end option 1
+			case 2: ?>
+					<input type="hidden" name="task" value="2" />
+			<?php 
+			
+			break;
+			case 3: //Change Name ?>
+			 <label
+			for="firstName" <?php validateField( "firstName", $missingFields ) ?>>First
+			name *</label> <input type="text" name="firstName" id="firstName"
+			value="<?php echo $member->getValueEncoded( "firstName" ) ?>" /> 
+			<label
+			for="lastName" <?php validateField( "lastName", $missingFields ) ?>>Last
+			name *</label> <input type="text" name="lastName" id="lastName"
+			value="<?php echo $member->getValueEncoded( "lastName" ) ?>" />
+			<?php 
+			
+			break;
+			case 4: ?>
+		         		<label
+					for="street1" <?php validateField( "street1", $missingFields ) ?>>Street1
+					 *</label> <input type="text" name="street1" id="street1"
+					value="<?php echo $member->getValueEncoded( "street1" ) ?>" /> 
+		
+				 <label
+					for="street2" <?php validateField( "street2", $missingFields ) ?>>Street2
+					 *</label> <input type="text" name="street2" id="street2"
+					value="<?php echo $member->getValueEncoded( "street2" ) ?>" /> 
+		
+				 <label
+					for="city" <?php validateField( "city", $missingFields ) ?>>City
+					 *</label> <input type="text" name="city" id="city"
+					value="<?php echo $member->getValueEncoded( "city" ) ?>" /> 
+		
+				 <label
+					for="statename" <?php validateField( "statename", $missingFields ) ?>>State
+					 *</label> <input type="text" name="statename" id="statename"
+					value="<?php echo $member->getValueEncoded( "statename" ) ?>" /> 
+							<label for="zip5" <?php validateField( "zip5", $missingFields ) ?>>Zip
+			code *</label> <input type="text" name="zip5" id="zip5"
+			value="<?php echo $member->getValueEncoded( "zip5" ) ?>"
+			onchange="this.value = /^([0-9]{5})$/.test(this.value)? this.value : ''; valid_zip5.checked = this.value;" />&nbsp;<input
+			class="valid" type="checkbox" disabled name="valid_zip5" />
 					
-			<?php } ?>
-		<?php } ?>
+			<?php 
+			
+			break;
+			case 5: ?>
+			<label for="phone" <?php validateField( "phone", $missingFields ) ?>>Phone
+			 *</label> <input type="text" name="phone" id="phone"
+			value="<?php echo $member->getValueEncoded( "phone" ) ?>"
+			onchange="this.value = /^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$/.test(this.value)? this.value.replace(/[^0-9]+/g, '') : ''; valid_phone.checked = this.value;" />&nbsp;<input
+			class="valid" type="checkbox" disabled name="valid_phone" />
+			<?php 
+			
+			break;
+			case 6: ?>
+		<label for="emailAddress"
+		<?php validateField( "emailAddress", $missingFields ) ?>>Email
+			address
+			*</label>
+		<p>
+			<input type="text" name="emailAddress" id="email"
+				value="<?php echo $member->getValueEncoded( "emailAddress" ) ?>"
+				onchange="callAjax('checkEmail', this.value, this.id);" />&nbsp;<input
+				class="valid" id="valid_email" type="checkbox" disabled
+				name="valid_email">
+		</p>
+		<div class="rsp_message" id="rsp_email">
+			<!-- -->
+		</div>
+		<?php 
+			
+			break;
+			case 7: ?>
+					<input type="hidden" name="task" value="7" />
+			<?php 
+			
+			break;
+			case 8: ?>
+					<input type="hidden" name="task" value="8" />
+			<?php 
+			
+			break;
+			case 9: ?>
+					<input type="hidden" name="task" value="9" />
+			<?php 
+			
+			break;
+			case 10: ?>
+					<input type="hidden" name="task" value="10" />
+			<?php 
+			
+			break;
+			case 11: ?>
+					<input type="hidden" name="task" value="11" />
+			<?php 
+			
+			break;
+			case 12: ?>
+					<input type="hidden" name="task" value="12" />
+			<?php 
+			
+			break;
+			case 13: ?>
+					<input type="hidden" name="task" value="13" />
+			<?php 
+			
+			break;
+			case 21: ?>
+					<input type="hidden" name="task" value="21" />
+			<?php 
+			
+			break;
+			case 98: ?>
+					<input type="hidden" name="task" value="98" />
+			<?php 
+			
+			break;
+			case 99: ?>
+					<input type="hidden" name="task" value="99" />
+			<?php 
+			break;
+}?>
+
+
+			<?php } // end found member ?>
+					
+			<?php } // end token > 0 ?>
 		
 		<div style="clear: both;">
 			<input type="submit" name="submitButton" id="submitButton"
@@ -391,18 +619,171 @@ function processForm() {
 	$option = $_POST["option"];
 	$token = $_POST["token"];
 	$loggedIn = true;
-	if ($token < 0) {
-		$loggedIn = false;
-	}
-	//echo "processForm role $role option $option token $token logged in? $loggedIn\n";
-	
-	$requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "zip5", "gender" );
-	if ($token < 0) {
-		$requiredFields = array( "username", "password" );		
-	}
+	$requiredFields = array();
 	$missingFields = array();
 	$errorMessages = array();
 	$errorNumber = 0;
+	if ($token < 0) {
+		$loggedIn = false;
+		$requiredFields = array( "username", "password" );		
+	} else {
+		// logged in choosing a task...
+		//echo " processForm option $option\n";
+		switch($option) {
+			case 0:
+				$requiredFields = array( "task");
+			if (isset( $_POST["task"] )) {
+				$option = $_POST["task"];
+				//echo " processForm task $option\n";
+				if ($option == 99) {
+					$role = 'unknown';
+					$option = 0;
+					$token = -1;
+					//displayForm( $errorMessages, $missingFields, new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, $option, $token );					
+				}				
+				displayForm( $errorMessages, $missingFields, new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, $option, $token );					
+			} else {
+				$errorMessages[] = '<p class="error">Please make sure you enter your task option correctly.</p>';				
+			}
+         	//displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+
+         	//Change Password
+         	case 2:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+
+         	//Change Name
+         	case 3:
+         		if ( $member = Member::getMember( $token ) ) {
+         		  	$newFirstname = isset( $_POST["firstName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["firstName"] ) : "unknown";
+         		  	$oldFirstname = $member->getValueEncoded( "firstName" );
+    				$newLastname = isset( $_POST["lastName"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["lastName"] ) : "unknown";
+					//echo " processForm new first $newFirstname old name $oldFirstname\n";
+    				$member->setFirstName($newFirstname);
+         		 	$member->setLastName($newLastname);
+					//echo " processForm member firstname now " . $member->getValueEncoded( "firstName" );
+    				//echo " processForm update...\n";
+         		 	$member->update();
+         		 	// back to options         		 	
+         			displayForm( $errorMessages, $missingFields, $member, new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );
+         		} else {
+					displayForm( $errorMessages, $missingFields, new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );					
+         		}
+         	break;
+
+         	//Change Address
+         	case 4:
+         		if ( $member = Member::getMember( $token ) ) {
+         			$newStreet1 = isset( $_POST["street1"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["street1"] ) : "unknown";
+         			$newStreet2 = isset( $_POST["street2"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["street2"] ) : "unknown";
+         			$newCity = isset( $_POST["city"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["city"] ) : "unknown";
+         			$newStateName = isset( $_POST["statename"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["statename"] ) : "";
+        			$newZip5 = isset( $_POST["zip5"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["zip5"] ) : "00000";
+    				$member->setStreet1($newStreet1);
+        			$member->setStreet2($newStreet2);
+    				$member->setCity($newCity);
+        			$member->setStateName($newStateName);
+    				$member->setZip5($newZip5);
+        			$member->update();    				    				
+         			displayForm( $errorMessages, $missingFields, $member, new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );
+         		} else {
+					displayForm( $errorMessages, $missingFields, new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );					
+         		}
+			break;         	
+         	//Change Phone
+         	case 5:
+         		if ( $member = Member::getMember( $token ) ) {
+         			$newPhone = isset( $_POST["phone"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["phone"] ) : "unknown";
+    				$member->setPhone($newPhone);
+        			$member->update();    				    				
+         			displayForm( $errorMessages, $missingFields, $member, new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );
+         		} else {
+					displayForm( $errorMessages, $missingFields, new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );					
+         		}
+         	break;
+         	
+         	//Change Email
+         	case 6:
+         		if ( $member = Member::getMember( $token ) ) {
+         			$now = date("YmdHis");
+					$postedEmailAddress = $now . "@gunnerysergeant.org";
+	 				if ( isset( $_POST["emailAddress"] ) ) {
+	 					$postedEmailAddress = preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["emailAddress"] );
+	 				}
+					//echo " processForm new email $postedEmailAddress\n";
+	 				         			//$newEmail = isset( $_POST["emailAddress"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["emailAddress"] ) : "unknown";
+    				//$member->setEmail($newEmail);
+	 				$member->setEmail($postedEmailAddress);
+        			$member->update();    				    				
+         			displayForm( $errorMessages, $missingFields, $member, new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );
+         		} else {
+					displayForm( $errorMessages, $missingFields, new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );					
+         		}
+         	break;
+         	
+         	//Change Skills
+         	case 7:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+         	
+         	//Change Prefs
+         	case 8:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+         	
+         	//Edit Guns
+         	case 9:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+         	
+         	//View Logs
+         	case 10:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+         	
+         	//View Platoon
+         	case 11:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+         	
+         	//Log Conversation
+         	case 12:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+         	
+         	//Remove Sponsorship
+         	case 13:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+         	/*
+         	case 14:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+         	
+         	case 15:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;
+         	*/
+         	//Assign Member GS
+         	case 21:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;         	         	
+
+		    //Resign
+         	case 98:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;         	         	
+		
+		    //Sign Off
+         	case 99:
+         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
+         	break;         	         	
+		}
+	}
+	//echo "processForm role $role option $option token $token logged in? $loggedIn\n";
+	
+	//$requiredFields = array( "username", "password", "emailAddress", "firstName", "lastName", "zip5", "gender" );
 	// tjs 141114
 	//$d=mktime(1, 1, 1, 12, 31, 1970);
 	//echo "Created date is " . date("Y-m-d h:i:sa", $d);
@@ -485,10 +866,11 @@ function processForm() {
 	
 	 //echo "processForm handleUsername $handleUsername\n";
      if ( $member = Member::getByUsername( $handleUsername ) ) {
-		echo "processForm token before retrieved id $token\n";
+     	//TODO
+		echo " processForm token before retrieved id $token\n";
      	if ((integer) $token < 0) {
      		$token = $member->getValue('id');
-			//echo "processForm token $token\n";
+			echo " processForm token $token\n";
      	}
      }
 
@@ -600,8 +982,15 @@ function processForm() {
           displayThanks($role, $option, $token, $loggedIn);
          } // no errors
      } else { // not loggedIn yet
-     	//echo "ProcessForm logging in role $role option $option token $token logged in? $loggedIn\n";
-     	//displayThanks($role, $option, $token, $loggedIn);
+     	//tjs160722
+     	//possible role unknown...
+     	echo " processForm before role derived id $token role $role\n";    		
+     	if ($role == 'unknown') {
+     		$role = Member::getMemberRole($token);
+     		$option = 0;
+     		//TODO
+     		echo " processForm token after retrieved id $token role $role\n";    		
+     	}
      	displayForm( array(), array(), new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, $option, $token );    	
      }
 }
