@@ -80,6 +80,7 @@ class Member extends DataObject {
     "other" => "Other"
     );
 
+    
     public static function getMembers( $startRow, $numRows, $order ) {
      //echo "connecting...";
     	$conn = parent::connect();
@@ -106,7 +107,11 @@ class Member extends DataObject {
       //$row = $st->fetch();
       parent::disconnect( $conn );
       //return array( $members, $row["totalRows"] );
-      return array( $members, $rowCount );
+     // $totalRows = Member::getMemberCount();
+      $totalRows = 74;
+      echo " totalRows $totalRows";
+      //return array( $members, $rowCount );
+      return array( $members, $rowCount, $totalRows );
     	} catch ( PDOException $e ) {
       parent::disconnect( $conn );
       die( "Query failed: " . $e->getMessage() );

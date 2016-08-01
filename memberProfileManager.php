@@ -254,6 +254,8 @@
 
  */
 
+//echo " memberProfileManager";
+
 date_default_timezone_set ( "America/New_York" );
 
 require_once( "common.inc.php" );
@@ -268,6 +270,7 @@ if ( isset( $_POST["action"] ) and $_POST["action"] == "update" ) {
 	processForm();
 } else {
 	//displayForm( array(), array(), new Member( array() ) );
+	//echo " display form...";
 	displayForm( array(), array(), new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $_GET["role"], $_GET["option"], $_GET["token"] );
 	 
 	//echo "displayErrors...";
@@ -599,7 +602,7 @@ booster
 					<input type="hidden" name="task" value="99" />
 			<?php 
 			break;
-}?>
+} // end options ?>
 
 
 			<?php } // end found member ?>
