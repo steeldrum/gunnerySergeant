@@ -108,10 +108,10 @@ class Member extends DataObject {
       parent::disconnect( $conn );
       //return array( $members, $row["totalRows"] );
      // $totalRows = Member::getMemberCount();
-      $totalRows = 74;
-      echo " totalRows $totalRows";
-      //return array( $members, $rowCount );
-      return array( $members, $rowCount, $totalRows );
+      //$totalRows = 74;
+      //echo " totalRows $totalRows";
+      return array( $members, $rowCount );
+      //return array( $members, $rowCount, $totalRows );
     	} catch ( PDOException $e ) {
       parent::disconnect( $conn );
       die( "Query failed: " . $e->getMessage() );
