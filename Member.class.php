@@ -205,6 +205,10 @@ sponsor
 booster
     */
     public static function getMemberRole( $memberId ) {
+    		// TBD isAdmin? this is temp code...
+    	if ($memberId == 1) {
+    			return 'admin';
+    		} else 
     	if (Member::isSponsorMember( $memberId )) {
     		return 'sponsor';
     	} else if (Member::isSergeantMember( $memberId )) {
@@ -228,8 +232,7 @@ booster
     			return 'PFC';
     		}
     	} else {
-    		// TBD isAdmin?
-    		return 'booster';
+    			return 'booster';
     	}
     }
     

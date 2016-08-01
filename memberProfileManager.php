@@ -260,6 +260,8 @@ require_once( "common.inc.php" );
 require_once( "Kaba.class.php" );
 require_once( "Guns.class.php" );
 require_once( "Sergeant.class.php" );
+// tjs 160727
+require_once( "query.php" );
 
 if ( isset( $_POST["action"] ) and $_POST["action"] == "update" ) {
 	//echo "processForm...";
@@ -388,7 +390,7 @@ booster
  <label class="radioLabel">Log Conversation</label>
     <input class="radioInput" type="radio" name="task" value="12" disabled/>
 <label class="radioLabel">View Platoon</label>
-    <input class="radioInput" type="radio" name="task" value="11" disabled/>
+    <input class="radioInput" type="radio" name="task" value="11"/>
 <label class="radioLabel">View Logs</label>
     <input class="radioInput" type="radio" name="task" value="10" disabled/>
          
@@ -409,7 +411,7 @@ booster
         //echo "admin";
         ?>
 <label class="radioLabel">Assign Member GS</label>
-    <input class="radioInput" type="radio" name="task" value="21" disabled/>
+    <input class="radioInput" type="radio" name="task" value="21"/>
         
         <?php
         break;        
@@ -562,9 +564,12 @@ booster
 			<?php 
 			
 			break;
+			
+			//View Platoon
 			case 11: ?>
 					<input type="hidden" name="task" value="11" />
 			<?php 
+			queryForSergeantPlatoon($token);
 			
 			break;
 			case 12: ?>
@@ -578,8 +583,11 @@ booster
 			
 			break;
 			case 21: ?>
+			<p>To assign gun owner to sergeant, specify the common zip code and owner, sergeant respective handles.</p>
 					<input type="hidden" name="task" value="21" />
+					
 			<?php 
+			queryForKabaSergeantMatches();
 			
 			break;
 			case 98: ?>
@@ -599,9 +607,15 @@ booster
 			<?php } // end token > 0 ?>
 		
 		<div style="clear: both;">
+		
+		<?php if ($option == 11) { ?>
+			<input type="submit" name="submitButton" id="submitButton"
+				value="Done" /> 
+		<?php } else { ?>
 			<input type="submit" name="submitButton" id="submitButton"
 				value="Send Details" /> <input type="reset" name="resetButton"
 				id="resetButton" value="Reset Form" style="margin-right: 20px;" />
+		<?php } ?>
 		</div>
 
 	</div>
@@ -744,8 +758,12 @@ function processForm() {
          	
          	//View Platoon
          	case 11:
-         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
-         	break;
+         		if ( $member = Member::getMember( $token ) ) {
+         			displayForm( $errorMessages, $missingFields, $member, new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );
+         		} else {
+					displayForm( $errorMessages, $missingFields, new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );					
+         		}
+         		break;
          	
          	//Log Conversation
          	case 12:
@@ -767,8 +785,23 @@ function processForm() {
          	*/
          	//Assign Member GS
          	case 21:
-         	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );
-         	break;         	         	
+	 			if ( isset( $_POST["zip"] ) ) {
+	 					//          "zip5" => isset( $_POST["zip5"] ) ? preg_replace( "/[^ \'\-a-zA-Z0-9]/", "", $_POST["zip5"] ) : "",	 					
+	 				$zip = preg_replace( "/[^ \@\.\-\_a-zA-Z0-9]/", "", $_POST["zip"] );
+	 				if (isset( $_POST["sarge"] )) {
+						$sarge = preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["sarge"] );
+	 					if (isset( $_POST["kaba"] )) {
+							$kaba = preg_replace( "/[^ \-\_a-zA-Z0-9]/", "", $_POST["kaba"] );
+							Kaba::updateGSIDByHandleZipCodeGSHandle( $kaba, $zip, $sarge );							
+						} 
+	 				} 
+	 			}
+         		if ( $member = Member::getMember( $token ) ) {
+         			displayForm( $errorMessages, $missingFields, $member, new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );
+         		} else {
+					displayForm( $errorMessages, $missingFields, new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );					
+         		}
+	 			break;         	         	
 
 		    //Resign
          	case 98:

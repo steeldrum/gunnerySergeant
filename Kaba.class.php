@@ -64,6 +64,26 @@ class Kaba extends DataObject {
       die( "Query failed: " . $e->getMessage() );
     	}
     }
+
+    public static function updateGSIDByHandleZipCodeGSHandle( $handle, $zip5, $GShandle ) {
+    	$conn = parent::connect();
+    	//$sql = "SELECT memberid FROM " . TBL_KABAS . " k, " . TBL_MEMBERS . " m WHERE k.handle = :handle AND k.memberid = m.id AND m.zip5 = :zip5";
+    	//UPDATE kabas SET sergeantid = (SELECT s.memberid FROM sergeants s, members m WHERE s.handle = 'DonAsSarge' AND m.zip5 = '02006' AND s.memberid = m.id) WHERE memberid = (SELECT k.memberid FROM kabas k, members m WHERE k.handle = 'TheKicker' AND m.zip5 = '02006' AND k.memberid = m.id);
+    	
+    	$sql = "UPDATE kabas SET sergeantid = (SELECT s.memberid FROM sergeants s, members m WHERE s.handle = :sargeHandle AND m.zip5 = :zip5 AND s.memberid = m.id) WHERE memberid = (SELECT k.memberid FROM kabas k, members m WHERE k.handle = :handle AND m.zip5 = :zip5 AND k.memberid = m.id)";
+    	
+    	try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":handle", $handle, PDO::PARAM_STR );
+      $st->bindValue( ":zip5", $zip5, PDO::PARAM_STR );
+      $st->bindValue( ":sargeHandle", $GShandle, PDO::PARAM_STR );
+      $st->execute();
+    	}
+    	catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    	}
+    }
     
     public function insert() {
     	$conn = parent::connect();
