@@ -112,7 +112,13 @@ function memberServices(arole, aoption) {
 	setCookie('errornumber', 0, 1);
 	//window.location.href = 'enlist.html';
 	//window.location.href = 'enlist.php';
+	
+	// tjs 160805
+	if (option == 0) {
 		window.location.href = 'memberProfileManager.php?role=' + role + '&option=' + option + '&token=-1';
+	} else if (option == 22) {
+		window.location.href = 'view_role_members.php?start=0&order=role';	
+	}
 		/*
 		var html;
 		switch(role) {

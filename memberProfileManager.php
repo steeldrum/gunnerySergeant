@@ -379,7 +379,7 @@ booster
 <label class="radioLabel">Log Conversation</label>
     <input class="radioInput" type="radio" name="task" value="12" disabled/>
 <label class="radioLabel">View Platoon</label>
-    <input class="radioInput" type="radio" name="task" value="11" disabled/>
+    <input class="radioInput" type="radio" name="task" value="11"/>
 <label class="radioLabel">View Logs</label>
     <input class="radioInput" type="radio" name="task" value="10" disabled/>
 <label class="radioLabel">Edit Guns</label>
@@ -415,6 +415,8 @@ booster
         ?>
 <label class="radioLabel">Assign Member GS</label>
     <input class="radioInput" type="radio" name="task" value="21"/>
+<label class="radioLabel">View/Edit Members</label>
+    <input class="radioInput" type="radio" name="task" value="22"/>
         
         <?php
         break;        
@@ -593,6 +595,12 @@ booster
 			queryForKabaSergeantMatches();
 			
 			break;
+			case 22: ?>
+			<script>
+				memberServices('admin', 22);
+			</script>
+			
+			<?php 
 			case 98: ?>
 					<input type="hidden" name="task" value="98" />
 			<?php 
@@ -804,8 +812,13 @@ function processForm() {
          		} else {
 					displayForm( $errorMessages, $missingFields, new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, 0, $token );					
          		}
-	 			break;         	         	
+	 		break;         	         	
 
+	 		//View/Edit Members
+         	case 22:
+
+	 		break;         	         	
+	 		
 		    //Resign
          	case 98:
          	displayForm( $errorMessages, $missingFields, $member, $kaba, $sponsor, $gunInfo, $role, $option, $token );

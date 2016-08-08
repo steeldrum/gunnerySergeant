@@ -57,7 +57,9 @@ class Member extends DataObject {
     // 'labor', 'legal', 'management', 'music', 'politics', 'professional', 'retailing',
     // 'software', 'trades', 'other' ) NOT NULL,
 
-    private $_skills = array(
+    // tjs 160805
+    //private $_skills = array(
+    protected $_skills = array(
     "accounting" => "Accounting",
     "administration" => "Administration",
     "architecture" => "Architecture",
