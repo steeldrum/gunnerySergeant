@@ -260,12 +260,30 @@ static function build_sorter($key) {
 
     // tjs 140206
     public static function isMemberAdmin( $memberId ) {
+    	/*
     	// hack for test:
     	if ($memberId == 1) {
     		return true;
     	} else {
     		return false;
     	}
+    	*/
+    $conn = parent::connect();
+    	$sql = "SELECT * FROM " . TBL_ADMINS . " WHERE memberid = :id";
+
+    	try {
+      $st = $conn->prepare( $sql );
+      $st->bindValue( ":id", $memberId, PDO::PARAM_INT );
+      $st->execute();
+      $row = $st->fetch();
+      parent::disconnect( $conn );
+      if ( $row ) return true;
+    	} catch ( PDOException $e ) {
+      parent::disconnect( $conn );
+      die( "Query failed: " . $e->getMessage() );
+    	}
+    	return false;
+    	
     }
 
     // tjs 160722

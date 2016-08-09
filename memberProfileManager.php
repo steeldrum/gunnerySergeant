@@ -916,10 +916,10 @@ function processForm() {
 	 //echo "processForm handleUsername $handleUsername\n";
      if ( $member = Member::getByUsername( $handleUsername ) ) {
      	//TODO
-		echo " processForm token before retrieved id $token\n";
+		//echo " processForm token before retrieved id $token\n";
      	if ((integer) $token < 0) {
      		$token = $member->getValue('id');
-			echo " processForm token $token\n";
+			//echo " processForm token $token\n";
      	}
      }
 
@@ -1038,7 +1038,7 @@ function processForm() {
      		$role = Member::getMemberRole($token);
      		$option = 0;
      		//TODO
-     		echo " processForm token after retrieved id $token role $role\n";    		
+     		//echo " processForm token after retrieved id $token role $role\n";    		
      	}
      	displayForm( array(), array(), new Member( array() ), new Kaba( array() ), new Member( array() ), new Guns( array() ), $role, $option, $token );    	
      }
