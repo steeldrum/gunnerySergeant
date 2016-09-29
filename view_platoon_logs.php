@@ -11,6 +11,7 @@ file version 1.00
 require_once( "common.inc.php" );
 require_once( "config.php" );
 
+require_once( "CollaborationLog.class.php" );
 //require_once( "RoleMember.class.php" );
 // tjs 160801
 require_once( "query.php" );
@@ -38,9 +39,16 @@ discussed.  Topics are scenarios with conclusion 'lessons learned'.
 */
 $start = isset( $_GET["start"] ) ? (int)$_GET["start"] : 0;
 $order = isset( $_GET["order"] ) ? preg_replace( "/[^ a-zA-Z]/", "startaccess", $_GET["order"] ) : "startaccess";
-$sergeantid = isset( $_GET["sergeantid"] ) ? preg_replace( "/[^ a-zA-Z]/", "", $_GET["sergeantid"] ) : "";
-$memberid = isset( $_GET["memberid"] ) ? preg_replace( "/[^ a-zA-Z]/", "", $_GET["memberid"] ) : "";
+//$sergeantid = isset( $_GET["sergeantid"] ) ? preg_replace( "/[^ a-zA-Z]/", "", $_GET["sergeantid"] ) : "";
+$sergeantid = isset( $_GET["sergeantid"] ) ? preg_replace( "/[^0-9]/", "", $_GET["sergeantid"] ) : "";
+//$sergeantid = $_GET["sergeantid"];
+//$memberid = isset( $_GET["memberid"] ) ? preg_replace( "/[^ a-zA-Z]/", "", $_GET["memberid"] ) : "";
+$memberid = isset( $_GET["memberid"] ) ? preg_replace( "/[^0-9]/", "", $_GET["memberid"] ) : "";
+//echo "start $start order $order sergeant id $sergeantid";
 list( $collaborationLogs, $rowCount ) = CollaborationLog::getCollaborationLogs( $start, PAGE_SIZE, $order, $sergeantid, $memberid );
+//CollaborationLog::getCollaborationLogs( $start, PAGE_SIZE, $order, $sergeantid, $memberid );
+
+$totalRows = queryForPlatoonLogsCount($sergeantid);
 
 displayPageHeader( "View GunnerySergeant platoon logs" );
 
@@ -49,8 +57,8 @@ displayPageHeader( "View GunnerySergeant platoon logs" );
 
     <table cellspacing="0" style="width: 30em; border: 1px solid #666;">
       <tr>
-        <th><?php if ( $order != "startaccess" ) { ?><a href="view_platoon_logs.php?order=startaccess"><?php } ?>Start Contact<?php if ( $order != "startaccess" ) { ?></a><?php } ?></th>
-        <th><?php if ( $order != "stopaccess" ) { ?><a href="view_platoon_logs.php?order=stopaccess"><?php } ?>Stop Contact<?php if ( $order != "stopaccess" ) { ?></a><?php } ?></th>
+        <th><?php if ( $order != "startaccess" ) { ?><a href="view_platoon_logs.php?sergeantid=<?php echo $sergeantid; ?>&amp;order=startaccess"><?php } ?>Start Contact<?php if ( $order != "startaccess" ) { ?></a><?php } ?></th>
+        <th><?php if ( $order != "stopaccess" ) { ?><a href="view_platoon_logs.php?sergeantid=<?php echo $sergeantid; ?>&amp;order=stopaccess"><?php } ?>Stop Contact<?php if ( $order != "stopaccess" ) { ?></a><?php } ?></th>
         <th>Handle</th>
       </tr>
 <?php
@@ -60,7 +68,7 @@ foreach ( $collaborationLogs as $collaborationLog ) {
   $rowCount++;
 ?>
       <tr<?php if ( $rowCount % 2 == 0 ) echo ' class="alt"' ?>>
-        <td><a href="view_platoon_log.php?memberId=<?php echo $collaborationLog->getValueEncoded( "id" ) ?>&amp;start=<?php echo $start ?>&amp;order=<?php echo $order ?>"><?php echo $collaborationLog->getValueEncoded( "startaccess" ) ?></a></td>
+        <td><a href="view_platoon_log.php?sergeantid=<?php echo $sergeantid; ?>&amp;handle=<?php echo $collaborationLog->getValueEncoded( "handle" ); ?>&amp;id=<?php echo $collaborationLog->getValueEncoded( "id" ); ?>&amp;start=<?php echo $start; ?>&amp;order=<?php echo $order; ?>"><?php echo $collaborationLog->getValueEncoded( "startaccess" ); ?></a></td>
         <td><?php echo $collaborationLog->getValueEncoded( "stopaccess" ) ?></td>
         <td><?php echo $collaborationLog->getValueEncoded( "handle" ) ?></td>
       </tr>

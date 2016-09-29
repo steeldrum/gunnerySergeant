@@ -377,11 +377,11 @@ booster
         //echo "sponsoredSergeant";
         ?>
 <label class="radioLabel">Log Conversation</label>
-    <input class="radioInput" type="radio" name="task" value="12" disabled/>
+    <input class="radioInput" type="radio" name="task" value="12"/>
 <label class="radioLabel">View Platoon</label>
     <input class="radioInput" type="radio" name="task" value="11"/>
 <label class="radioLabel">View Logs</label>
-    <input class="radioInput" type="radio" name="task" value="10" disabled/>
+    <input class="radioInput" type="radio" name="task" value="10"/>
 <label class="radioLabel">Edit Guns</label>
     <input class="radioInput" type="radio" name="task" value="9" disabled/>
         
@@ -391,11 +391,11 @@ booster
         //echo "sergeant";
         ?>
  <label class="radioLabel">Log Conversation</label>
-    <input class="radioInput" type="radio" name="task" value="12" disabled/>
+    <input class="radioInput" type="radio" name="task" value="12"/>
 <label class="radioLabel">View Platoon</label>
     <input class="radioInput" type="radio" name="task" value="11"/>
 <label class="radioLabel">View Logs</label>
-    <input class="radioInput" type="radio" name="task" value="10" disabled/>
+    <input class="radioInput" type="radio" name="task" value="10"/>
          
         <?php
         break;
@@ -564,8 +564,12 @@ booster
 			<?php 
 			
 			break;
+			
+			//View Logs
 			case 10: ?>
-					<input type="hidden" name="task" value="10" />
+			<script>
+				memberServices('<?php echo $role; ?>', 10, <?php echo $token; ?>);
+			</script>
 			<?php 
 			
 			break;
@@ -577,8 +581,12 @@ booster
 			queryForSergeantPlatoon($token);
 			
 			break;
+			
+			//Log Conversation
 			case 12: ?>
-					<input type="hidden" name="task" value="12" />
+			<script>
+				memberServices('<?php echo $role; ?>', 12, <?php echo $token; ?>);
+			</script>
 			<?php 
 			
 			break;
@@ -619,7 +627,7 @@ booster
 		
 		<div style="clear: both;">
 		
-		<?php if ($option == 11) { ?>
+		<?php if ($option == 11  || $option == 10) { ?>
 			<input type="submit" name="submitButton" id="submitButton"
 				value="Done" /> 
 		<?php } else { ?>
@@ -1033,7 +1041,7 @@ function processForm() {
      } else { // not loggedIn yet
      	//tjs160722
      	//possible role unknown...
-     	echo " processForm before role derived id $token role $role\n";    		
+     	//echo " processForm before role derived id $token role $role\n";    		
      	if ($role == 'unknown') {
      		$role = Member::getMemberRole($token);
      		$option = 0;

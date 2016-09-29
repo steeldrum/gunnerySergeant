@@ -148,6 +148,64 @@ function queryForMemberCount() {
 	}	
 }
 
+function queryForPlatoonLogsCount($sargeId) {
+	$conn = connect();
+	//$sql = 'SELECT memberid, handle FROM kabas WHERE isinactive = 0 AND sergeantid = :sergeantid';
+	$sql = 'SELECT count(*) FROM collaborationlog WHERE memberid IN (SELECT memberid FROM kabas WHERE isinactive = 0 AND sergeantid = :sergeantid)';
+	//echo " sql is " . $sql;
+	$count = 0;
+	
+	try {
+		$rows = array();
+		$st = $conn->prepare( $sql );
+		$st->bindValue( ":sergeantid", $sargeId, PDO::PARAM_INT );
+		//echo "binding done...";
+		
+		$st->execute();
+		//echo "looping start...";
+		foreach ( $st->fetchAll() as $row ) {
+			//echo "Result is " . $row;
+			//echo "handle is " . $row['handle'];
+			//echo "phone is " . $row['phone'];
+			//echo "email is " . $row['email'];
+			$count = $row['count'];
+		}
+		
+		disconnect( $conn );
+		return $count;
+	} catch ( PDOException $e ) {
+		disconnect( $conn );
+		die( "Query failed: " . $e->getMessage() );
+	}
+	
+	$conn = connect();
+	$sql = 'SELECT count(*) as "count" FROM collaborationlogs';
+	//echo " sql is " . $sql;
+
+	try {
+		$count = 0;
+		$st = $conn->prepare( $sql );
+		//echo "binding done...";
+		
+		$st->execute();
+		//echo "looping start...";
+		foreach ( $st->fetchAll() as $row ) {
+			//echo "Result is " . $row;
+			//echo "handle is " . $row['handle'];
+			//echo "phone is " . $row['phone'];
+			//echo "email is " . $row['email'];
+			$count = $row['count'];
+		}
+		
+		disconnect( $conn );
+		//echo " count $count";
+		return $count;
+			} catch ( PDOException $e ) {
+		disconnect( $conn );
+		die( "Query failed: " . $e->getMessage() );
+	}	
+}
+
 function connect() {
 	try {
 		// tjs 130719 - conversion to postgreSQL

@@ -6,7 +6,7 @@ $LastChangedDate:: 2011-03-01 15:28:41#$: Date of last commit
 ***************************************/
 /*
 Collaborators/
-LogEntry.class.php
+AccessLog.class.php
 tjs 101012
 
 file version 1.00 
@@ -16,10 +16,11 @@ release version 1.06
 
 require_once "DataObject.class.php";
 
-class LogEntry extends DataObject {
+class AccessLog extends DataObject {
 
   protected $data = array(
   // tjs 130725
+  "id" => "",
     "memberid" => "",
     "pageurl" => "",
     "numvisits" => "",
@@ -28,7 +29,8 @@ class LogEntry extends DataObject {
 
   public static function getLogEntries( $memberId ) {
     $conn = parent::connect();
-    $sql = "SELECT * FROM " . TBL_ACCESS_LOG . " WHERE memberid = :memberId ORDER BY lastaccess DESC";
+    //$sql = "SELECT * FROM " . TBL_ACCESS_LOG . " WHERE memberid = :memberId ORDER BY lastaccess DESC";
+    $sql = "SELECT * FROM " . TBL_ACCESS_LOG . " WHERE memberid = :memberId";
 
     try {
       $st = $conn->prepare( $sql );
@@ -36,7 +38,7 @@ class LogEntry extends DataObject {
       $st->execute();
       $logEntries = array();
       foreach ( $st->fetchAll() as $row ) {
-        $logEntries[] = new LogEntry( $row );
+        $logEntries[] = new AccessLog( $row );
       }
       parent::disconnect( $conn );
       return $logEntries;

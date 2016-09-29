@@ -99,7 +99,9 @@ function enlist(arole, aoption) {
 		
 	}
 
-function memberServices(arole, aoption) {
+// tjs 160825
+//function memberServices(arole, aoption) {
+function memberServices(arole, aoption, atoken) {
 	role = arole;
 	option = aoption;
 	console.log("memberServices role is " + role + " options is " + option);
@@ -118,6 +120,16 @@ function memberServices(arole, aoption) {
 		window.location.href = 'memberProfileManager.php?role=' + role + '&option=' + option + '&token=-1';
 	} else if (option == 22) {
 		window.location.href = 'view_role_members.php?start=0&order=role';	
+	} else if (option == 10) {
+		//window.location.href = 'view_platoon_logs.php?start=0&order=startaccess';	
+		token = atoken;
+		console.log("memberServices token is " + token);
+		window.location.href = 'view_platoon_logs.php?start=0&order=startaccess&sergeantid=' + atoken;	
+	} else if (option == 12) {
+		//window.location.href = 'view_platoon_logs.php?start=0&order=startaccess';	
+		token = atoken;
+		console.log("memberServices token is " + token);
+		window.location.href = 'add_edit_platoon_member_log.php?sergeantid=' + atoken;	
 	}
 		/*
 		var html;
