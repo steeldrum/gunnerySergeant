@@ -129,7 +129,7 @@ function displayFormContents(memberid) {
 	//html += ' value="' + selectedCollaboratorLogInfo.topicid + '" disabled />';
 	html += ' value="' + selectedCollaboratorLogInfo.topicid + '" disabled />';
 	html += '<label for="log" >Log';
-	html += '</label><input type="textarea" name="log" id="log"';
+	html += '</label><input type="textarea" class="w3-input" name="log" id="log"';
 	html += ' value="' + selectedCollaboratorLogInfo.log + '" />';
 	html += '<label for="closelog" >Close Log?';
 	html += '</label><input type="checkbox" name="closelog" id="closelog"';
